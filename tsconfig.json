@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",           // Совместимо с Node.js 22
+    "module": "NodeNext",         // Для ESM (или "CommonJS" для старого стиля)
+    "rootDir": "./src",           // Исходники в src
+    "outDir": "./dist",           // Для компиляции (не обязательно с ts-node)
+    "strict": true,               // Строгие проверки типов
+    "esModuleInterop": true,      // Упрощает работу с модулями
+    "skipLibCheck": true,         // Ускоряет проверку
+    "moduleResolution": "NodeNext" // Соответствует module
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}
