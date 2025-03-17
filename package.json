@@ -26,5 +26,8 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.26.1"
+  },
+  "dependencies": {
+    "xlsx": "file:vendor/xlsx-0.20.3.tgz"
   }
 }
