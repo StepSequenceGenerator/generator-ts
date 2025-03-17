@@ -1,5 +1,7 @@
-console.log('TESTddddd');
+import { fileParser } from './file-parser/parser.js';
 
 function run() {
-  const test = 'esddd  dddddd';
+  fileParser();
 }
+
+run();
