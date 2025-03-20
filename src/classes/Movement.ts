@@ -1,12 +1,6 @@
-import {
-  Edge,
-  Leg,
-  RotationDegrees,
-  RotationDirection,
-  TranslationDirection,
-} from '../enums/movement-enums.js';
+import { Edge, Leg, RotationDegrees, RotationDirection, TranslationDirection } from '../enums/movement-enums.js';
 
-interface IMovement {
+export interface IMovement {
   readonly name: string;
 
   readonly translationDirection: TranslationDirection;
