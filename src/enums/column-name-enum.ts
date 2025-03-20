@@ -6,7 +6,7 @@ enum ColumnName {
   END_EDGE = 'E',
   TRANSLATION_DIRECTION = 'F',
   ROTATION_DIRECTION = 'G',
-  IS_SPEED_INCREASE = 'H'
+  IS_SPEED_INCREASE = 'H',
 }
 
 export { ColumnName };
