@@ -9,6 +9,7 @@ enum Leg {
 }
 
 enum RotationDegrees {
+  DEGREES_0 = 0,
   DEGREE_180 = 180,
   DEGREE_360 = 360,
   DEGREE_540 = 540,
@@ -18,8 +19,9 @@ enum RotationDegrees {
 }
 
 enum RotationDirection {
-  COUNTERCLOCKWISE = 0,
-  CLOCKWISE = 1
+  NONE = 0,
+  COUNTERCLOCKWISE = 1,
+  CLOCKWISE = 2,
 }
 
 enum TranslationDirection {
