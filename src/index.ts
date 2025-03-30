@@ -11,6 +11,7 @@ function run() {
   const workBook = xlsxBook.getWorkBook();
   const parser = new ExcelParser<typeof ColumnName>(workBook, ColumnName);
   const lines = parser.parse();
+  console.log(lines);
 }
 
 run();
