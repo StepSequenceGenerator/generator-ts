@@ -53,7 +53,7 @@ class ExcelParser<T extends Record<string, string>> {
     for (const key of columnNameKeys) {
       const cellKey = `${this.columnNames[key]}${index}`;
       if (sheet[cellKey]) {
-        line.set(this.columnNames[key], sheet[cellKey].v);
+        line.set(this.columnNames[key], String(sheet[cellKey].v).trim().toLowerCase());
       } else {
         console.warn(`Ячейка ${cellKey} не найдена.`);
       }

@@ -15,7 +15,7 @@ enum RotationDegrees {
   DEGREE_540 = 540,
   DEGREE_720 = 720,
   DEGREE_900 = 900,
-  DEGREE_1080 = 1080
+  DEGREE_1080 = 1080,
 }
 
 enum RotationDirection {

@@ -17,6 +17,7 @@
   "description": "",
   "devDependencies": {
     "@eslint/js": "^9.22.0",
+    "@types/lodash": "^4.17.16",
     "@types/node": "^22.13.10",
     "@typescript-eslint/eslint-plugin": "^8.26.1",
     "@typescript-eslint/parser": "^8.26.1",
@@ -30,6 +31,7 @@
     "typescript-eslint": "^8.26.1"
   },
   "dependencies": {
+    "lodash": "^4.17.21",
     "xlsx": "file:vendor/xlsx-0.20.3.tgz"
   }
 }
