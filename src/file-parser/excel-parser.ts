@@ -26,7 +26,6 @@ class ExcelParser<T extends Record<string, string>> {
 
     const columnNameKeys = Object.keys(this.columnNames);
     const data = this.createData(sheet, lastLineNumber, columnNameKeys);
-    console.log(data);
     return data;
   }
 

@@ -1,6 +1,8 @@
 import { XlsxBook } from './file-parser/xlsx-book.js';
 import { ExcelParser } from './file-parser/excel-parser.js';
 import { ColumnName } from './enums/column-name-enum.js';
+import { Movement } from './classes/Movement.js';
+import { MovementFactory } from './classes/MovementFactory.js';
 
 function run() {
   const PUBLIC_DIR =
@@ -11,7 +13,12 @@ function run() {
   const workBook = xlsxBook.getWorkBook();
   const parser = new ExcelParser<typeof ColumnName>(workBook, ColumnName);
   const lines = parser.parse();
-  console.log(lines);
+
+  const movementLibrary: Movement[] = [];
+  for (const line of lines) {
+    const movement = MovementFactory.createFromExcelData<typeof ColumnName>(line, ColumnName);
+    movementLibrary.push(movement);
+  }
 }
 
 run();

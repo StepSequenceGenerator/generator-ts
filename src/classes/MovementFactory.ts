@@ -1,17 +1,20 @@
-import { isEqual } from 'lodash';
+import lodash from 'lodash';
 import { MovementParserError } from '../errors/custom-errors.js';
 import { IMovement, Movement } from './Movement.js';
 import { ColumnName } from '../enums/column-name-enum.js';
 import { Edge, Leg, RotationDegrees, RotationDirection, TranslationDirection } from '../enums/movement-enums.js';
 
+const { isEqual } = lodash;
+
 type RotationDegreeType = 0 | 180 | -180 | 360 | -360;
 const RIGHT_LEG = 'правая';
 const LEFT_LEG = 'левая';
-const INNER_EDGE = 'наружнее';
+const INNER_EDGE = 'наружное';
 const OUTER_EDGE = 'внутреннее';
+const TWO_EDGES = 'два ребра';
 
 class MovementFactory {
-  static createFromExcelData(data: Map<string, string | number>): Movement {
+  static createFromExcelData<T extends Record<string, string>>(data: Map<string, string | number>, columnName: T): Movement {
     const movementData: IMovement = {
       name: this.parseName(data.get(ColumnName.NAME)),
       translationDirection: this.parseTranslationDirection(data.get(ColumnName.TRANSLATION_DIRECTION)),
@@ -42,7 +45,13 @@ class MovementFactory {
 
     this.validateEdge(formatedValue);
 
-    return formatedValue === INNER_EDGE ? Edge.INNER : Edge.OUTER;
+    if (formatedValue === INNER_EDGE) {
+      return Edge.INNER;
+    } else if (formatedValue === OUTER_EDGE) {
+      return Edge.OUTER;
+    } else {
+      return Edge.TWO_EDGES;
+    }
   }
 
   private static parseIsChangeEdge(startEdge: unknown, endEdge: unknown): boolean {
@@ -55,7 +64,7 @@ class MovementFactory {
   }
 
   private static validateEdge(value: string): void {
-    if (value !== INNER_EDGE && value !== OUTER_EDGE) throw new MovementParserError('wrong value for edge', 'INVALID_EDGE');
+    if (value !== INNER_EDGE && value !== OUTER_EDGE && value !== TWO_EDGES) throw new MovementParserError('wrong value for edge', 'INVALID_EDGE');
   }
 
 
@@ -104,8 +113,14 @@ class MovementFactory {
 
   private static parseTranslationDirection(value: unknown): TranslationDirection {
     const formattedValue = Number(value);
-    if (Number.isNaN(formattedValue)) throw new MovementParserError('wrong translationDirection', 'INVALID_TRANSLATION_DIRECTION');
-    return formattedValue == 0 ? TranslationDirection.FORWARD : TranslationDirection.BACKWARD;
+    if (Number.isNaN(formattedValue)) {
+      return TranslationDirection.NONE;
+    } else if (formattedValue === 0) {
+      return TranslationDirection.FORWARD;
+    } else {
+      return TranslationDirection.BACKWARD;
+    }
+
   }
 
   private static parseRotationDirection(value: unknown): RotationDirection {
@@ -137,3 +152,5 @@ class MovementFactory {
     }
   }
 }
+
+export { MovementFactory };
