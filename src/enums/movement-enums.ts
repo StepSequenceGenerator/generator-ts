@@ -1,6 +1,7 @@
 enum Edge {
   INNER = 0,
   OUTER = 1,
+  TWO_EDGES = 2,
 }
 
 enum Leg {
@@ -25,8 +26,9 @@ enum RotationDirection {
 }
 
 enum TranslationDirection {
-  FORWARD = 0,
-  BACKWARD = 1,
+  NONE = 0,
+  FORWARD = 1,
+  BACKWARD = 2,
 }
 
 export { Edge, Leg, RotationDegrees, RotationDirection, TranslationDirection };
