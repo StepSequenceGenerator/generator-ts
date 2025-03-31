@@ -21,7 +21,7 @@ class ExcelParser<T extends Record<string, string>> {
 
     const lastLineNumber: number = this.findLastLineNumber(
       this.cleanUpAndSortSheetKeys(Object.keys(sheet)),
-      this.getColumnNamesLastKey(),
+      this.getColumnNamesLastKey()
     );
 
     const columnNameKeys = Object.keys(this.columnNames);
@@ -32,7 +32,7 @@ class ExcelParser<T extends Record<string, string>> {
   private createData(
     sheet: WorkSheet,
     lastLineNumber: number,
-    columnNameKeys: string[],
+    columnNameKeys: string[]
   ): Map<string, string | number>[] {
     const data: Map<string, string | number>[] = [];
     for (let i = 2; i <= lastLineNumber; i++) {
@@ -45,14 +45,17 @@ class ExcelParser<T extends Record<string, string>> {
   private createLine(
     sheet: WorkSheet,
     columnNameKeys: string[],
-    index: number,
+    index: number
   ): Map<string, string | number> {
     const line: Map<string, string | number> = new Map();
 
     for (const key of columnNameKeys) {
       const cellKey = `${this.columnNames[key]}${index}`;
       if (sheet[cellKey]) {
-        line.set(this.columnNames[key], String(sheet[cellKey].v).trim().toLowerCase());
+        line.set(
+          this.columnNames[key],
+          String(sheet[cellKey].v).trim().toLowerCase()
+        );
       } else {
         console.warn(`Ячейка ${cellKey} не найдена.`);
       }
@@ -79,7 +82,7 @@ class ExcelParser<T extends Record<string, string>> {
 
   private findLastLineNumber(
     arr: SheetKeysType,
-    lastColumnNameKey: string,
+    lastColumnNameKey: string
   ): number {
     const numbers: number[] = [];
 
