@@ -22,13 +22,9 @@ class XlsxBook {
 
   private initializeWorkBook() {
     try {
-      const binaryData = fs.readFileSync(this.absoluteFilePath, {
-        encoding: 'binary',
-      });
-      const arrayBuffer = new Uint8Array(binaryData.length);
-      for (let i = 0; i < arrayBuffer.length; i++) {
-        arrayBuffer[i] = binaryData.charCodeAt(i) & 0xff;
-      }
+      const binaryData = fs.readFileSync(this.absoluteFilePath);
+      const arrayBuffer = new Uint8Array(binaryData);
+
       return XLSX.read(arrayBuffer, { type: 'array' });
     } catch (error) {
       throw new Error(
