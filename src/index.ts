@@ -19,7 +19,7 @@ function run() {
   >(parsedData, ColumnName);
 
   const movementLibrary = new MovementLibrary(preparedDataForLibrary);
-  console.log(movementLibrary.movements);
+  // console.log(movementLibrary.movements);
 }
 
 function prepareDataForMovementLibrary<T extends Record<string, string>>(
