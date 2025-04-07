@@ -13,8 +13,8 @@ const { isEqual } = lodash;
 
 const RIGHT_LEG = 'правая';
 const LEFT_LEG = 'левая';
-const INNER_EDGE = 'наружное';
-const OUTER_EDGE = 'внутреннее';
+const INNER_EDGE = 'внутреннее';
+const OUTER_EDGE = 'наружное';
 const TWO_EDGES = 'два ребра';
 
 class MovementFactory {
@@ -24,6 +24,7 @@ class MovementFactory {
   ): Movement {
     const movementData: IMovement = {
       name: this.parseName(data.get(columnName.NAME)),
+      // TODO переименовать на transitionDirection
       translationDirection: this.parseTranslationDirection(
         data.get(columnName.TRANSLATION_DIRECTION)
       ),
@@ -83,12 +84,14 @@ class MovementFactory {
     const formatedEndEdge = String(endEdge);
     this.validateEdge(formatedEndEdge);
 
-    return formatedStartEdge === formatedEndEdge;
+    return formatedStartEdge !== formatedEndEdge;
   }
 
-  private static validateEdge(value: string): void {
-    if (value !== INNER_EDGE && value !== OUTER_EDGE && value !== TWO_EDGES)
+  private static validateEdge(value: string): boolean {
+    if (value !== INNER_EDGE && value !== OUTER_EDGE && value !== TWO_EDGES) {
       throw new MovementParserError('wrong value for edge', 'INVALID_EDGE');
+    }
+    return true;
   }
 
   private static parseIsSpeedIncrease(value: unknown): boolean {
@@ -106,7 +109,6 @@ class MovementFactory {
   private static parseStartLeg(value: unknown): Leg[] {
     const valueList = this.getLegList(value);
     this.validateLegList(valueList);
-
     if (valueList.includes(LEFT_LEG) && valueList.includes(RIGHT_LEG)) {
       return [Leg.LEFT, Leg.RIGHT];
     } else if (valueList.includes(LEFT_LEG)) {
@@ -126,15 +128,17 @@ class MovementFactory {
     return !isEqual(startLegList, endLegList);
   }
 
-  private static validateLegList(value: string[]): void {
+  private static validateLegList(value: string[]): boolean {
     if (!value.includes(LEFT_LEG) && !value.includes(RIGHT_LEG))
       throw new MovementParserError('wrong Leg', 'INVALID_LEG');
+    return true;
   }
 
   private static getLegList(value: unknown) {
     return String(value)
       .split(',')
-      .sort((a, b) => a.localeCompare(b));
+      .sort((a, b) => a.localeCompare(b))
+      .map((item) => item.trim());
   }
 
   private static parseTranslationDirection(
