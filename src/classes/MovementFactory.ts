@@ -48,7 +48,6 @@ class MovementFactory {
         data.get(columnName.IS_SPEED_INCREASE)
       ),
     };
-
     return new Movement(movementData);
   }
 
