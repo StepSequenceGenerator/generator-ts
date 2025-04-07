@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { Movement } from './Movement.js';
 
 describe('Movement', () => {
@@ -14,9 +14,14 @@ describe('Movement', () => {
     isSpeedIncrease: true,
   };
 
+  let movement: Movement;
+
+  beforeEach(() => {
+    movement = new Movement(movementData);
+  });
+
   describe('implementation', () => {
     it('должен корректно создаваться', () => {
-      const movement = new Movement(movementData);
       expect(movement).toBeDefined();
       expect(movement).toBeInstanceOf(Movement);
     });
