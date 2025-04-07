@@ -1,6 +1,4 @@
 import globals from 'globals';
-import pluginJs from '@eslint/js';
-import tseslint from 'typescript-eslint';
 import typescriptEslintPlugin from '@typescript-eslint/eslint-plugin';
 import typescriptEslintParser from '@typescript-eslint/parser';
 import prettierPlugin from 'eslint-plugin-prettier';
@@ -18,8 +16,8 @@ export default [
     },
     languageOptions: {
       globals: {
-        ...globals.node,      // Замена env.node
-        ...globals.es2022,    // Замена env.es2022
+        ...globals.node, // Замена env.node
+        ...globals.es2022, // Замена env.es2022
       },
       parser: typescriptEslintParser,
       parserOptions: {
@@ -31,6 +29,7 @@ export default [
     rules: {
       ...typescriptEslintPlugin.configs.recommended.rules,
       ...prettierConfig.rules,
+      'no-explicit-any': 'error',
       'prettier/prettier': 'error',
     },
   },
