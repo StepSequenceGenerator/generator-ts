@@ -140,25 +140,25 @@ describe('MovementFactory', () => {
     });
   });
 
-  describe('parseStartLeg', () => {
-    it('должен вернуть массив [Leg.LEFT, Leg.RIGHT]', () => {
+  describe('parseLeg', () => {
+    it('должен вернуть Leg.BOTH', () => {
       const input = `${RIGHT_LEG}, ${LEFT_LEG}`;
-      const expected = [Leg.LEFT, Leg.RIGHT];
-      const result = getFuncResult('parseStartLeg', input);
+      const expected = Leg.BOTH;
+      const result = getFuncResult('parseLeg', input);
       expect(result).toStrictEqual(expected);
     });
 
-    it('должен вернуть массив [Leg.LEFT]', () => {
+    it('должен вернуть Leg.LEFT', () => {
       const input = LEFT_LEG;
-      const expected = [Leg.LEFT];
-      const result = getFuncResult('parseStartLeg', input);
+      const expected = Leg.LEFT;
+      const result = getFuncResult('parseLeg', input);
       expect(result).toStrictEqual(expected);
     });
 
-    it('должен вернуть массив [Leg.RIGHT]', () => {
+    it('должен вернуть Leg.RIGHT', () => {
       const input = RIGHT_LEG;
-      const expected = [Leg.RIGHT];
-      const result = getFuncResult('parseStartLeg', input);
+      const expected = Leg.RIGHT;
+      const result = getFuncResult('parseLeg', input);
       expect(result).toStrictEqual(expected);
     });
   });
