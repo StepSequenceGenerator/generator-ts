@@ -19,6 +19,7 @@ export interface IMovement {
   readonly isChangeLeg: boolean;
 
   readonly startEdge: Edge;
+  readonly endEdge: Edge;
   readonly isChangeEdge: boolean;
 
   readonly isSpeedIncrease: boolean;
@@ -33,6 +34,7 @@ export class Movement implements IMovement {
   readonly endLeg: Leg;
   readonly isChangeLeg: boolean;
   readonly startEdge: Edge;
+  readonly endEdge: Edge;
   readonly isChangeEdge: boolean;
   readonly isSpeedIncrease: boolean;
 
@@ -45,6 +47,7 @@ export class Movement implements IMovement {
     this.endLeg = movement.endLeg;
     this.isChangeLeg = movement.isChangeLeg;
     this.startEdge = movement.startEdge;
+    this.endEdge = movement.endEdge;
     this.isChangeEdge = movement.isChangeEdge;
     this.isSpeedIncrease = movement.isSpeedIncrease;
   }
