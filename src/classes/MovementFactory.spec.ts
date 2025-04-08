@@ -222,25 +222,25 @@ describe('MovementFactory', () => {
     });
   });
 
-  describe('parseStartEdge', () => {
+  describe('parseEdge', () => {
     it('должен вернуть Edge.OUTER', () => {
       const input = OUTER_EDGE;
       const expected = Edge.OUTER;
-      const result = getFuncResult('parseStartEdge', input);
+      const result = getFuncResult('parseEdge', input);
       expect(result).toBe(expected);
     });
 
     it('должен вернуть Edge.INNER', () => {
       const input = INNER_EDGE;
       const expected = Edge.INNER;
-      const result = getFuncResult('parseStartEdge', input);
+      const result = getFuncResult('parseEdge', input);
       expect(result).toBe(expected);
     });
 
     it('должен вернуть Edge.TWO_EDGES', () => {
       const input = TWO_EDGES;
       const expected = Edge.TWO_EDGES;
-      const result = getFuncResult('parseStartEdge', input);
+      const result = getFuncResult('parseEdge', input);
       expect(result).toBe(expected);
     });
   });
