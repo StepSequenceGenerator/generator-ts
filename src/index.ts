@@ -4,6 +4,7 @@ import { ColumnName } from './enums/column-name-enum.js';
 import { Movement } from './classes/Movement.js';
 import { MovementFactory } from './classes/MovementFactory.js';
 import { MovementLibrary } from './classes/MovementLibrary.js';
+import { StepSequenceGenerator } from './sequence-generator/StepSequenceGenerator.js';
 
 function run() {
   const PUBLIC_DIR =
@@ -19,7 +20,8 @@ function run() {
   >(parsedData, ColumnName);
 
   const movementLibrary = new MovementLibrary(preparedDataForLibrary);
-  // console.log(movementLibrary.movements);
+  const generator = new StepSequenceGenerator(movementLibrary);
+  console.log(generator.generate(11));
 }
 
 function prepareDataForMovementLibrary<T extends Record<string, string>>(
@@ -34,4 +36,5 @@ function prepareDataForMovementLibrary<T extends Record<string, string>>(
   return movements;
 }
 
+// 5, 7, 9, 11
 run();
