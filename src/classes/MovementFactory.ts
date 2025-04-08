@@ -40,7 +40,8 @@ class MovementFactory {
         data.get(columnName.START_LEG),
         data.get(columnName.END_LEG)
       ),
-      startEdge: this.parseStartEdge(data.get(columnName.START_EDGE)),
+      startEdge: this.parseEdge(data.get(columnName.START_EDGE)),
+      endEdge: this.parseEdge(data.get(columnName.END_EDGE)),
       isChangeEdge: this.parseIsChangeEdge(
         data.get(columnName.START_EDGE),
         data.get(columnName.END_EDGE)
@@ -61,7 +62,7 @@ class MovementFactory {
     }
   }
 
-  private static parseStartEdge(value: unknown): Edge {
+  private static parseEdge(value: unknown): Edge {
     const formatedValue = String(value);
 
     this.validateEdge(formatedValue);
