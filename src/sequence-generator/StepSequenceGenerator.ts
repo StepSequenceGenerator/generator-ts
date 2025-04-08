@@ -31,27 +31,15 @@ class StepSequenceGenerator {
 
   private getCurrentLeg() {
     if (this.currentStep) {
-      if (
-        this.currentStep.startLeg.length === 2 ||
-        !this.currentStep.isChangeLeg
-      ) {
-        return this.currentStep.startLeg;
-      } else {
-        if (this.currentStep.isChangeLeg) {
-          return this.currentStep.startLeg[0] === Leg.RIGHT
-            ? [Leg.LEFT]
-            : [Leg.RIGHT];
-        } else {
-          return this.currentStep.startLeg;
-        }
-      }
+      return this.currentStep.endLeg;
     } else {
-      return [this.getRandomIndex(1) as Leg];
+      return this.getRandomIndex(2) as Leg;
     }
   }
 
   private getCurrentEdge() {
     if (this.currentStep) {
+      return this.currentStep.startEdge;
     }
   }
 
