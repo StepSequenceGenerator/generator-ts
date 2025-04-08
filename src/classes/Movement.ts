@@ -14,7 +14,8 @@ export interface IMovement {
   readonly rotationDirection: RotationDirection;
   readonly rotationDegree: RotationDegrees;
 
-  readonly startLeg: Leg[];
+  readonly startLeg: Leg;
+  readonly endLeg: Leg;
   readonly isChangeLeg: boolean;
 
   readonly startEdge: Edge;
@@ -28,7 +29,8 @@ export class Movement implements IMovement {
   readonly translationDirection: TranslationDirection;
   readonly rotationDirection: RotationDirection;
   readonly rotationDegree: RotationDegrees;
-  readonly startLeg: Leg[];
+  readonly startLeg: Leg;
+  readonly endLeg: Leg;
   readonly isChangeLeg: boolean;
   readonly startEdge: Edge;
   readonly isChangeEdge: boolean;
@@ -40,6 +42,7 @@ export class Movement implements IMovement {
     this.rotationDirection = movement.rotationDirection;
     this.rotationDegree = movement.rotationDegree;
     this.startLeg = movement.startLeg;
+    this.endLeg = movement.endLeg;
     this.isChangeLeg = movement.isChangeLeg;
     this.startEdge = movement.startEdge;
     this.isChangeEdge = movement.isChangeEdge;

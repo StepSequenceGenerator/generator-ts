@@ -34,7 +34,8 @@ class MovementFactory {
       rotationDegree: this.parseRotationDegree(
         data.get(columnName.ROTATION_DIRECTION)
       ),
-      startLeg: this.parseStartLeg(data.get(columnName.START_LEG)),
+      startLeg: this.parseLeg(data.get(columnName.START_LEG)),
+      endLeg: this.parseLeg(data.get(columnName.END_LEG)),
       isChangeLeg: this.parseIsChangeLeg(
         data.get(columnName.START_LEG),
         data.get(columnName.END_LEG)
@@ -105,15 +106,15 @@ class MovementFactory {
     return Boolean(formatedValue);
   }
 
-  private static parseStartLeg(value: unknown): Leg[] {
+  private static parseLeg(value: unknown): Leg {
     const valueList = this.getLegList(value);
     this.validateLegList(valueList);
     if (valueList.includes(LEFT_LEG) && valueList.includes(RIGHT_LEG)) {
-      return [Leg.LEFT, Leg.RIGHT];
+      return Leg.BOTH;
     } else if (valueList.includes(LEFT_LEG)) {
-      return [Leg.LEFT];
+      return Leg.LEFT;
     } else {
-      return [Leg.RIGHT];
+      return Leg.RIGHT;
     }
   }
 

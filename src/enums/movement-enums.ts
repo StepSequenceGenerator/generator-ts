@@ -7,7 +7,7 @@ enum Edge {
 enum Leg {
   LEFT = 0,
   RIGHT = 1,
-  BOTH,
+  BOTH = 2,
 }
 
 enum RotationDegrees {
