@@ -21,7 +21,7 @@ function run() {
 
   const movementLibrary = new MovementLibrary(preparedDataForLibrary);
   const generator = new StepSequenceGenerator(movementLibrary);
-  console.log(generator.generate(11));
+  console.log('дорожка', generator.generate(11));
 }
 
 function prepareDataForMovementLibrary<T extends Record<string, string>>(

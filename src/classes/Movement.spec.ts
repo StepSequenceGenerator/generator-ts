@@ -11,6 +11,7 @@ describe('Movement', () => {
     endLeg: 0,
     isChangeLeg: true,
     startEdge: 0,
+    endEdge: 1,
     isChangeEdge: true,
     isSpeedIncrease: true,
   };

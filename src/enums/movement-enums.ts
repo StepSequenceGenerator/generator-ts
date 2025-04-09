@@ -26,6 +26,7 @@ enum RotationDirection {
   CLOCKWISE = 2,
 }
 
+// TODO поменять название на TransitionDirection
 enum TranslationDirection {
   NONE = 0,
   FORWARD = 1,
