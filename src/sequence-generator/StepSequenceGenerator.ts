@@ -1,7 +1,13 @@
 import { MovementLibrary } from '../classes/MovementLibrary.js';
 import { randomInt } from 'node:crypto';
 import { Movement } from '../classes/Movement.js';
-import { Edge, Leg } from '../enums/movement-enums.js';
+import {
+  Edge,
+  Leg,
+  RotationDegrees,
+  RotationDirection,
+  TranslationDirection,
+} from '../enums/movement-enums.js';
 
 class StepSequenceGenerator {
   private readonly library: MovementLibrary;
@@ -37,19 +43,44 @@ class StepSequenceGenerator {
   private filterLibraryForNextStep() {
     return this.library
       .filterByEdge(this.getCurrentEdge())
-      .filterByLeg(this.getCurrentLeg()).movements;
+      .filterByLeg(this.getCurrentLeg())
+      .filterByTransitionDirection(this.getCurrentDirection()).movements;
   }
 
   private getCurrentLeg() {
     return this.currentStep
-      ? this.currentStep.startLeg
+      ? this.currentStep.endLeg
       : (this.getRandomIndex(2) as Leg);
   }
 
   private getCurrentEdge() {
     return this.currentStep
-      ? this.currentStep.startEdge
+      ? this.currentStep.endEdge
       : (this.getRandomIndex(2) as Edge);
+  }
+
+  private getCurrentDirection() {
+    if (!this.currentStep)
+      return this.getRandomIndex(2) as TranslationDirection;
+
+    const { rotationDirection, rotationDegree, translationDirection } =
+      this.currentStep;
+
+    if (
+      rotationDirection === RotationDirection.NONE ||
+      this.isFullTurn(rotationDegree)
+    ) {
+      return translationDirection;
+    }
+
+    return translationDirection === TranslationDirection.BACKWARD
+      ? TranslationDirection.FORWARD
+      : translationDirection;
+  }
+
+  private isFullTurn(degrees: RotationDegrees) {
+    const FULL_TURN = 360;
+    return degrees % FULL_TURN === 0;
   }
 
   private setFirstStep() {

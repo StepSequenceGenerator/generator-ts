@@ -7,8 +7,10 @@ import { MovementLibrary } from './classes/MovementLibrary.js';
 import { StepSequenceGenerator } from './sequence-generator/StepSequenceGenerator.js';
 
 function run() {
-  const PUBLIC_DIR =
+  const VISTA_LOCAL = '/home/user/WebstormProjects/generator-ts/public';
+  const HOME_LOCAL =
     '/home/gen/Backstage/step-sequence-generator/generator-ts/public';
+  const PUBLIC_DIR = HOME_LOCAL;
   const fileName = 'steps.xlsx';
 
   const xlsxBook = new XlsxBook(PUBLIC_DIR, fileName);
