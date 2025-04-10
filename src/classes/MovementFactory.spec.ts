@@ -6,7 +6,7 @@ import {
   Leg,
   RotationDegrees,
   RotationDirection,
-  TranslationDirection,
+  TransitionDirection,
 } from '../enums/movement-enums.js';
 
 const RIGHT_LEG = 'правая';
@@ -64,25 +64,25 @@ describe('MovementFactory', () => {
     });
   }); // parseName
 
-  describe('parseTranslationDirection', () => {
-    it('должен вернуть TranslationDirection.FORWARD', () => {
+  describe('parseTransitionDirection', () => {
+    it('должен вернуть TransitionDirection.FORWARD', () => {
       const input = 0;
-      const expected = TranslationDirection.FORWARD;
-      const result = getFuncResult('parseTranslationDirection', input);
+      const expected = TransitionDirection.FORWARD;
+      const result = getFuncResult('parseTransitionDirection', input);
       expect(result).toBe(expected);
     });
 
-    it('должен вернуть TranslationDirection.BACKWARD', () => {
+    it('должен вернуть parseTransitionDirection.BACKWARD', () => {
       const input = 180;
-      const expected = TranslationDirection.BACKWARD;
-      const result = getFuncResult('parseTranslationDirection', input);
+      const expected = TransitionDirection.BACKWARD;
+      const result = getFuncResult('parseTransitionDirection', input);
       expect(result).toBe(expected);
     });
 
-    it('должен вернуть TranslationDirection.NONE', () => {
+    it('должен вернуть parseTransitionDirection.NONE', () => {
       const input = 'test';
-      const expected = TranslationDirection.NONE;
-      const result = getFuncResult('parseTranslationDirection', input);
+      const expected = TransitionDirection.NONE;
+      const result = getFuncResult('parseTransitionDirection', input);
       expect(result).toBe(expected);
     });
   });

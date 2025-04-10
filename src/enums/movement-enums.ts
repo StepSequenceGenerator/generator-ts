@@ -26,10 +26,10 @@ enum RotationDirection {
   CLOCKWISE = 2,
 }
 
-enum TranslationDirection {
+enum TransitionDirection {
   NONE = 0,
   FORWARD = 1,
   BACKWARD = 2,
 }
 
-export { Edge, Leg, RotationDegrees, RotationDirection, TranslationDirection };
+export { Edge, Leg, RotationDegrees, RotationDirection, TransitionDirection };

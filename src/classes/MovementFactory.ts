@@ -6,7 +6,7 @@ import {
   Leg,
   RotationDegrees,
   RotationDirection,
-  TranslationDirection,
+  TransitionDirection,
 } from '../enums/movement-enums.js';
 
 const { isEqual } = lodash;
@@ -25,7 +25,7 @@ class MovementFactory {
     const movementData: IMovement = {
       name: this.parseName(data.get(columnName.NAME)),
       // TODO переименовать на transitionDirection
-      translationDirection: this.parseTranslationDirection(
+      transitionDirection: this.parseTransitionDirection(
         data.get(columnName.TRANSLATION_DIRECTION)
       ),
       rotationDirection: this.parseRotationDirection(
@@ -142,16 +142,14 @@ class MovementFactory {
       .map((item) => item.trim());
   }
 
-  private static parseTranslationDirection(
-    value: unknown
-  ): TranslationDirection {
+  private static parseTransitionDirection(value: unknown): TransitionDirection {
     const formattedValue = Number(value);
     if (Number.isNaN(formattedValue)) {
-      return TranslationDirection.NONE;
+      return TransitionDirection.NONE;
     } else if (formattedValue === 0) {
-      return TranslationDirection.FORWARD;
+      return TransitionDirection.FORWARD;
     } else {
-      return TranslationDirection.BACKWARD;
+      return TransitionDirection.BACKWARD;
     }
   }
 

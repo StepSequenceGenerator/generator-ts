@@ -4,13 +4,14 @@ import { Movement } from './Movement.js';
 describe('Movement', () => {
   const movementData = {
     name: 'тест',
-    translationDirection: 2,
+    transitionDirection: 2,
     rotationDirection: 1,
     rotationDegree: 0,
     startLeg: 1,
     endLeg: 0,
     isChangeLeg: true,
     startEdge: 0,
+    endEdge: 1,
     isChangeEdge: true,
     isSpeedIncrease: true,
   };

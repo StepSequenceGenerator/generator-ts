@@ -4,10 +4,14 @@ import { ColumnName } from './enums/column-name-enum.js';
 import { Movement } from './classes/Movement.js';
 import { MovementFactory } from './classes/MovementFactory.js';
 import { MovementLibrary } from './classes/MovementLibrary.js';
+import { StepSequenceGenerator } from './sequence-generator/StepSequenceGenerator.js';
+import { StepContext } from './sequence-generator/StepContext.js';
 
 function run() {
-  const PUBLIC_DIR =
+  const VISTA_LOCAL = '/home/user/WebstormProjects/generator-ts/public';
+  const HOME_LOCAL =
     '/home/gen/Backstage/step-sequence-generator/generator-ts/public';
+  const PUBLIC_DIR = HOME_LOCAL;
   const fileName = 'steps.xlsx';
 
   const xlsxBook = new XlsxBook(PUBLIC_DIR, fileName);
@@ -19,7 +23,9 @@ function run() {
   >(parsedData, ColumnName);
 
   const movementLibrary = new MovementLibrary(preparedDataForLibrary);
-  // console.log(movementLibrary.movements);
+  const stepContext = new StepContext();
+  const generator = new StepSequenceGenerator(movementLibrary, stepContext);
+  console.log('дорожка', generator.generate(11));
 }
 
 function prepareDataForMovementLibrary<T extends Record<string, string>>(
@@ -34,4 +40,5 @@ function prepareDataForMovementLibrary<T extends Record<string, string>>(
   return movements;
 }
 
+// 5, 7, 9, 11
 run();
