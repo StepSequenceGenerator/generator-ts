@@ -4,7 +4,7 @@ import {
   Leg,
   RotationDegrees,
   RotationDirection,
-  TranslationDirection,
+  TransitionDirection,
 } from '../enums/movement-enums.js';
 
 class StepContext {
@@ -27,22 +27,22 @@ class StepContext {
   }
 
   get currentDirection() {
-    if (!this.currentStep) return TranslationDirection.NONE;
+    if (!this.currentStep) return TransitionDirection.NONE;
 
-    const { rotationDirection, rotationDegree, translationDirection } =
+    const { rotationDirection, rotationDegree, transitionDirection } =
       this.currentStep;
 
     if (rotationDirection === RotationDirection.NONE) {
-      return translationDirection;
+      return transitionDirection;
     }
 
     if (this.isFullTurn(rotationDegree)) {
-      return translationDirection;
+      return transitionDirection;
     }
 
-    return translationDirection === TranslationDirection.BACKWARD
-      ? TranslationDirection.FORWARD
-      : TranslationDirection.BACKWARD;
+    return transitionDirection === TransitionDirection.BACKWARD
+      ? TransitionDirection.FORWARD
+      : TransitionDirection.BACKWARD;
   }
 
   private isFullTurn(degrees: RotationDegrees) {

@@ -3,7 +3,7 @@ import {
   Edge,
   Leg,
   RotationDirection,
-  TranslationDirection,
+  TransitionDirection,
 } from '../enums/movement-enums.js';
 
 class MovementLibrary {
@@ -25,13 +25,11 @@ class MovementLibrary {
     );
   }
 
-  filterByTransitionDirection(
-    direction: TranslationDirection
-  ): MovementLibrary {
+  filterByTransitionDirection(direction: TransitionDirection): MovementLibrary {
     return this.filterBy(
       (movement) =>
-        direction === TranslationDirection.NONE ||
-        movement.translationDirection === direction
+        direction === TransitionDirection.NONE ||
+        movement.transitionDirection === direction
     );
   }
 

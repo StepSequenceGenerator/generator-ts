@@ -4,7 +4,7 @@ import { Movement } from './Movement.js';
 describe('Movement', () => {
   const movementData = {
     name: 'тест',
-    translationDirection: 2,
+    transitionDirection: 2,
     rotationDirection: 1,
     rotationDegree: 0,
     startLeg: 1,

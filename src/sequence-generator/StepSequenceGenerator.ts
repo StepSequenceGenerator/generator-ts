@@ -2,7 +2,7 @@ import { MovementLibrary } from '../classes/MovementLibrary.js';
 import { randomInt } from 'node:crypto';
 import { Movement } from '../classes/Movement.js';
 import { StepContext } from './StepContext.js';
-import { Edge, Leg, TranslationDirection } from '../enums/movement-enums.js';
+import { Edge, Leg, TransitionDirection } from '../enums/movement-enums.js';
 
 class StepSequenceGenerator {
   private readonly library: MovementLibrary;
@@ -33,7 +33,7 @@ class StepSequenceGenerator {
       .filterByEdge(this.context.currentEdge || Edge.TWO_EDGES)
       .filterByLeg(this.context.currentLeg || Leg.BOTH)
       .filterByTransitionDirection(
-        this.context.currentDirection || TranslationDirection.NONE
+        this.context.currentDirection || TransitionDirection.NONE
       ).movements;
   }
 
