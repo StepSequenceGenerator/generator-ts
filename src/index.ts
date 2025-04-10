@@ -5,6 +5,7 @@ import { Movement } from './classes/Movement.js';
 import { MovementFactory } from './classes/MovementFactory.js';
 import { MovementLibrary } from './classes/MovementLibrary.js';
 import { StepSequenceGenerator } from './sequence-generator/StepSequenceGenerator.js';
+import { StepContext } from './sequence-generator/StepContext.js';
 
 function run() {
   const VISTA_LOCAL = '/home/user/WebstormProjects/generator-ts/public';
@@ -22,7 +23,8 @@ function run() {
   >(parsedData, ColumnName);
 
   const movementLibrary = new MovementLibrary(preparedDataForLibrary);
-  const generator = new StepSequenceGenerator(movementLibrary);
+  const stepContext = new StepContext();
+  const generator = new StepSequenceGenerator(movementLibrary, stepContext);
   console.log('дорожка', generator.generate(11));
 }
 

@@ -29,7 +29,9 @@ class MovementLibrary {
     direction: TranslationDirection
   ): MovementLibrary {
     return this.filterBy(
-      (movement) => movement.translationDirection === direction
+      (movement) =>
+        direction === TranslationDirection.NONE ||
+        movement.translationDirection === direction
     );
   }
 
