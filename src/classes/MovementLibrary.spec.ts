@@ -53,15 +53,19 @@ describe('MovementLibrary', () => {
     const mockMovements: Movement[] = [
       { name: 'A', startLeg: Leg.LEFT } as Movement,
       { name: 'B', startLeg: Leg.RIGHT } as Movement,
+      { name: 'B', startLeg: Leg.BOTH } as Movement,
     ];
 
     beforeEach(() => {
       movementLibrary = new MovementLibrary(mockMovements);
     });
 
-    it('должен вернуть массив с movement с Leg.LEFT', () => {
+    it('должен вернуть массив с movement с Leg.LEFT и Leg.BOTH', () => {
       const input = Leg.LEFT;
-      const expected = [{ name: 'A', startLeg: Leg.LEFT }];
+      const expected = [
+        { name: 'A', startLeg: Leg.LEFT },
+        { name: 'B', startLeg: Leg.BOTH },
+      ];
       const result = getFuncResult<MovementLibrary>(
         movementLibrary,
         'filterByLeg',
@@ -70,9 +74,12 @@ describe('MovementLibrary', () => {
       expect(result.movements).toEqual(expected);
     });
 
-    it('должен вернуть массив с movement с Leg.RIGHT', () => {
+    it('должен вернуть массив с movement с Leg.RIGHT и Leg.BOTH', () => {
       const input = Leg.RIGHT;
-      const expected = [{ name: 'B', startLeg: Leg.RIGHT }];
+      const expected = [
+        { name: 'B', startLeg: Leg.RIGHT },
+        { name: 'B', startLeg: Leg.BOTH },
+      ];
       const result = getFuncResult<MovementLibrary>(
         movementLibrary,
         'filterByLeg',
@@ -97,15 +104,19 @@ describe('MovementLibrary', () => {
     const mockMovements: Movement[] = [
       { startEdge: Edge.INNER } as Movement,
       { startEdge: Edge.OUTER } as Movement,
+      { startEdge: Edge.TWO_EDGES } as Movement,
     ];
 
     beforeEach(() => {
       movementLibrary = new MovementLibrary(mockMovements);
     });
 
-    it('должен вернуть массив с Edge.INNER', () => {
+    it('должен вернуть массив с Edge.INNER и Edge.TWO_EDGES', () => {
       const input = Edge.INNER;
-      const expected = [{ startEdge: Edge.INNER }];
+      const expected = [
+        { startEdge: Edge.INNER },
+        { startEdge: Edge.TWO_EDGES },
+      ];
       const result = getFuncResult<MovementLibrary>(
         movementLibrary,
         'filterByEdge',
@@ -114,9 +125,12 @@ describe('MovementLibrary', () => {
       expect(result.movements).toEqual(expected);
     });
 
-    it('должен вернуть массив с Edge.INNER', () => {
+    it('должен вернуть массив с Edge.INNER и Edge.TWO_EDGES', () => {
       const input = Edge.INNER;
-      const expected = [{ startEdge: Edge.INNER }];
+      const expected = [
+        { startEdge: Edge.INNER },
+        { startEdge: Edge.TWO_EDGES },
+      ];
       const result = getFuncResult<MovementLibrary>(
         movementLibrary,
         'filterByEdge',
@@ -148,9 +162,12 @@ describe('MovementLibrary', () => {
       movementLibrary = new MovementLibrary(mockMovements);
     });
 
-    it('должен вернуть массив с TransitionDirection.BACKWARD', () => {
+    it('должен вернуть массив с TransitionDirection.BACKWARD и TransitionDirection.NONE', () => {
       const input = TransitionDirection.BACKWARD;
-      const expected = [{ transitionDirection: TransitionDirection.BACKWARD }];
+      const expected = [
+        { transitionDirection: TransitionDirection.BACKWARD },
+        { transitionDirection: TransitionDirection.NONE },
+      ];
       const result = getFuncResult<MovementLibrary>(
         movementLibrary,
         'filterByTransitionDirection',
@@ -159,9 +176,12 @@ describe('MovementLibrary', () => {
       expect(result.movements).toEqual(expected);
     });
 
-    it('должен вернуть массив с TransitionDirection.FORWARD', () => {
+    it('должен вернуть массив с TransitionDirection.FORWARD и TransitionDirection.NONE', () => {
       const input = TransitionDirection.FORWARD;
-      const expected = [{ transitionDirection: TransitionDirection.FORWARD }];
+      const expected = [
+        { transitionDirection: TransitionDirection.FORWARD },
+        { transitionDirection: TransitionDirection.NONE },
+      ];
       const result = getFuncResult<MovementLibrary>(
         movementLibrary,
         'filterByTransitionDirection',
@@ -193,9 +213,12 @@ describe('MovementLibrary', () => {
       movementLibrary = new MovementLibrary(mockMovements);
     });
 
-    it('должен вернуть массив с RotationDirection.CLOCKWISE', () => {
+    it('должен вернуть массив с RotationDirection.CLOCKWISE и RotationDirection.NONE', () => {
       const input = RotationDirection.CLOCKWISE;
-      const expected = [{ rotationDirection: RotationDirection.CLOCKWISE }];
+      const expected = [
+        { rotationDirection: RotationDirection.CLOCKWISE },
+        { rotationDirection: RotationDirection.NONE },
+      ];
       const result = getFuncResult<MovementLibrary>(
         movementLibrary,
         'filterByRotationDirection',
@@ -204,10 +227,11 @@ describe('MovementLibrary', () => {
       expect(result.movements).toEqual(expected);
     });
 
-    it('должен вернуть массив с RotationDirection.COUNTERCLOCKWISE', () => {
+    it('должен вернуть массив с RotationDirection.COUNTERCLOCKWISE и RotationDirection.NONE', () => {
       const input = RotationDirection.COUNTERCLOCKWISE;
       const expected = [
         { rotationDirection: RotationDirection.COUNTERCLOCKWISE },
+        { rotationDirection: RotationDirection.NONE },
       ];
       const result = getFuncResult<MovementLibrary>(
         movementLibrary,
