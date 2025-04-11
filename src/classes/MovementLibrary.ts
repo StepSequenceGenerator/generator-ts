@@ -35,7 +35,9 @@ class MovementLibrary {
 
   filterByRotationDirection(direction: RotationDirection): MovementLibrary {
     return this.filterBy(
-      (movement) => movement.rotationDirection === direction
+      (movement) =>
+        direction === RotationDirection.NONE ||
+        movement.rotationDirection === direction
     );
   }
 
