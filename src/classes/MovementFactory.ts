@@ -24,7 +24,7 @@ class MovementFactory {
   ): Movement {
     const movementData: IMovement = {
       name: this.parseName(data.get(columnName.NAME)),
-      // TODO переименовать на transitionDirection
+
       transitionDirection: this.parseTransitionDirection(
         data.get(columnName.TRANSLATION_DIRECTION)
       ),
@@ -174,7 +174,7 @@ class MovementFactory {
   }
 
   private static parseRotationDegree(value: unknown): RotationDegrees {
-    const formatedValue = Number(value);
+    const formatedValue = Math.abs(Number(value));
     if (Number.isNaN(formatedValue))
       throw new MovementParserError(
         'wrong value for rotationDirection',
