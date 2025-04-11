@@ -304,6 +304,7 @@ describe('MovementFactory', () => {
     });
   });
 
+  // todo удалить и импортитировать из utils
   // eslint-disable-line no-explicit-any
   function getFuncResult(funcName: string, ...args: any) {
     // @ts-expect-error-ignore

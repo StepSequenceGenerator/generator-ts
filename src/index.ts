@@ -23,6 +23,7 @@ function run() {
   >(parsedData, ColumnName);
 
   const movementLibrary = new MovementLibrary(preparedDataForLibrary);
+  console.log(movementLibrary);
   const stepContext = new StepContext();
   const generator = new StepSequenceGenerator(movementLibrary, stepContext);
   console.log('дорожка', generator.generate(11));

@@ -15,13 +15,19 @@ class MovementLibrary {
 
   filterByLeg(leg: Leg): MovementLibrary {
     return this.filterBy(
-      (movement) => leg === Leg.BOTH || movement.startLeg === leg
+      (movement) =>
+        leg === Leg.BOTH ||
+        movement.startLeg === leg ||
+        movement.startLeg === Leg.BOTH
     );
   }
 
   filterByEdge(edge: Edge): MovementLibrary {
     return this.filterBy(
-      (movement) => edge === Edge.TWO_EDGES || movement.startEdge === edge
+      (movement) =>
+        edge === Edge.TWO_EDGES ||
+        movement.startEdge === edge ||
+        movement.startEdge === Edge.TWO_EDGES
     );
   }
 
@@ -29,13 +35,17 @@ class MovementLibrary {
     return this.filterBy(
       (movement) =>
         direction === TransitionDirection.NONE ||
-        movement.transitionDirection === direction
+        movement.transitionDirection === direction ||
+        movement.transitionDirection === TransitionDirection.NONE
     );
   }
 
   filterByRotationDirection(direction: RotationDirection): MovementLibrary {
     return this.filterBy(
-      (movement) => movement.rotationDirection === direction
+      (movement) =>
+        direction === RotationDirection.NONE ||
+        movement.rotationDirection === direction ||
+        movement.rotationDirection === RotationDirection.NONE
     );
   }
 
