@@ -11,7 +11,7 @@ function run() {
   const VISTA_LOCAL = '/home/user/WebstormProjects/generator-ts/public';
   const HOME_LOCAL =
     '/home/gen/Backstage/step-sequence-generator/generator-ts/public';
-  const PUBLIC_DIR = HOME_LOCAL;
+  const PUBLIC_DIR = VISTA_LOCAL;
   const fileName = 'steps.xlsx';
 
   const xlsxBook = new XlsxBook(PUBLIC_DIR, fileName);
@@ -23,6 +23,7 @@ function run() {
   >(parsedData, ColumnName);
 
   const movementLibrary = new MovementLibrary(preparedDataForLibrary);
+  console.log(movementLibrary);
   const stepContext = new StepContext();
   const generator = new StepSequenceGenerator(movementLibrary, stepContext);
   console.log('дорожка', generator.generate(11));

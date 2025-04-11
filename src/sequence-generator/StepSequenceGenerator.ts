@@ -29,6 +29,14 @@ class StepSequenceGenerator {
   }
 
   private filterLibraryForNextStep() {
+    console.group('filterLibraryForNextStep');
+    console.log('this.context.currentEdge: ', this.context.currentEdge);
+    console.log('this.context.currentLeg: ', this.context.currentLeg);
+    console.log(
+      'this.context.currentDirection: ',
+      this.context.currentDirection
+    );
+    console.groupEnd();
     return this.library
       .filterByEdge(this.context.currentEdge || Edge.TWO_EDGES)
       .filterByLeg(this.context.currentLeg || Leg.BOTH)
