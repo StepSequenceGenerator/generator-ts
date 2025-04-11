@@ -26,7 +26,10 @@ function run() {
   console.log(movementLibrary);
   const stepContext = new StepContext();
   const generator = new StepSequenceGenerator(movementLibrary, stepContext);
-  console.log('дорожка', generator.generate(11));
+  console.log(
+    'дорожка',
+    generator.generate(11).map((item, index) => `${index} : ${item}`)
+  );
 }
 
 function prepareDataForMovementLibrary<T extends Record<string, string>>(

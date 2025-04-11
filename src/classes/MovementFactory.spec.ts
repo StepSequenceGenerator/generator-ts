@@ -126,6 +126,13 @@ describe('MovementFactory', () => {
       expect(result).toBe(expected);
     });
 
+    it('должен вернуть RotationDegrees.DEGREE_180 при отрицательном повороте', () => {
+      const input = -180;
+      const expected = RotationDegrees.DEGREE_180;
+      const result = getFuncResult('parseRotationDegree', input);
+      expect(result).toBe(expected);
+    });
+
     it('должен вернуть RotationDegrees.DEGREES_0', () => {
       const input = 0;
       const expected = RotationDegrees.DEGREES_0;
