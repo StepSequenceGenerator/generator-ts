@@ -4,7 +4,7 @@ import { IMovement, Movement } from './Movement.js';
 import {
   Edge,
   Leg,
-  RotationDegrees,
+  RotationDegree,
   RotationDirection,
   TransitionDirection,
 } from '../enums/movement-enums.js';
@@ -53,6 +53,7 @@ class MovementFactory {
     };
     return new Movement(movementData);
   }
+
   // todo написать тесты
   private static parseId(value: unknown): string {
     return String(value).trim();
@@ -178,7 +179,7 @@ class MovementFactory {
     return direction;
   }
 
-  private static parseRotationDegree(value: unknown): RotationDegrees {
+  private static parseRotationDegree(value: unknown): RotationDegree {
     const formatedValue = Math.abs(Number(value));
     if (Number.isNaN(formatedValue))
       throw new MovementParserError(
@@ -186,11 +187,11 @@ class MovementFactory {
         'INVALID_ROTATION_DIRECTION'
       );
 
-    const validDegrees = Object.values(RotationDegrees);
+    const validDegrees = Object.values(RotationDegree);
     if (!validDegrees.includes(formatedValue)) {
-      return RotationDegrees.DEGREES_0;
+      return RotationDegree.DEGREES_0;
     } else {
-      return formatedValue as RotationDegrees;
+      return formatedValue as RotationDegree;
     }
   }
 }

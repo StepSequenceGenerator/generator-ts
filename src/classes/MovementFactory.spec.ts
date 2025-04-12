@@ -4,7 +4,7 @@ import { Movement } from './Movement.js';
 import {
   Edge,
   Leg,
-  RotationDegrees,
+  RotationDegree,
   RotationDirection,
   TransitionDirection,
 } from '../enums/movement-enums.js';
@@ -119,23 +119,23 @@ describe('MovementFactory', () => {
   });
 
   describe('parseRotationDegree', () => {
-    it('должен вернуть RotationDegrees.DEGREE_180', () => {
+    it('должен вернуть RotationDegree.DEGREE_180', () => {
       const input = 180;
-      const expected = RotationDegrees.DEGREE_180;
+      const expected = RotationDegree.DEGREE_180;
       const result = getFuncResult('parseRotationDegree', input);
       expect(result).toBe(expected);
     });
 
-    it('должен вернуть RotationDegrees.DEGREE_180 при отрицательном повороте', () => {
+    it('должен вернуть RotationDegree.DEGREE_180 при отрицательном повороте', () => {
       const input = -180;
-      const expected = RotationDegrees.DEGREE_180;
+      const expected = RotationDegree.DEGREE_180;
       const result = getFuncResult('parseRotationDegree', input);
       expect(result).toBe(expected);
     });
 
-    it('должен вернуть RotationDegrees.DEGREES_0', () => {
+    it('должен вернуть RotationDegree.DEGREES_0', () => {
       const input = 0;
-      const expected = RotationDegrees.DEGREES_0;
+      const expected = RotationDegree.DEGREES_0;
       const result = getFuncResult('parseRotationDegree', input);
       expect(result).toBe(expected);
     });

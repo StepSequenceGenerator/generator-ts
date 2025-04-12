@@ -1,5 +1,43 @@
 import { UploaderAbstract } from './UploaderAbstract.js';
 import { Movement } from '../classes/Movement.js';
+import {
+  Edge,
+  Leg,
+  RotationDegree,
+  RotationDirection,
+  TransitionDirection,
+} from '../enums/movement-enums.js';
+
+const enumMap: Record<string, any> = {
+  transitionDirection: {
+    obj: TransitionDirection,
+    name: 'TransitionDirection',
+  },
+  rotationDirection: {
+    obj: RotationDirection,
+    name: 'RotationDirection',
+  },
+  rotationDegree: {
+    obj: RotationDegree,
+    name: 'RotationDegree',
+  },
+  startLeg: {
+    obj: Leg,
+    name: 'Leg',
+  },
+  endLeg: {
+    obj: Leg,
+    name: 'Leg',
+  },
+  startEdge: {
+    obj: Edge,
+    name: 'Edge',
+  },
+  endEdge: {
+    obj: Edge,
+    name: 'Edge',
+  },
+};
 
 export class UploaderMovements extends UploaderAbstract {
   constructor(data: Movement[]) {
@@ -13,19 +51,24 @@ export class UploaderMovements extends UploaderAbstract {
     this.uploadToFile(filePath, content);
   }
 
-  private formatData() {
-    const pattern = /("transitionDirection").+(\d),/g;
+  private formatData(): string {
     const dataString = JSON.stringify(this.data, null, 2);
-    const matches = dataString.match(pattern);
-    if (matches) {
-      for (const item of matches) {
-        console.log(Object.keys(item));
-      }
+    const dataFormated = this.formatEnum(dataString, enumMap);
+    return dataFormated;
+  }
+
+  private formatEnum(data: string, enumMap: Record<string, any>): string {
+    let formatedData: string = data;
+
+    for (const [enumKey, enumInfo] of Object.entries(enumMap)) {
+      const pattern = new RegExp(`("${enumKey}").+(\\d)`, 'g');
+      formatedData = formatedData.replace(pattern, (_, name, value) => {
+        const enumName = enumInfo.name;
+        const enumValue = enumInfo.obj[Number(value)];
+        return `${enumKey}: ${enumName}.${enumValue}`;
+      });
     }
-    return JSON.stringify(this.data, null, 2).replace(
-      /("transitionDirection").+(\d),/g,
-      `$1: TransitionDirection.,`
-    );
+    return formatedData;
   }
 
   private getImportPath(filePath: string): string {
@@ -37,7 +80,7 @@ export class UploaderMovements extends UploaderAbstract {
   private addImports(importPath: string, formatedData: string) {
     const imports =
       `import { Movement } from '${importPath}/classes/Movement.js';\n` +
-      `import { Leg, Edge, RotationDirection, RotationDegrees, TransitionDirection } from '${importPath}/enums/movement-enums.js';\n\n` +
+      `import { Leg, Edge, RotationDirection, RotationDegree, TransitionDirection } from '${importPath}/enums/movement-enums.js';\n\n` +
       `export const movements: Movement[] = `;
     return `${imports} ${formatedData};\n`;
   }

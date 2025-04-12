@@ -1,7 +1,7 @@
 import {
   Edge,
   Leg,
-  RotationDegrees,
+  RotationDegree,
   RotationDirection,
   TransitionDirection,
 } from '../enums/movement-enums.js';
@@ -13,7 +13,7 @@ export interface IMovement {
   readonly transitionDirection: TransitionDirection;
 
   readonly rotationDirection: RotationDirection;
-  readonly rotationDegree: RotationDegrees;
+  readonly rotationDegree: RotationDegree;
 
   readonly startLeg: Leg;
   readonly endLeg: Leg;
@@ -31,7 +31,7 @@ export class Movement implements IMovement {
   readonly name: string;
   readonly transitionDirection: TransitionDirection;
   readonly rotationDirection: RotationDirection;
-  readonly rotationDegree: RotationDegrees;
+  readonly rotationDegree: RotationDegree;
   readonly startLeg: Leg;
   readonly endLeg: Leg;
   readonly isChangeLeg: boolean;
