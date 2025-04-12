@@ -24,8 +24,8 @@ function run() {
   >(parsedData, ColumnName);
 
   const movementLibrary = new MovementLibrary(preparedDataForLibrary);
-  const uploader = new UploaderMovements(movementLibrary.movements);
-  uploader.upload(`${PUBLIC_DIR}/movements.ts`);
+  const uploader = new UploaderMovements();
+  uploader.upload(movementLibrary.movements, `${PUBLIC_DIR}/movements.ts`);
   // console.log(movementLibrary);
   const stepContext = new StepContext();
   const generator = new StepSequenceGenerator(movementLibrary, stepContext);

@@ -3,6 +3,7 @@ import { randomInt } from 'node:crypto';
 import { Movement } from '../classes/Movement.js';
 import { StepContext } from './StepContext.js';
 import { Edge, Leg, TransitionDirection } from '../enums/movement-enums.js';
+import { UploaderBase } from '../uploader/UploaderBase.js';
 
 class StepSequenceGenerator {
   private readonly library: MovementLibrary;
@@ -17,13 +18,16 @@ class StepSequenceGenerator {
 
   generate(stepSequenceLength: number) {
     this.stepSequence = [];
+    const randomIndexList: number[] = [];
 
     for (let i = 0; i < stepSequenceLength; i++) {
       const currentMovements = this.filterLibraryForNextStep();
       const index = this.getRandomIndex(currentMovements.length);
+      randomIndexList.push(index);
       this.context.currentStep = currentMovements[index];
       this.addStep(this.context.currentStep);
     }
+    const uploader = new UploaderBase();
 
     return this.stepSequence.map((step: Movement) => step.name);
   }

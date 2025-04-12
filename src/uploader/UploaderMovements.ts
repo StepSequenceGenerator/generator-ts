@@ -40,19 +40,15 @@ const enumMap: Record<string, any> = {
 };
 
 export class UploaderMovements extends UploaderAbstract {
-  constructor(data: Movement[]) {
-    super(data);
-  }
-
-  upload(filePath: string): void {
-    const formatedData = this.formatData();
+  upload(data: Movement[], filePath: string): void {
+    const formatedData = this.formatData(data);
     const importPath = this.getImportPath(filePath);
     const content = this.addImports(importPath, formatedData);
     this.uploadToFile(filePath, content);
   }
 
-  private formatData(): string {
-    const dataString = JSON.stringify(this.data, null, 2);
+  private formatData(data: Movement[]): string {
+    const dataString = this.formatToJSON(data);
     const dataFormated = this.formatEnum(dataString, enumMap);
     return dataFormated;
   }
