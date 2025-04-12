@@ -2,7 +2,7 @@ import { Movement } from '../classes/Movement.js';
 import {
   Edge,
   Leg,
-  RotationDegrees,
+  RotationDegree,
   RotationDirection,
   TransitionDirection,
 } from '../enums/movement-enums.js';
@@ -45,7 +45,7 @@ class StepContext {
       : TransitionDirection.BACKWARD;
   }
 
-  private isFullTurn(degrees: RotationDegrees) {
+  private isFullTurn(degrees: RotationDegree) {
     const FULL_TURN = 360;
     return degrees % FULL_TURN === 0;
   }

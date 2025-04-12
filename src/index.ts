@@ -1,3 +1,4 @@
+import dotenv from 'dotenv';
 import { XlsxBook } from './file-parser/xlsx-book.js';
 import { ExcelParser } from './file-parser/excel-parser.js';
 import { ColumnName } from './enums/column-name-enum.js';
@@ -6,24 +7,26 @@ import { MovementFactory } from './classes/MovementFactory.js';
 import { MovementLibrary } from './classes/MovementLibrary.js';
 import { StepSequenceGenerator } from './sequence-generator/StepSequenceGenerator.js';
 import { StepContext } from './sequence-generator/StepContext.js';
+import { UploaderMovements } from './uploader/UploaderMovements.js';
+dotenv.config();
 
 function run() {
-  const VISTA_LOCAL = '/home/user/WebstormProjects/generator-ts/public';
-  const HOME_LOCAL =
-    '/home/gen/Backstage/step-sequence-generator/generator-ts/public';
-  const PUBLIC_DIR = HOME_LOCAL;
+  const PUBLIC_DIR: string = process.env.PUBLIC_DIR || '';
   const fileName = 'steps.xlsx';
 
   const xlsxBook = new XlsxBook(PUBLIC_DIR, fileName);
   const workBook = xlsxBook.getWorkBook();
   const parser = new ExcelParser<typeof ColumnName>(workBook, ColumnName);
   const parsedData = parser.parse();
+  // console.log(parsedData);
   const preparedDataForLibrary = prepareDataForMovementLibrary<
     typeof ColumnName
   >(parsedData, ColumnName);
 
   const movementLibrary = new MovementLibrary(preparedDataForLibrary);
-  console.log(movementLibrary);
+  const uploader = new UploaderMovements();
+  uploader.upload(movementLibrary.movements, `${PUBLIC_DIR}/movements.ts`);
+  // console.log(movementLibrary);
   const stepContext = new StepContext();
   const generator = new StepSequenceGenerator(movementLibrary, stepContext);
   console.log(

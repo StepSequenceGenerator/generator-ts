@@ -10,7 +10,7 @@ enum Leg {
   BOTH = 2,
 }
 
-enum RotationDegrees {
+enum RotationDegree {
   DEGREES_0 = 0,
   DEGREE_180 = 180,
   DEGREE_360 = 360,
@@ -32,4 +32,4 @@ enum TransitionDirection {
   BACKWARD = 2,
 }
 
-export { Edge, Leg, RotationDegrees, RotationDirection, TransitionDirection };
+export { Edge, Leg, RotationDegree, RotationDirection, TransitionDirection };

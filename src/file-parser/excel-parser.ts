@@ -20,8 +20,7 @@ class ExcelParser<T extends Record<string, string>> {
     );
 
     const columnNameKeys = Object.keys(this.columnNames);
-    const data = this.createData(sheet, lastLineNumber, columnNameKeys);
-    return data;
+    return this.createData(sheet, lastLineNumber, columnNameKeys);
   }
 
   private getFirstSheetsName() {
@@ -83,6 +82,12 @@ class ExcelParser<T extends Record<string, string>> {
 
     for (const key of columnNameKeys) {
       const cellKey = `${this.columnNames[key]}${index}`;
+
+      if (key === this.columnNames.ID) {
+        line.set(this.columnNames[key], cellKey);
+        continue;
+      }
+
       if (sheet[cellKey]) {
         line.set(
           this.columnNames[key],
