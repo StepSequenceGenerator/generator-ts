@@ -4,5 +4,6 @@ export class UploaderBase extends UploaderAbstract {
   upload(data: any, filePath: string) {
     const dataString = this.formatToJSON(data);
     this.formatToJSON(dataString);
+    this.uploadToFile(filePath, dataString);
   }
 }

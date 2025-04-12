@@ -28,6 +28,12 @@ class StepSequenceGenerator {
       this.addStep(this.context.currentStep);
     }
     const uploader = new UploaderBase();
+    const PUBLIC_DIR = process.env.PUBLIC_DIR || '';
+    const sequence = this.stepSequence.map(
+      (item, index) => `${index} : ${item.id} ${item.name}`
+    );
+    uploader.upload(randomIndexList, `${PUBLIC_DIR}/random-index-list.json`);
+    uploader.upload(sequence, `${PUBLIC_DIR}/step-sequence.json`);
 
     return this.stepSequence.map((step: Movement) => step.name);
   }
