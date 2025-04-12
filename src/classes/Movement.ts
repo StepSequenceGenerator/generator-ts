@@ -7,6 +7,7 @@ import {
 } from '../enums/movement-enums.js';
 
 export interface IMovement {
+  readonly id: string;
   readonly name: string;
 
   readonly transitionDirection: TransitionDirection;
@@ -26,6 +27,7 @@ export interface IMovement {
 }
 
 export class Movement implements IMovement {
+  readonly id: string;
   readonly name: string;
   readonly transitionDirection: TransitionDirection;
   readonly rotationDirection: RotationDirection;
@@ -39,6 +41,7 @@ export class Movement implements IMovement {
   readonly isSpeedIncrease: boolean;
 
   constructor(private readonly movement: IMovement) {
+    this.id = movement.id;
     this.name = movement.name;
     this.transitionDirection = movement.transitionDirection;
     this.rotationDirection = movement.rotationDirection;

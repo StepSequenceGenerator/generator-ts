@@ -23,6 +23,7 @@ class MovementFactory {
     columnName: T
   ): Movement {
     const movementData: IMovement = {
+      id: this.parseId(data.get(columnName.ID)),
       name: this.parseName(data.get(columnName.NAME)),
 
       transitionDirection: this.parseTransitionDirection(
@@ -51,6 +52,10 @@ class MovementFactory {
       ),
     };
     return new Movement(movementData);
+  }
+  // todo написать тесты
+  private static parseId(value: unknown): string {
+    return String(value).trim();
   }
 
   private static parseName(value: unknown): string {
