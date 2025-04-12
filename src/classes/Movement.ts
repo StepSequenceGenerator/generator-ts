@@ -40,7 +40,7 @@ export class Movement implements IMovement {
   readonly isChangeEdge: boolean;
   readonly isSpeedIncrease: boolean;
 
-  constructor(private readonly movement: IMovement) {
+  constructor(movement: IMovement) {
     this.id = movement.id;
     this.name = movement.name;
     this.transitionDirection = movement.transitionDirection;

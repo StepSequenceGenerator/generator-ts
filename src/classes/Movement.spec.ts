@@ -3,6 +3,7 @@ import { Movement } from './Movement.js';
 
 describe('Movement', () => {
   const movementData = {
+    id: 'testId',
     name: 'тест',
     transitionDirection: 2,
     rotationDirection: 1,

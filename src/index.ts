@@ -18,12 +18,13 @@ function run() {
   const workBook = xlsxBook.getWorkBook();
   const parser = new ExcelParser<typeof ColumnName>(workBook, ColumnName);
   const parsedData = parser.parse();
+  console.log(parsedData);
   const preparedDataForLibrary = prepareDataForMovementLibrary<
     typeof ColumnName
   >(parsedData, ColumnName);
 
   const movementLibrary = new MovementLibrary(preparedDataForLibrary);
-  console.log(movementLibrary);
+  // console.log(movementLibrary);
   const stepContext = new StepContext();
   const generator = new StepSequenceGenerator(movementLibrary, stepContext);
   console.log(
