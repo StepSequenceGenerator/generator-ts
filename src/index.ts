@@ -6,6 +6,7 @@ import { MovementFactory } from './classes/MovementFactory.js';
 import { MovementLibrary } from './classes/MovementLibrary.js';
 import { StepSequenceGenerator } from './sequence-generator/StepSequenceGenerator.js';
 import { StepContext } from './sequence-generator/StepContext.js';
+import { UploaderMovements } from './uploader/UploaderMovements.js';
 
 function run() {
   const VISTA_LOCAL = '/home/user/WebstormProjects/generator-ts/public';
@@ -18,12 +19,16 @@ function run() {
   const workBook = xlsxBook.getWorkBook();
   const parser = new ExcelParser<typeof ColumnName>(workBook, ColumnName);
   const parsedData = parser.parse();
-  console.log(parsedData);
+  // console.log(parsedData);
   const preparedDataForLibrary = prepareDataForMovementLibrary<
     typeof ColumnName
   >(parsedData, ColumnName);
 
   const movementLibrary = new MovementLibrary(preparedDataForLibrary);
+  const uploader = new UploaderMovements(movementLibrary.movements);
+  uploader.upload(
+    '/home/user/WebstormProjects/generator-ts/public/movements.ts'
+  );
   // console.log(movementLibrary);
   const stepContext = new StepContext();
   const generator = new StepSequenceGenerator(movementLibrary, stepContext);
