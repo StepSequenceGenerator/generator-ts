@@ -1,5 +1,5 @@
-import { Movement } from '/home/user/WebstormProjects/generator-ts/src/classes/Movement.js';
-import { Leg, Edge, RotationDirection, RotationDegree, TransitionDirection } from '/home/user/WebstormProjects/generator-ts/src/enums/movement-enums.js';
+import { Movement } from '/home/gen/Backstage/step-sequence-generator/generator-ts/src/classes/Movement.js';
+import { Leg, Edge, RotationDirection, RotationDegree, TransitionDirection } from '/home/gen/Backstage/step-sequence-generator/generator-ts/src/enums/movement-enums.js';
 
 export const movements: Movement[] =  [
   {

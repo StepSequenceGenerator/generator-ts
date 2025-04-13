@@ -8,7 +8,6 @@ import { MovementLibrary } from './classes/MovementLibrary.js';
 import { StepSequenceGenerator } from './sequence-generator/StepSequenceGenerator.js';
 import { StepContext } from './sequence-generator/StepContext.js';
 import { UploaderMovements } from './uploader/UploaderMovements.js';
-import { UploaderBase } from './uploader/UploaderBase.js';
 import { UploaderMap } from './uploader/UploaderMap.js';
 
 dotenv.config();
@@ -30,7 +29,7 @@ function run() {
 
   const movementLibrary = new MovementLibrary(preparedDataForLibrary);
   const uploader = new UploaderMovements();
-  uploader.upload(movementLibrary.movements, `${PUBLIC_DIR}/movements.ts`);
+  // uploader.upload(movementLibrary.movements, `${PUBLIC_DIR}/movements.ts`);
 
   const stepContext = new StepContext();
   const generator = new StepSequenceGenerator(movementLibrary, stepContext);
