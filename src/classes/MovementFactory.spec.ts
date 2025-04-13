@@ -8,6 +8,8 @@ import {
   RotationDirection,
   TransitionDirection,
 } from '../enums/movement-enums.js';
+import { convertFromObjectToMap } from '../utils/converters/from-object-to-map.js';
+import { ColumnName } from '../enums/column-name-enum.js';
 
 const RIGHT_LEG = 'правая';
 const LEFT_LEG = 'левая';
@@ -308,6 +310,50 @@ describe('MovementFactory', () => {
       expect(() => getFuncResult('parseIsSpeedIncrease', input)).toThrowError(
         'wrong value for speedIncrease'
       );
+    });
+  });
+
+  describe('parse line', () => {
+    it('должен вернуть new Movement', () => {
+      const lineObj = [
+        {
+          ID: 'ID134',
+          A: 'чиктао вперёд внутрь с правой',
+          B: 'правая',
+          C: 'левая',
+          D: 'внутреннее',
+          E: 'наружное',
+          F: '0',
+          G: '180',
+          H: '0',
+        },
+      ];
+      const lineMap = convertFromObjectToMap(lineObj)[0] as unknown as Map<
+        string,
+        string | number
+      >;
+
+      const expected = new Movement({
+        id: 'ID134',
+        name: 'чиктао вперёд внутрь с правой',
+        transitionDirection: TransitionDirection.FORWARD,
+        rotationDirection: RotationDirection.COUNTERCLOCKWISE,
+        rotationDegree: 180,
+        startLeg: Leg.RIGHT,
+        endLeg: Leg.LEFT,
+        isChangeLeg: true,
+        startEdge: Edge.INNER,
+        endEdge: Edge.OUTER,
+        isChangeEdge: true,
+        isSpeedIncrease: false,
+      });
+
+      const result = MovementFactory.createFromExcelData<typeof ColumnName>(
+        lineMap,
+        ColumnName
+      );
+
+      expect(result).toStrictEqual(expected);
     });
   });
 

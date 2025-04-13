@@ -8,7 +8,11 @@ import { MovementLibrary } from './classes/MovementLibrary.js';
 import { StepSequenceGenerator } from './sequence-generator/StepSequenceGenerator.js';
 import { StepContext } from './sequence-generator/StepContext.js';
 import { UploaderMovements } from './uploader/UploaderMovements.js';
+import { UploaderMap } from './uploader/UploaderMap.js';
+
 dotenv.config();
+
+const uploaderMap = new UploaderMap();
 
 function run() {
   const PUBLIC_DIR: string = process.env.PUBLIC_DIR || '';
@@ -18,15 +22,15 @@ function run() {
   const workBook = xlsxBook.getWorkBook();
   const parser = new ExcelParser<typeof ColumnName>(workBook, ColumnName);
   const parsedData = parser.parse();
-  // console.log(parsedData);
+  // uploaderMap.upload(parsedData, `${PUBLIC_DIR}/parsedData.json`);
   const preparedDataForLibrary = prepareDataForMovementLibrary<
     typeof ColumnName
   >(parsedData, ColumnName);
 
   const movementLibrary = new MovementLibrary(preparedDataForLibrary);
   const uploader = new UploaderMovements();
-  uploader.upload(movementLibrary.movements, `${PUBLIC_DIR}/movements.ts`);
-  // console.log(movementLibrary);
+  // uploader.upload(movementLibrary.movements, `${PUBLIC_DIR}/movements.ts`);
+
   const stepContext = new StepContext();
   const generator = new StepSequenceGenerator(movementLibrary, stepContext);
   console.log(

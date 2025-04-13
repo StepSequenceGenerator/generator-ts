@@ -49,15 +49,14 @@ export class UploaderMovements extends UploaderAbstract {
 
   private formatData(data: Movement[]): string {
     const dataString = this.formatToJSON(data);
-    const dataFormated = this.formatEnum(dataString, enumMap);
-    return dataFormated;
+    return this.formatEnum(dataString, enumMap);
   }
 
   private formatEnum(data: string, enumMap: Record<string, any>): string {
     let formatedData: string = data;
 
     for (const [enumKey, enumInfo] of Object.entries(enumMap)) {
-      const pattern = new RegExp(`("${enumKey}").+(\\d)`, 'g');
+      const pattern = new RegExp(`("${enumKey}").+?(\\d+)`, 'g');
       formatedData = formatedData.replace(pattern, (_, name, value) => {
         const enumName = enumInfo.name;
         const enumValue = enumInfo.obj[Number(value)];
