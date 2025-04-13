@@ -23,12 +23,13 @@ class MovementLibrary {
   }
 
   filterByEdge(edge: Edge): MovementLibrary {
-    return this.filterBy(
-      (movement) =>
+    return this.filterBy((movement) => {
+      return (
         edge === Edge.TWO_EDGES ||
         movement.startEdge === edge ||
         movement.startEdge === Edge.TWO_EDGES
-    );
+      );
+    });
   }
 
   filterByTransitionDirection(direction: TransitionDirection): MovementLibrary {
@@ -50,7 +51,7 @@ class MovementLibrary {
   }
 
   filterBy(fn: (movement: Movement) => boolean): MovementLibrary {
-    return this.create(this._movements.filter(fn));
+    return this.create(this.movements.filter(fn));
   }
 
   create(movement: Movement[]): MovementLibrary {

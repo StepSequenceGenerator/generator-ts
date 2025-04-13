@@ -3,7 +3,6 @@ import { randomInt } from 'node:crypto';
 import { Movement } from '../classes/Movement.js';
 import { StepContext } from './StepContext.js';
 import { Edge, Leg, TransitionDirection } from '../enums/movement-enums.js';
-import { UploaderBase } from '../uploader/UploaderBase.js';
 
 class StepSequenceGenerator {
   private readonly library: MovementLibrary;
@@ -18,33 +17,30 @@ class StepSequenceGenerator {
 
   generate(stepSequenceLength: number) {
     this.stepSequence = [];
-    const randomIndexList: number[] = [];
 
     for (let i = 0; i < stepSequenceLength; i++) {
       const currentMovements = this.filterLibraryForNextStep();
       const index = this.getRandomIndex(currentMovements.length);
-      randomIndexList.push(index);
       this.context.currentStep = currentMovements[index];
       this.addStep(this.context.currentStep);
     }
-    const uploader = new UploaderBase();
-    const PUBLIC_DIR = process.env.PUBLIC_DIR || '';
-    const sequence = this.stepSequence.map(
-      (item, index) => `${index} : ${item.id} ${item.name}`
-    );
-    // uploader.upload(randomIndexList, `${PUBLIC_DIR}/random-index-list.json`);
-    // uploader.upload(sequence, `${PUBLIC_DIR}/step-sequence.json`);
-
     return this.stepSequence.map((step: Movement) => step.name);
   }
 
   private filterLibraryForNextStep() {
     return this.library
-      .filterByEdge(this.context.currentEdge || Edge.TWO_EDGES)
-      .filterByLeg(this.context.currentLeg || Leg.BOTH)
+      .filterByEdge(this.withDefault(this.context.currentEdge, Edge.TWO_EDGES))
+      .filterByLeg(this.withDefault(this.context.currentLeg, Leg.BOTH))
       .filterByTransitionDirection(
-        this.context.currentDirection || TransitionDirection.NONE
+        this.withDefault(
+          this.context.currentDirection,
+          TransitionDirection.NONE
+        )
       ).movements;
+  }
+
+  private withDefault<T>(value: T | null | undefined, defaultValue: T): T {
+    return value !== null && value !== undefined ? value : defaultValue;
   }
 
   private addStep(movement: Movement) {
