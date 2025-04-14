@@ -313,6 +313,36 @@ describe('MovementFactory', () => {
     });
   });
 
+  describe('parseIsDifficult', () => {
+    it('должен вернуть true когда value = 1', () => {
+      const input = 1;
+      const expected = true;
+      const result = getFuncResult('parseIsDifficult', input);
+      expect(result).toBe(expected);
+    });
+
+    it('должен вернуть true когда value = string', () => {
+      const input = 'someString';
+      const expected = true;
+      const result = getFuncResult('parseIsDifficult', input);
+      expect(result).toBe(expected);
+    });
+
+    it('должен вернуть false когда value = 0', () => {
+      const input = 0;
+      const expected = false;
+      const result = getFuncResult('parseIsDifficult', input);
+      expect(result).toBe(expected);
+    });
+
+    it('должен вернуть false когда value = null', () => {
+      const input = null;
+      const expected = false;
+      const result = getFuncResult('parseIsDifficult', input);
+      expect(result).toBe(expected);
+    });
+  });
+
   describe('parse line', () => {
     it('должен вернуть new Movement', () => {
       const lineObj = [
@@ -326,6 +356,7 @@ describe('MovementFactory', () => {
           F: '0',
           G: '180',
           H: '0',
+          I: '',
         },
       ];
       const lineMap = convertFromObjectToMap(lineObj)[0] as unknown as Map<
@@ -346,6 +377,7 @@ describe('MovementFactory', () => {
         endEdge: Edge.OUTER,
         isChangeEdge: true,
         isSpeedIncrease: false,
+        isDifficult: false,
       });
 
       const result = MovementFactory.createFromExcelData<typeof ColumnName>(

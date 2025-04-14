@@ -1,6 +1,7 @@
 import { WorkBook, WorkSheet } from 'xlsx';
 
 type SheetKeysType = string[];
+type MapValueType = string | number | null;
 
 class ExcelParser<T extends Record<string, string>> {
   private readonly columnNames: T;
@@ -64,8 +65,8 @@ class ExcelParser<T extends Record<string, string>> {
     sheet: WorkSheet,
     lastLineNumber: number,
     columnNameKeys: string[]
-  ): Map<string, string | number>[] {
-    const data: Map<string, string | number>[] = [];
+  ): Map<string, MapValueType>[] {
+    const data: Map<string, MapValueType>[] = [];
     for (let i = 2; i <= lastLineNumber; i++) {
       const line = this.createLine(sheet, columnNameKeys, i);
       data.push(line);
@@ -77,8 +78,8 @@ class ExcelParser<T extends Record<string, string>> {
     sheet: WorkSheet,
     columnNameKeys: string[],
     index: number
-  ): Map<string, string | number> {
-    const line: Map<string, string | number> = new Map();
+  ): Map<string, MapValueType> {
+    const line: Map<string, MapValueType> = new Map();
 
     for (const key of columnNameKeys) {
       const cellKey = `${this.columnNames[key]}${index}`;
@@ -88,14 +89,14 @@ class ExcelParser<T extends Record<string, string>> {
         continue;
       }
 
+      let cellValue: MapValueType;
       if (sheet[cellKey]) {
-        line.set(
-          this.columnNames[key],
-          String(sheet[cellKey].v).trim().toLowerCase()
-        );
+        cellValue = String(sheet[cellKey].v).trim().toLowerCase();
       } else {
         console.warn(`Ячейка ${cellKey} не найдена.`);
+        cellValue = null;
       }
+      line.set(this.columnNames[key], cellValue);
     }
     return line;
   }

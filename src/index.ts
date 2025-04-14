@@ -29,7 +29,9 @@ function run() {
   const generator = new StepSequenceGenerator(movementLibrary, stepContext);
   console.log(
     'дорожка',
-    generator.generate(11).map((item, index) => `${index} : ${item.name}`)
+    generator
+      .generate(11)
+      .map((item, index) => `${index} : ${item.isDifficult}`)
   );
 }
 

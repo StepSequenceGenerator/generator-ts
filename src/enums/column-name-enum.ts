@@ -8,6 +8,7 @@ enum ColumnName {
   TRANSLATION_DIRECTION = 'F',
   ROTATION_DIRECTION = 'G',
   IS_SPEED_INCREASE = 'H',
+  IS_DIFFICULT = 'I',
 }
 
 export { ColumnName };

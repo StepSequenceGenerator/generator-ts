@@ -50,6 +50,7 @@ class MovementFactory {
       isSpeedIncrease: this.parseIsSpeedIncrease(
         data.get(columnName.IS_SPEED_INCREASE)
       ),
+      isDifficult: this.parseIsDifficult(data.get(columnName.IS_DIFFICULT)),
     };
     return new Movement(movementData);
   }
@@ -193,6 +194,11 @@ class MovementFactory {
     } else {
       return formatedValue as RotationDegree;
     }
+  }
+
+  private static parseIsDifficult(value: unknown): boolean {
+    // note чтобы не проверять на Number.isNaN(value)
+    return !(value === null || value == 0);
   }
 }
 

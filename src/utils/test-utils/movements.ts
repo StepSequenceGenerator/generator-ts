@@ -1,4 +1,3 @@
-import { Movement } from '../../movement/Movement.js';
 import {
   Edge,
   Leg,
@@ -7,7 +6,7 @@ import {
   TransitionDirection,
 } from '../../enums/movement-enums.js';
 
-export const movements: Movement[] = [
+export const movements = [
   {
     id: 'ID2',
     name: 'фонарик вперёд',

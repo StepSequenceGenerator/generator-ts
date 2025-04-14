@@ -24,6 +24,7 @@ export interface IMovement {
   readonly isChangeEdge: boolean;
 
   readonly isSpeedIncrease: boolean;
+  readonly isDifficult: boolean;
 }
 
 export class Movement implements IMovement {
@@ -39,6 +40,7 @@ export class Movement implements IMovement {
   readonly endEdge: Edge;
   readonly isChangeEdge: boolean;
   readonly isSpeedIncrease: boolean;
+  readonly isDifficult: boolean;
 
   constructor(movement: IMovement) {
     this.id = movement.id;
@@ -53,5 +55,6 @@ export class Movement implements IMovement {
     this.endEdge = movement.endEdge;
     this.isChangeEdge = movement.isChangeEdge;
     this.isSpeedIncrease = movement.isSpeedIncrease;
+    this.isDifficult = movement.isDifficult;
   }
 }
