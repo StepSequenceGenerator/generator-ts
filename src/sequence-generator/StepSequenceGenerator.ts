@@ -24,7 +24,7 @@ class StepSequenceGenerator {
       this.context.currentStep = currentMovements[index];
       this.addStep(this.context.currentStep);
     }
-    return this.stepSequence.map((step: Movement) => step.name);
+    return this.stepSequence;
   }
 
   private filterLibraryForNextStep() {
