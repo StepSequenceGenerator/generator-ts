@@ -1,7 +1,7 @@
 import { WorkBook, WorkSheet } from 'xlsx';
+import { MapValueTypeBase } from '../shared/types/map-value-type-base.js';
 
 type SheetKeysType = string[];
-type MapValueType = string | number | null;
 
 class ExcelParser<T extends Record<string, string>> {
   private readonly columnNames: T;
@@ -65,8 +65,8 @@ class ExcelParser<T extends Record<string, string>> {
     sheet: WorkSheet,
     lastLineNumber: number,
     columnNameKeys: string[]
-  ): Map<string, MapValueType>[] {
-    const data: Map<string, MapValueType>[] = [];
+  ): Map<string, MapValueTypeBase>[] {
+    const data: Map<string, MapValueTypeBase>[] = [];
     for (let i = 2; i <= lastLineNumber; i++) {
       const line = this.createLine(sheet, columnNameKeys, i);
       data.push(line);
@@ -78,8 +78,8 @@ class ExcelParser<T extends Record<string, string>> {
     sheet: WorkSheet,
     columnNameKeys: string[],
     index: number
-  ): Map<string, MapValueType> {
-    const line: Map<string, MapValueType> = new Map();
+  ): Map<string, MapValueTypeBase> {
+    const line: Map<string, MapValueTypeBase> = new Map();
 
     for (const key of columnNameKeys) {
       const cellKey = `${this.columnNames[key]}${index}`;
@@ -89,7 +89,7 @@ class ExcelParser<T extends Record<string, string>> {
         continue;
       }
 
-      let cellValue: MapValueType;
+      let cellValue: MapValueTypeBase;
       if (sheet[cellKey]) {
         cellValue = String(sheet[cellKey].v).trim().toLowerCase();
       } else {
