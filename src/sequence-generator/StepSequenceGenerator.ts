@@ -19,12 +19,12 @@ class StepSequenceGenerator {
     this.stepSequence = [];
 
     for (let i = 0; i < stepSequenceLength; i++) {
-      const currentMovements = this.filterLibraryForNextStep();
-      const index = this.getRandomIndex(currentMovements.length);
-      this.context.currentStep = currentMovements[index];
+      const currentMovementsForChoice = this.filterLibraryForNextStep();
+      const index = this.getRandomIndex(currentMovementsForChoice.length);
+      this.context.currentStep = currentMovementsForChoice[index];
       this.addStep(this.context.currentStep);
     }
-    return this.stepSequence.map((step: Movement) => step.name);
+    return this.stepSequence;
   }
 
   private filterLibraryForNextStep() {
@@ -43,16 +43,16 @@ class StepSequenceGenerator {
     return value !== null && value !== undefined ? value : defaultValue;
   }
 
-  private addStep(movement: Movement) {
-    this.stepSequence.push(movement);
-  }
-
   private getRandomIndex(max: number) {
     if (max <= 0) {
       // todo сделать пользовательский error
       throw new Error('Not enough maximum number of steps');
     }
     return randomInt(0, max);
+  }
+
+  private addStep(movement: Movement) {
+    this.stepSequence.push(movement);
   }
 }
 
