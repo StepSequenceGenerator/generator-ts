@@ -32,4 +32,20 @@ enum TransitionDirection {
   BACKWARD = 2,
 }
 
-export { Edge, Leg, RotationDegree, RotationDirection, TransitionDirection };
+enum MovementCharacter {
+  STEP = 'step',
+  TURN = 'turn',
+  SEQUENCE = 'sequence',
+  HOP = 'hop',
+  GLIDE = 'glide',
+  UNKNOWN = 'unknown',
+}
+
+export {
+  Edge,
+  Leg,
+  RotationDegree,
+  RotationDirection,
+  TransitionDirection,
+  MovementCharacter,
+};

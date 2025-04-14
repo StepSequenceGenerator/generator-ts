@@ -4,6 +4,7 @@ import { IMovement, Movement } from './Movement.js';
 import {
   Edge,
   Leg,
+  MovementCharacter,
   RotationDegree,
   RotationDirection,
   TransitionDirection,
@@ -17,6 +18,13 @@ const LEFT_LEG = 'левая';
 const INNER_EDGE = 'внутреннее';
 const OUTER_EDGE = 'наружное';
 const TWO_EDGES = 'два ребра';
+
+type ParseTypeArgsType = {
+  value: unknown;
+  startLeg: Leg;
+  endLeg: Leg;
+  rotationDegree: RotationDegree;
+};
 
 class MovementFactory {
   static createFromExcelData<T extends Record<string, string>>(
@@ -52,6 +60,14 @@ class MovementFactory {
         data.get(columnName.IS_SPEED_INCREASE)
       ),
       isDifficult: this.parseIsDifficult(data.get(columnName.IS_DIFFICULT)),
+      type: this.parseType({
+        value: data.get(columnName.IS_SEQUENCE),
+        startLeg: this.parseLeg(data.get(columnName.START_LEG)),
+        endLeg: this.parseLeg(data.get(columnName.END_LEG)),
+        rotationDegree: this.parseRotationDegree(
+          data.get(columnName.ROTATION_DEGREE)
+        ),
+      }),
     };
     return new Movement(movementData);
   }
@@ -200,6 +216,15 @@ class MovementFactory {
   private static parseIsDifficult(value: unknown): boolean {
     // note чтобы не проверять на Number.isNaN(value)
     return !(value === null || value == 0);
+  }
+
+  private static parseType(args: ParseTypeArgsType): MovementCharacter {
+    const { value, startLeg, endLeg, rotationDegree } = args;
+    if (value == 1 || value !== null) return MovementCharacter.SEQUENCE;
+    if (startLeg !== endLeg || rotationDegree === RotationDegree.DEGREES_0) {
+      return MovementCharacter.STEP;
+    }
+    return MovementCharacter.UNKNOWN;
   }
 }
 
