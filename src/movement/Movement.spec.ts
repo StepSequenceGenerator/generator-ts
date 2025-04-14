@@ -15,6 +15,7 @@ describe('Movement', () => {
     endEdge: 1,
     isChangeEdge: true,
     isSpeedIncrease: true,
+    isDifficult: true,
   };
 
   let movement: Movement;

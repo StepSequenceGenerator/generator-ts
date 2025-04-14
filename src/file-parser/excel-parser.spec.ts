@@ -101,6 +101,7 @@ describe('ExcelParser', () => {
       Z3: { v: '3' },
       '!ref': 'A1:H1',
     };
+
     describe('createLine', () => {
       it('должен вернуть Map со значениями строки листа', () => {
         const receivedLine = parser['createLine'](
@@ -115,6 +116,25 @@ describe('ExcelParser', () => {
           ['Z', '2'],
         ]);
 
+        expect(receivedLine).toStrictEqual(expectedLine);
+      });
+
+      it('должен вернуть Map с value = пустая строка', () => {
+        const mockSheet1 = {
+          A2: { v: 'test' },
+        };
+        const mockColumnName = {
+          FAKE_NAME_3: 'Z',
+        };
+
+        const expectedLine = new Map<string, string | number | null>([
+          ['Z', null],
+        ]);
+        const receivedLine = parser['createLine'](
+          mockSheet1,
+          Object.keys(mockColumnName),
+          2
+        );
         expect(receivedLine).toStrictEqual(expectedLine);
       });
     });

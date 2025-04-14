@@ -13,7 +13,7 @@ import {
 } from '../enums/movement-enums.js';
 
 const mockMovementsFormated = mockMovements.map(
-  (movement) => new Movement(movement)
+  (movement) => new Movement(movement as Movement)
 );
 
 describe('StepSequenceGenerator', () => {
