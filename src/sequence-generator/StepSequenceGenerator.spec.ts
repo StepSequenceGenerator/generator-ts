@@ -1,34 +1,17 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { StepSequenceGenerator } from './StepSequenceGenerator.js';
-import { movements as movementsCopy } from '../utils/test-utils/movements.js';
 import { Movement } from '../classes/Movement.js';
+import { movements as mockMovements } from '../utils/test-utils/movements.js';
 import { MovementLibrary } from '../classes/MovementLibrary.js';
 import { StepContext } from './StepContext.js';
+import { Leg } from '../enums/movement-enums.js';
 
-const movementIdList = [
-  'ID95',
-  'ID100',
-  'ID122',
-  'ID22',
-  'ID135',
-  'ID124',
-  'ID108',
-  'ID36',
-  'ID28',
-  'ID32',
-  'ID62',
-];
-
-const movementsCopyFiltered = movementsCopy
-  .filter((item) => {
-    return movementIdList.includes(item.id);
-  })
-  .map((item) => {
-    return new Movement(item);
-  });
+const mockMovementsFormated = mockMovements.map(
+  (movement) => new Movement(movement)
+);
 
 describe('StepSequenceGenerator', () => {
-  const library: MovementLibrary = new MovementLibrary(movementsCopyFiltered);
+  const library: MovementLibrary = new MovementLibrary(mockMovementsFormated);
   const context: StepContext = new StepContext();
   let generator: StepSequenceGenerator;
   beforeEach(() => {
@@ -42,16 +25,48 @@ describe('StepSequenceGenerator', () => {
     });
   });
 
-  describe('должен', () => {
-    it('first step', () => {
-      const stepIndex = movementsCopyFiltered.findIndex(
-        (item) => item.id === 'ID95'
-      );
-      generator['context'].currentStep = movementsCopyFiltered[stepIndex];
-      const result = generator['filterLibraryForNextStep'](); // вызов напрямую, иначе метод не триггернется
+  describe('generate', () => {
+    it('должен вернуть последовательность шагов определенной длины', () => {
+      const expected = 10;
+      const result = generator.generate(expected).length;
+      expect(result).toEqual(expected);
+    });
 
-      // console.debug('currentStep', generator['context'].currentStep);
-      // console.debug(result);
+    it('должен вернуть массив Movement', () => {
+      const list = generator.generate(3);
+      const result = list.every((item) => item instanceof Movement);
+      expect(result).toBe(true);
+    });
+
+    it('должен добавлять элементы в свойство stepSequence', () => {
+      const expected = 10;
+      generator.generate(expected);
+      const result = generator['stepSequence'].length;
+      expect(result).toBe(expected);
+    });
+
+    const methodList = [
+      'filterLibraryForNextStep',
+      'getRandomIndex',
+      'addStep',
+    ];
+    it.each(methodList)('должен вызывать метод %s', (methodName) => {
+      const generatorAny = generator as unknown as any;
+      const spyFn = vi.spyOn(generatorAny, methodName);
+      generatorAny.generate(1);
+      expect(spyFn).toHaveBeenCalled();
+    });
+  });
+
+  describe('filterLibraryForNextStep', () => {
+    const legList = [Leg.RIGHT, Leg.LEFT, Leg.BOTH];
+
+    it.each(legList)('должен вернуть массив с %s', (currentLeg) => {
+      generator['context'].currentStep = { endLeg: currentLeg } as Movement;
+      const result = generator['filterLibraryForNextStep']();
+      result.forEach((item) => {
+        expect(item.startLeg).toBe(currentLeg);
+      });
     });
   });
 });
