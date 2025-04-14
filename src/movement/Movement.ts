@@ -1,6 +1,7 @@
 import {
   Edge,
   Leg,
+  MovementCharacter,
   RotationDegree,
   RotationDirection,
   TransitionDirection,
@@ -25,6 +26,8 @@ export interface IMovement {
 
   readonly isSpeedIncrease: boolean;
   readonly isDifficult: boolean;
+
+  readonly type: MovementCharacter;
 }
 
 export class Movement implements IMovement {
@@ -41,6 +44,7 @@ export class Movement implements IMovement {
   readonly isChangeEdge: boolean;
   readonly isSpeedIncrease: boolean;
   readonly isDifficult: boolean;
+  readonly type: MovementCharacter;
 
   constructor(movement: IMovement) {
     this.id = movement.id;
@@ -56,5 +60,6 @@ export class Movement implements IMovement {
     this.isChangeEdge = movement.isChangeEdge;
     this.isSpeedIncrease = movement.isSpeedIncrease;
     this.isDifficult = movement.isDifficult;
+    this.type = movement.type;
   }
 }
