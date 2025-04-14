@@ -8,6 +8,7 @@ import {
   RotationDirection,
   TransitionDirection,
 } from '../enums/movement-enums.js';
+import { MapValueTypeBase } from '../shared/types/map-value-type-base.js';
 
 const { isEqual } = lodash;
 
@@ -19,7 +20,7 @@ const TWO_EDGES = 'два ребра';
 
 class MovementFactory {
   static createFromExcelData<T extends Record<string, string>>(
-    data: Map<string, string | number>,
+    data: Map<string, MapValueTypeBase>,
     columnName: T
   ): Movement {
     const movementData: IMovement = {

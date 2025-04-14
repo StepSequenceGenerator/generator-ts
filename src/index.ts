@@ -8,6 +8,8 @@ import { MovementLibrary } from './movement/MovementLibrary.js';
 import { StepSequenceGenerator } from './sequence-generator/StepSequenceGenerator.js';
 import { StepContext } from './sequence-generator/StepContext.js';
 
+import { MapValueTypeBase } from './shared/types/map-value-type-base.js';
+
 dotenv.config();
 
 function run() {
@@ -29,14 +31,12 @@ function run() {
   const generator = new StepSequenceGenerator(movementLibrary, stepContext);
   console.log(
     'дорожка',
-    generator
-      .generate(11)
-      .map((item, index) => `${index} : ${item.isDifficult}`)
+    generator.generate(11).map((item, index) => `${index} : ${item.name}`)
   );
 }
 
 function prepareDataForMovementLibrary<T extends Record<string, string>>(
-  data: Map<string, string | number>[],
+  data: Map<string, MapValueTypeBase>[],
   columnName: T
 ) {
   const movements: Movement[] = [];
