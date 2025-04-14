@@ -2,9 +2,9 @@ import dotenv from 'dotenv';
 import { XlsxBook } from './file-parser/xlsx-book.js';
 import { ExcelParser } from './file-parser/excel-parser.js';
 import { ColumnName } from './enums/column-name-enum.js';
-import { Movement } from './classes/Movement.js';
-import { MovementFactory } from './classes/MovementFactory.js';
-import { MovementLibrary } from './classes/MovementLibrary.js';
+import { Movement } from './movement/Movement.js';
+import { MovementFactory } from './movement/MovementFactory.js';
+import { MovementLibrary } from './movement/MovementLibrary.js';
 import { StepSequenceGenerator } from './sequence-generator/StepSequenceGenerator.js';
 import { StepContext } from './sequence-generator/StepContext.js';
 
@@ -29,7 +29,7 @@ function run() {
   const generator = new StepSequenceGenerator(movementLibrary, stepContext);
   console.log(
     'дорожка',
-    generator.generate(11).map((item, index) => `${index} : ${item}`)
+    generator.generate(11).map((item, index) => `${index} : ${item.name}`)
   );
 }
 
