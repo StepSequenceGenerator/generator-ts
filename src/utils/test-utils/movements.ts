@@ -1,9 +1,9 @@
-import { Movement } from '../../classes/Movement.js';
+import { Movement } from '../../movement/Movement.js';
 import {
-  Leg,
   Edge,
-  RotationDirection,
+  Leg,
   RotationDegree,
+  RotationDirection,
   TransitionDirection,
 } from '../../enums/movement-enums.js';
 

@@ -1,4 +1,4 @@
-import { Movement } from '../classes/Movement.js';
+import { Movement } from '../movement/Movement.js';
 import {
   Edge,
   Leg,

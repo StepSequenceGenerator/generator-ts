@@ -1,6 +1,6 @@
-import { MovementLibrary } from '../classes/MovementLibrary.js';
+import { MovementLibrary } from '../movement/MovementLibrary.js';
 import { randomInt } from 'node:crypto';
-import { Movement } from '../classes/Movement.js';
+import { Movement } from '../movement/Movement.js';
 import { StepContext } from './StepContext.js';
 import { Edge, Leg, TransitionDirection } from '../enums/movement-enums.js';
 
