@@ -27,7 +27,7 @@ class StepContext {
   }
 
   get currentDirection() {
-    if (!this.currentStep) return TransitionDirection.NONE;
+    if (this.currentStep === null) return TransitionDirection.NONE;
 
     const { rotationDirection, rotationDegree, transitionDirection } =
       this.currentStep;
