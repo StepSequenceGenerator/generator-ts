@@ -19,11 +19,12 @@ const INNER_EDGE = 'внутреннее';
 const OUTER_EDGE = 'наружное';
 const TWO_EDGES = 'два ребра';
 
-type ParseTypeArgsType = {
-  value: unknown;
+export type ParseTypeArgsType = {
+  isSequence: unknown;
   startLeg: Leg;
   endLeg: Leg;
   rotationDegree: RotationDegree;
+  isDifficult: boolean;
 };
 
 class MovementFactory {
@@ -61,12 +62,13 @@ class MovementFactory {
       ),
       isDifficult: this.parseIsDifficult(data.get(columnName.IS_DIFFICULT)),
       type: this.parseType({
-        value: data.get(columnName.IS_SEQUENCE),
+        isSequence: data.get(columnName.IS_SEQUENCE),
         startLeg: this.parseLeg(data.get(columnName.START_LEG)),
         endLeg: this.parseLeg(data.get(columnName.END_LEG)),
         rotationDegree: this.parseRotationDegree(
-          data.get(columnName.ROTATION_DEGREE)
+          data.get(columnName.ROTATION_DIRECTION)
         ),
+        isDifficult: this.parseIsDifficult(data.get(columnName.IS_DIFFICULT)),
       }),
     };
     return new Movement(movementData);
@@ -180,12 +182,13 @@ class MovementFactory {
   private static parseRotationDirection(value: unknown): RotationDirection {
     let direction: RotationDirection;
     const formatedValue = Number(value);
-
-    if (Number.isNaN(formatedValue))
+    // console.log(Number.isNaN(formatedValue));
+    if (Number.isNaN(formatedValue)) {
       throw new MovementParserError(
-        'wrong value for rotationDirection',
+        'from parseRotationDirection: wrong value for rotationDirection',
         'INVALID_ROTATION_DIRECTION'
       );
+    }
 
     if (formatedValue > 0) {
       direction = RotationDirection.COUNTERCLOCKWISE;
@@ -201,7 +204,7 @@ class MovementFactory {
     const formatedValue = Math.abs(Number(value));
     if (Number.isNaN(formatedValue))
       throw new MovementParserError(
-        'wrong value for rotationDirection',
+        'from parseRotationDegree: wrong value for rotationDirection',
         'INVALID_ROTATION_DIRECTION'
       );
 
@@ -219,11 +222,13 @@ class MovementFactory {
   }
 
   private static parseType(args: ParseTypeArgsType): MovementCharacter {
-    const { value, startLeg, endLeg, rotationDegree } = args;
-    if (value == 1 || value !== null) return MovementCharacter.SEQUENCE;
-    if (startLeg !== endLeg || rotationDegree === RotationDegree.DEGREES_0) {
-      return MovementCharacter.STEP;
-    }
+    const { isSequence, startLeg, endLeg, rotationDegree, isDifficult } = args;
+
+    if (isSequence == 1 || (isSequence !== null && isSequence !== undefined))
+      return MovementCharacter.SEQUENCE;
+    // note когда появится поле type в excel надо будет изменить условие - убрать isDifficult
+    if (isDifficult && rotationDegree !== RotationDegree.DEGREES_0)
+      return MovementCharacter.TURN;
     return MovementCharacter.UNKNOWN;
   }
 }

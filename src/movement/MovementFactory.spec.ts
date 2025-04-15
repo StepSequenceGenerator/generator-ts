@@ -4,6 +4,7 @@ import { Movement } from './Movement.js';
 import {
   Edge,
   Leg,
+  MovementCharacter,
   RotationDegree,
   RotationDirection,
   TransitionDirection,
@@ -25,7 +26,7 @@ describe('MovementFactory', () => {
     ['D', 'наружное'],
     ['E', 'внутреннее'],
     ['F', '0'],
-    ['G', '0'],
+    ['G', 0],
     ['H', '1'],
   ]);
 
@@ -115,7 +116,7 @@ describe('MovementFactory', () => {
       const input = 'test';
 
       expect(() => getFuncResult('parseRotationDirection', input)).toThrowError(
-        'wrong value for rotationDirection'
+        'from parseRotationDirection: wrong value for rotationDirection'
       );
     });
   });
@@ -144,7 +145,7 @@ describe('MovementFactory', () => {
 
     it('должен выбросить ошибку', () => {
       expect(() => getFuncResult('parseRotationDegree', 'test')).toThrowError(
-        'wrong value for rotationDirection'
+        'from parseRotationDegree: wrong value for rotationDirection'
       );
     });
   });
@@ -343,6 +344,53 @@ describe('MovementFactory', () => {
     });
   });
 
+  describe('parseType', () => {
+    let argList: any[];
+    describe('MovementCharacter.SEQUENCE', () => {
+      argList = [{ isSequence: 1 }, { isSequence: 'test' }];
+      it.each(argList)('должен возвращать SEQUENCE при %s', (arg) => {
+        const input = arg;
+        const expected = MovementCharacter.SEQUENCE;
+        const result = getFuncResult('parseType', input);
+        expect(result).toBe(expected);
+      });
+
+      argList = [{ isSequence: null }, { isSequence: undefined }];
+      it.each(argList)('НЕ Должен возвращать SEQUENCE при %s', (arg) => {
+        const result = getFuncResult('parseType', arg);
+        expect(result !== MovementCharacter.SEQUENCE).toBeTruthy();
+      });
+    });
+
+    describe('MovementCharacter.TURN', () => {
+      let argList: any[];
+      it('должен вернуть TURN при isDifficult: true, rotationDegree: RotationDegree.DEGREES_0', () => {
+        const input = {
+          isDifficult: true,
+          rotationDegree: RotationDegree.DEGREE_180,
+        };
+        const expected = MovementCharacter.TURN;
+        const result = getFuncResult('parseType', input);
+        expect(result).toBe(expected);
+      });
+
+      argList = [
+        {
+          isDifficult: false,
+          rotationDegree: RotationDegree.DEGREE_180,
+        },
+        {
+          isDifficult: true,
+          rotationDegree: RotationDegree.DEGREES_0,
+        },
+      ];
+      it.each(argList)('НЕ Должен возвращать TURN при %s', (arg) => {
+        const result = getFuncResult('parseType', arg);
+        expect(result !== MovementCharacter.SEQUENCE).toBeTruthy();
+      });
+    });
+  });
+
   describe('parse line', () => {
     it('должен вернуть new Movement', () => {
       const lineObj = [
@@ -378,6 +426,7 @@ describe('MovementFactory', () => {
         isChangeEdge: true,
         isSpeedIncrease: false,
         isDifficult: false,
+        type: MovementCharacter.UNKNOWN,
       });
 
       const result = MovementFactory.createFromExcelData<typeof ColumnName>(
