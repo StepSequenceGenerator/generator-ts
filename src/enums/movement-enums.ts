@@ -26,6 +26,12 @@ enum RotationDirection {
   CLOCKWISE = 2,
 }
 
+enum RotationDirectionString {
+  NONE = 'none',
+  COUNTERCLOCKWISE = 'counterclockwise',
+  CLOCKWISE = 'clockwise',
+}
+
 enum TransitionDirection {
   NONE = 0,
   FORWARD = 1,
@@ -46,6 +52,7 @@ export {
   Leg,
   RotationDegree,
   RotationDirection,
+  RotationDirectionString,
   TransitionDirection,
   MovementCharacter,
 };
