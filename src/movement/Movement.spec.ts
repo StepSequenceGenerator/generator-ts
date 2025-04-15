@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { Movement } from './Movement.js';
+import { MovementCharacter } from '../enums/movement-enums.js';
 
 describe('Movement', () => {
   const movementData = {
@@ -16,6 +17,7 @@ describe('Movement', () => {
     isChangeEdge: true,
     isSpeedIncrease: true,
     isDifficult: true,
+    type: MovementCharacter.UNKNOWN,
   };
 
   let movement: Movement;
