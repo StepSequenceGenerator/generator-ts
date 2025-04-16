@@ -1,8 +1,12 @@
-import { beforeEach, describe, it, expect, vi } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { StepCounter } from './StepCounter.js';
-import { getFuncResult } from '../utils/test-utils/get-func-result.js';
-import { Movement } from '../movement/Movement.js';
 import { TurnAbsoluteName } from '../enums/turn-absolute-name-enum.js';
+import { Movement } from '../movement/Movement.js';
+import {
+  RotationDegree,
+  RotationDirection,
+  RotationDirectionString,
+} from '../enums/movement-enums.js';
 
 describe('StepCounter', () => {
   let counter: StepCounter;
@@ -18,6 +22,7 @@ describe('StepCounter', () => {
     });
   });
 
+  //  note turns
   describe('increaseDifficultAll', () => {
     it('должен увеличить на единицу turns.difficultAll', () => {
       counter['turns'].difficultAll = 1;
@@ -56,6 +61,122 @@ describe('StepCounter', () => {
       const expected = 1;
 
       expect(result).toEqual(expected);
+    });
+  });
+
+  describe('conditionIsTurnDifficult', () => {
+    it('должен вернуть true', () => {
+      const mockMovement = { isDifficult: true } as Movement;
+      const result = counter['conditionIsTurnDifficult'](mockMovement);
+      expect(result).toBeTruthy();
+    });
+
+    it('должен вернуть false', () => {
+      const mockMovement = { isDifficult: false } as Movement;
+      const result = counter['conditionIsTurnDifficult'](mockMovement);
+      expect(result).toBeFalsy();
+    });
+  });
+
+  describe('conditionToIncreaseDifficultOrigin', () => {
+    it('должен вернуть true', () => {
+      const turnAbsoluteName = TurnAbsoluteName.ROCKER;
+      counter['turns'].difficultOrigin.set(turnAbsoluteName, 1);
+      const result =
+        counter['conditionToIncreaseDifficultOrigin'](turnAbsoluteName);
+      expect(result).toBeTruthy();
+    });
+
+    it('должен вернуть false', () => {
+      const turnAbsoluteName = TurnAbsoluteName.ROCKER;
+      counter['turns'].difficultOrigin.set(turnAbsoluteName, 2);
+      const result =
+        counter['conditionToIncreaseDifficultOrigin'](turnAbsoluteName);
+      expect(result).toBeFalsy();
+    });
+  });
+
+  // note rotations
+
+  describe('increaseRotations', () => {
+    it('должен увеличить counter.rotations на 180', () => {
+      const mockCurrentMovement = {
+        rotationDegree: RotationDegree.DEGREE_180,
+        rotationDirection: RotationDirection.CLOCKWISE,
+      } as Movement;
+
+      counter['increaseRotations'](mockCurrentMovement, 180);
+      const expected = 360;
+      const result = counter['rotations'].get(
+        RotationDirectionString.CLOCKWISE
+      );
+      expect(result).toEqual(expected);
+    });
+  });
+
+  describe('conditionToIncreaseRotations', () => {
+    it('должен вернуть true (проверка первого условия)', () => {
+      const mockCurrentMovement = {
+        rotationDegree: RotationDegree.DEGREE_360,
+        rotationDirection: RotationDirection.COUNTERCLOCKWISE,
+      } as Movement;
+      const mockLastStep = {
+        rotationDirection: RotationDirection.CLOCKWISE,
+      } as Movement;
+
+      counter['lastStep'] = mockLastStep;
+
+      const result =
+        counter['conditionToIncreaseRotations'](mockCurrentMovement);
+      expect(result).toBeTruthy();
+    });
+
+    it('должен вернуть true (проверка второго условия)', () => {
+      const mockCurrentMovement = {
+        rotationDegree: RotationDegree.DEGREE_180,
+        rotationDirection: RotationDirection.CLOCKWISE,
+      } as Movement;
+      const mockLastStep = {
+        rotationDirection: RotationDirection.CLOCKWISE,
+      } as Movement;
+
+      counter['lastStep'] = mockLastStep;
+
+      const result =
+        counter['conditionToIncreaseRotations'](mockCurrentMovement);
+      expect(result).toBeTruthy();
+    });
+
+    it('должен вернуть false (проверка первого условия)', () => {
+      const mockCurrentMovement = {
+        rotationDegree: RotationDegree.DEGREES_0,
+        rotationDirection: RotationDirection.CLOCKWISE,
+      } as Movement;
+      const mockLastStep = {
+        rotationDirection: RotationDirection.CLOCKWISE,
+      } as Movement;
+
+      counter['lastStep'] = mockLastStep;
+
+      const result =
+        counter['conditionToIncreaseRotations'](mockCurrentMovement);
+      expect(result).toBeFalsy();
+    });
+
+    it('должен вернуть false (проверка второго условия)', () => {
+      const mockCurrentMovement = {
+        rotationDegree: RotationDegree.DEGREE_180,
+        rotationDirection: RotationDirection.CLOCKWISE,
+      } as Movement;
+      const mockLastStep = {
+        rotationDirection: RotationDirection.COUNTERCLOCKWISE,
+      } as Movement;
+
+      counter['lastStep'] = mockLastStep;
+
+      const result =
+        counter['conditionToIncreaseRotations'](mockCurrentMovement);
+      expect(result).toBeFalsy();
     });
   });
 });
