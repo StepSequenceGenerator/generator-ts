@@ -28,8 +28,8 @@ export class StepCounter {
 
   public update(currentMovement: Movement): void {
     const turnAbsoluteName = TurnAbsoluteName.ROCKER;
-    if (currentMovement.isDifficult) {
-      this.increaseDifficultAll();
+    if (this.conditionIsTurnDifficult(currentMovement)) {
+      this.increaseTurnsDifficultAll();
       if (this.conditionToIncreaseDifficultOrigin(turnAbsoluteName)) {
         this.increaseDifficultOrigin(
           turnAbsoluteName,
@@ -101,6 +101,10 @@ export class StepCounter {
     }
   }
 
+  private conditionIsTurnDifficult(currentMovement: Movement): boolean {
+    return currentMovement.isDifficult;
+  }
+
   private conditionToIncreaseDifficultOrigin(
     absoluteName: TurnAbsoluteName
   ): boolean {
@@ -108,7 +112,7 @@ export class StepCounter {
     return currentAmount < 2;
   }
 
-  private increaseDifficultAll() {
+  private increaseTurnsDifficultAll() {
     this.turns.difficultAll += 1;
   }
 
