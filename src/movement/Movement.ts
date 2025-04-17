@@ -28,6 +28,8 @@ export interface IMovement {
   readonly isDifficult: boolean;
 
   readonly type: MovementCharacter;
+
+  readonly description: string;
 }
 
 export class Movement implements IMovement {
@@ -45,6 +47,7 @@ export class Movement implements IMovement {
   readonly isSpeedIncrease: boolean;
   readonly isDifficult: boolean;
   readonly type: MovementCharacter;
+  readonly description: string;
 
   constructor(movement: IMovement) {
     this.id = movement.id;
@@ -61,5 +64,6 @@ export class Movement implements IMovement {
     this.isSpeedIncrease = movement.isSpeedIncrease;
     this.isDifficult = movement.isDifficult;
     this.type = movement.type;
+    this.description = movement.description;
   }
 }

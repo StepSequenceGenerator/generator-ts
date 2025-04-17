@@ -9,7 +9,9 @@ enum ColumnName {
   ROTATION_DIRECTION = 'G',
   IS_SPEED_INCREASE = 'H',
   IS_DIFFICULT = 'I',
-  IS_SEQUENCE = 'J',
+  TYPE = 'J',
+  IS_SEQUENCE = 'K',
+  DESCRIPTION = 'L',
 }
 
 export { ColumnName };

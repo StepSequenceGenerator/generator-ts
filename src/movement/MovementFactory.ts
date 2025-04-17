@@ -61,15 +61,8 @@ class MovementFactory {
         data.get(columnName.IS_SPEED_INCREASE)
       ),
       isDifficult: this.parseIsDifficult(data.get(columnName.IS_DIFFICULT)),
-      type: this.parseType({
-        isSequence: data.get(columnName.IS_SEQUENCE),
-        startLeg: this.parseLeg(data.get(columnName.START_LEG)),
-        endLeg: this.parseLeg(data.get(columnName.END_LEG)),
-        rotationDegree: this.parseRotationDegree(
-          data.get(columnName.ROTATION_DIRECTION)
-        ),
-        isDifficult: this.parseIsDifficult(data.get(columnName.IS_DIFFICULT)),
-      }),
+      type: this.parseType(data.get(columnName.TYPE)),
+      description: this.parseDescription(data.get(columnName.DESCRIPTION)),
     };
     return new Movement(movementData);
   }
@@ -221,15 +214,17 @@ class MovementFactory {
     return !(value === null || value == 0);
   }
 
-  private static parseType(args: ParseTypeArgsType): MovementCharacter {
-    const { isSequence, startLeg, endLeg, rotationDegree, isDifficult } = args;
+  private static parseType(value: unknown): MovementCharacter {
+    const formattedValue = String(value).trim() as MovementCharacter;
+    if (Object.values(MovementCharacter).includes(formattedValue)) {
+      return formattedValue;
+    } else {
+      return MovementCharacter.UNKNOWN;
+    }
+  }
 
-    if (isSequence == 1 || (isSequence !== null && isSequence !== undefined))
-      return MovementCharacter.SEQUENCE;
-    // note когда появится поле type в excel надо будет изменить условие - убрать isDifficult
-    if (isDifficult && rotationDegree !== RotationDegree.DEGREES_0)
-      return MovementCharacter.TURN;
-    return MovementCharacter.UNKNOWN;
+  private static parseDescription(value: unknown): string {
+    return String(value || '');
   }
 }
 
