@@ -1,6 +1,7 @@
 import { Movement } from '../movement/Movement.js';
 import { TurnAbsoluteName } from '../enums/turn-absolute-name-enum.js';
 import {
+  MovementCharacter,
   RotationDegree,
   RotationDirection,
   RotationDirectionString,
@@ -46,7 +47,7 @@ export class StepCounter {
   }
 
   public get difficultTurnsAllAmount() {
-    return this.turns.difficultAll;
+    return this.turns.difficultAll || 0;
   }
 
   public get difficultTurnsOriginAmount(): number {
@@ -94,6 +95,8 @@ export class StepCounter {
         return RotationDirectionString.COUNTERCLOCKWISE;
       case RotationDirection.CLOCKWISE:
         return RotationDirectionString.CLOCKWISE;
+      case RotationDirection.NONE:
+        return RotationDirectionString.NONE;
       default:
         throw new Error(
           'from mappingRotationDirection: Unrecognized RotationDirection'
@@ -102,7 +105,8 @@ export class StepCounter {
   }
 
   private conditionIsTurnDifficult(currentMovement: Movement): boolean {
-    return currentMovement.isDifficult;
+    const { isDifficult, type } = currentMovement;
+    return isDifficult && type === MovementCharacter.TURN;
   }
 
   private conditionToIncreaseDifficultOrigin(
