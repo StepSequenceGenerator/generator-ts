@@ -347,44 +347,15 @@ describe('MovementFactory', () => {
   describe('parseType', () => {
     let argList: any[];
     describe('MovementCharacter.SEQUENCE', () => {
-      argList = [{ isSequence: 1 }, { isSequence: 'test' }];
-      it.each(argList)('должен возвращать SEQUENCE при %s', (arg) => {
-        const input = arg;
-        const expected = MovementCharacter.SEQUENCE;
-        const result = getFuncResult('parseType', input);
+      argList = ['step', 'turn', 'sequence', 'hop', 'glide', 'unknown'];
+      it.each(argList)('должен возвращать %s', (item) => {
+        const expected = item;
+        const result = getFuncResult('parseType', item);
         expect(result).toBe(expected);
       });
 
-      argList = [{ isSequence: null }, { isSequence: undefined }];
-      it.each(argList)('НЕ Должен возвращать SEQUENCE при %s', (arg) => {
-        const result = getFuncResult('parseType', arg);
-        expect(result !== MovementCharacter.SEQUENCE).toBeTruthy();
-      });
-    });
-
-    describe('MovementCharacter.TURN', () => {
-      let argList: any[];
-      it('должен вернуть TURN при isDifficult: true, rotationDegree: RotationDegree.DEGREES_0', () => {
-        const input = {
-          isDifficult: true,
-          rotationDegree: RotationDegree.DEGREE_180,
-        };
-        const expected = MovementCharacter.TURN;
-        const result = getFuncResult('parseType', input);
-        expect(result).toBe(expected);
-      });
-
-      argList = [
-        {
-          isDifficult: false,
-          rotationDegree: RotationDegree.DEGREE_180,
-        },
-        {
-          isDifficult: true,
-          rotationDegree: RotationDegree.DEGREES_0,
-        },
-      ];
-      it.each(argList)('НЕ Должен возвращать TURN при %s', (arg) => {
+      argList = [null, undefined, 'test'];
+      it.each(argList)('должен вернуть UNKNOWN  при %s', (arg) => {
         const result = getFuncResult('parseType', arg);
         expect(result !== MovementCharacter.SEQUENCE).toBeTruthy();
       });
