@@ -16,8 +16,7 @@ class ExcelParser<T extends Record<string, string>> {
     const firstSheetName = this.getFirstSheetsName();
     const sheet = this.workBook.Sheets[firstSheetName];
     const lastLineNumber: number = this.findLastLineNumber(
-      this.cleanUpAndSortSheetKeys(Object.keys(sheet)),
-      this.getColumnNamesLastKey()
+      this.cleanUpAndSortSheetKeys(Object.keys(sheet))
     );
 
     const columnNameKeys = Object.keys(this.columnNames);
@@ -28,22 +27,17 @@ class ExcelParser<T extends Record<string, string>> {
     return this.workBook.SheetNames[0];
   }
 
-  private findLastLineNumber(
-    arr: SheetKeysType,
-    lastColumnNameKey: string
-  ): number {
+  private findLastLineNumber(arr: SheetKeysType): number {
     const numbers: number[] = [];
 
     arr.forEach((item) => {
-      if (item.includes(this.columnNames[lastColumnNameKey])) {
-        const number = item.replace(this.columnNames[lastColumnNameKey], '');
-        if (Number.isInteger(Number(number))) numbers.push(Number(number));
-      }
-      //   TODO выбросить ошибку с else
+      const pattern = /\d+/;
+      const number = item.match(pattern);
+
+      if (Number.isInteger(Number(number))) numbers.push(Number(number));
     });
 
     numbers.sort((a, b) => b - a);
-
     return numbers.length > 0 ? numbers[0] : 1;
   }
 
@@ -51,14 +45,6 @@ class ExcelParser<T extends Record<string, string>> {
     return arr
       .filter((item) => !item.includes('!'))
       .sort((a, b) => a.localeCompare(b));
-  }
-
-  private getColumnNamesLastKey(): string {
-    const keys = Object.keys(this.columnNames);
-
-    if (keys.length === 0) throw new Error('No columnNames defined');
-
-    return keys[keys.length - 1];
   }
 
   private createData(

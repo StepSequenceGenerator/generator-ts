@@ -58,33 +58,11 @@ describe('ExcelParser', () => {
     });
   });
 
-  describe('getColumnNamesLastKey', () => {
-    it('должен отдать последний ключ в ColumnName', () => {
-      const receivedKey = parser['getColumnNamesLastKey']();
-      const expectedKey = 'FAKE_NAME_3';
-      expect(receivedKey).toStrictEqual(expectedKey);
-    });
-
-    it('должен выбросить ошибку при отсутствии ключей в ColumnName', () => {
-      enum mockWrongColumnName {}
-
-      const parser = new ExcelParser<typeof mockWrongColumnName>(
-        mockWorkBook,
-        mockWrongColumnName
-      );
-
-      expect(() => parser['getColumnNamesLastKey']()).toThrow(
-        'No columnNames defined'
-      );
-    });
-  });
-
   describe('findLastLineNumber', () => {
     it('должен отдать номер линии в листе ', () => {
       const mockSheet = { A1: {}, B1: {}, Z1: {}, A10: {}, B10: {}, Z10: {} };
       const receivedNumber = parser['findLastLineNumber'](
-        Object.keys(mockSheet),
-        'FAKE_NAME_3'
+        Object.keys(mockSheet)
       );
       const expectedNumber = 10;
       expect(receivedNumber).toStrictEqual(expectedNumber);
