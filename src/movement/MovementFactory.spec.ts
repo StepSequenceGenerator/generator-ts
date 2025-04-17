@@ -398,6 +398,7 @@ describe('MovementFactory', () => {
         isSpeedIncrease: false,
         isDifficult: false,
         type: MovementCharacter.UNKNOWN,
+        description: '',
       });
 
       const result = MovementFactory.createFromExcelData<typeof ColumnName>(

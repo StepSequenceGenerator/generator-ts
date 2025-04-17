@@ -61,7 +61,8 @@ class MovementFactory {
         data.get(columnName.IS_SPEED_INCREASE)
       ),
       isDifficult: this.parseIsDifficult(data.get(columnName.IS_DIFFICULT)),
-      type: this.parseType(data.get(columnName.IS_SEQUENCE)),
+      type: this.parseType(data.get(columnName.TYPE)),
+      description: this.parseDescription(data.get(columnName.DESCRIPTION)),
     };
     return new Movement(movementData);
   }
@@ -220,6 +221,10 @@ class MovementFactory {
     } else {
       return MovementCharacter.UNKNOWN;
     }
+  }
+
+  private static parseDescription(value: unknown): string {
+    return String(value || '');
   }
 }
 

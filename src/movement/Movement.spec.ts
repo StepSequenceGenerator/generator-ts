@@ -18,6 +18,7 @@ describe('Movement', () => {
     isSpeedIncrease: true,
     isDifficult: true,
     type: MovementCharacter.UNKNOWN,
+    description: '',
   };
 
   let movement: Movement;
