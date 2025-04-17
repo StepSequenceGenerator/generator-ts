@@ -12,6 +12,7 @@ enum ColumnName {
   TYPE = 'J',
   IS_SEQUENCE = 'K',
   DESCRIPTION = 'L',
+  ABSOLUTE_NAME = 'M',
 }
 
 export { ColumnName };

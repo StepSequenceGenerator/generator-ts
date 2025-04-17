@@ -3,15 +3,22 @@ import { randomInt } from 'node:crypto';
 import { Movement } from '../movement/Movement.js';
 import { StepContext } from './StepContext.js';
 import { Edge, Leg, TransitionDirection } from '../enums/movement-enums.js';
+import { StepCounter } from './StepCounter.js';
 
 class StepSequenceGenerator {
   private readonly library: MovementLibrary;
   private readonly context: StepContext;
+  private readonly counter: StepCounter;
   private stepSequence: Movement[] = [];
 
-  constructor(library: MovementLibrary, context: StepContext) {
+  constructor(
+    library: MovementLibrary,
+    context: StepContext,
+    counter: StepCounter
+  ) {
     this.library = library;
     this.context = context;
+    this.counter = counter;
     this.stepSequence = [];
   }
 

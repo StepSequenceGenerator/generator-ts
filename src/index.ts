@@ -9,6 +9,7 @@ import { StepSequenceGenerator } from './sequence-generator/StepSequenceGenerato
 import { StepContext } from './sequence-generator/StepContext.js';
 
 import { MapValueTypeBase } from './shared/types/map-value-type-base.js';
+import { StepCounter } from './sequence-generator/StepCounter.js';
 
 dotenv.config();
 
@@ -28,10 +29,20 @@ function run() {
   const movementLibrary = new MovementLibrary(preparedDataForLibrary);
 
   const stepContext = new StepContext();
-  const generator = new StepSequenceGenerator(movementLibrary, stepContext);
+  const stepCounter = new StepCounter();
+  const generator = new StepSequenceGenerator(
+    movementLibrary,
+    stepContext,
+    stepCounter
+  );
   console.log(
     'дорожка',
-    generator.generate(11).map((item, index) => `${index} : ${item.name}`)
+    generator
+      .generate(11)
+      .map(
+        (item, index) =>
+          `${index} : ${item.id} ${item.name} ${item.absoluteName}`
+      )
   );
 }
 
@@ -47,5 +58,4 @@ function prepareDataForMovementLibrary<T extends Record<string, string>>(
   return movements;
 }
 
-// 5, 7, 9, 11
 run();

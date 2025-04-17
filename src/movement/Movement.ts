@@ -6,6 +6,7 @@ import {
   RotationDirection,
   TransitionDirection,
 } from '../enums/movement-enums.js';
+import { TurnAbsoluteName } from '../enums/turn-absolute-name-enum.js';
 
 export interface IMovement {
   readonly id: string;
@@ -30,6 +31,7 @@ export interface IMovement {
   readonly type: MovementCharacter;
 
   readonly description: string;
+  readonly absoluteName: TurnAbsoluteName;
 }
 
 export class Movement implements IMovement {
@@ -48,6 +50,7 @@ export class Movement implements IMovement {
   readonly isDifficult: boolean;
   readonly type: MovementCharacter;
   readonly description: string;
+  readonly absoluteName: TurnAbsoluteName;
 
   constructor(movement: IMovement) {
     this.id = movement.id;
@@ -65,5 +68,6 @@ export class Movement implements IMovement {
     this.isDifficult = movement.isDifficult;
     this.type = movement.type;
     this.description = movement.description;
+    this.absoluteName = movement.absoluteName;
   }
 }
