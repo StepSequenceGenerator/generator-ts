@@ -26,11 +26,14 @@ class StepSequenceGenerator {
   generate(stepAmountBySequenceLevel: DifficultLevelAmountStep) {
     this.stepSequence = [];
 
-    for (let i = 0; i < stepAmountBySequenceLevel; i++) {
+    while (
+      this.counter.difficultTurnsOriginAmount < stepAmountBySequenceLevel
+    ) {
       const currentMovementsForChoice = this.filterLibraryForNextStep();
       const index = this.getRandomIndex(currentMovementsForChoice.length);
       this.context.currentStep = currentMovementsForChoice[index];
-      this.addStep(this.context.currentStep);
+      this.addStepToSequence(this.context.currentStep);
+      this.counter.update(this.context.currentStep);
     }
     return this.stepSequence;
   }
@@ -59,7 +62,7 @@ class StepSequenceGenerator {
     return randomInt(0, max);
   }
 
-  private addStep(movement: Movement) {
+  private addStepToSequence(movement: Movement) {
     this.stepSequence.push(movement);
   }
 }
