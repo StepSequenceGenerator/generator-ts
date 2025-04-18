@@ -11,7 +11,8 @@
     "lint": "eslint 'src/**/*.ts' --fix",
     "format": "prettier --write 'src/**/*.ts'",
     "test": "vitest",
-    "test:coverage": "vitest --coverage"
+    "test:coverage": "vitest --coverage",
+    "test:report": "vitest --reporter verbose"
   },
   "keywords": [],
   "author": "",
