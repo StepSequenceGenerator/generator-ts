@@ -10,6 +10,7 @@ import { StepContext } from './sequence-generator/StepContext.js';
 
 import { MapValueTypeBase } from './shared/types/map-value-type-base.js';
 import { StepCounter } from './sequence-generator/StepCounter.js';
+import { DifficultLevelAmountStep } from './enums/difficult-level-amount-step-enum.js';
 
 dotenv.config();
 
@@ -38,7 +39,7 @@ function run() {
   console.log(
     'дорожка',
     generator
-      .generate(11)
+      .generate(DifficultLevelAmountStep.LEVEL_4)
       .map(
         (item, index) =>
           `${index} : ${item.id} ${item.name} ${item.absoluteName}`

@@ -12,6 +12,7 @@ import {
   TransitionDirection,
 } from '../enums/movement-enums.js';
 import { StepCounter } from './StepCounter.js';
+import { DifficultLevelAmountStep } from '../enums/difficult-level-amount-step-enum.js';
 
 const mockMovementsFormated = mockMovements.map(
   (movement) => new Movement(movement as Movement)
@@ -35,19 +36,19 @@ describe('StepSequenceGenerator', () => {
 
   describe('generate', () => {
     it('должен вернуть последовательность шагов определенной длины', () => {
-      const expected = 10;
+      const expected = DifficultLevelAmountStep.LEVEL_4;
       const result = generator.generate(expected).length;
       expect(result).toEqual(expected);
     });
 
     it('должен вернуть массив Movement', () => {
-      const list = generator.generate(3);
+      const list = generator.generate(DifficultLevelAmountStep.LEVEL_4);
       const result = list.every((item) => item instanceof Movement);
       expect(result).toBe(true);
     });
 
     it('должен добавлять элементы в свойство stepSequence', () => {
-      const expected = 10;
+      const expected = DifficultLevelAmountStep.LEVEL_3;
       generator.generate(expected);
       const result = generator['stepSequence'].length;
       expect(result).toBe(expected);

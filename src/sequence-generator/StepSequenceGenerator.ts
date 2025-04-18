@@ -4,6 +4,7 @@ import { Movement } from '../movement/Movement.js';
 import { StepContext } from './StepContext.js';
 import { Edge, Leg, TransitionDirection } from '../enums/movement-enums.js';
 import { StepCounter } from './StepCounter.js';
+import { DifficultLevelAmountStep } from '../enums/difficult-level-amount-step-enum.js';
 
 class StepSequenceGenerator {
   private readonly library: MovementLibrary;
@@ -22,10 +23,10 @@ class StepSequenceGenerator {
     this.stepSequence = [];
   }
 
-  generate(stepSequenceLength: number) {
+  generate(stepAmountBySequenceLevel: DifficultLevelAmountStep) {
     this.stepSequence = [];
 
-    for (let i = 0; i < stepSequenceLength; i++) {
+    for (let i = 0; i < stepAmountBySequenceLevel; i++) {
       const currentMovementsForChoice = this.filterLibraryForNextStep();
       const index = this.getRandomIndex(currentMovementsForChoice.length);
       this.context.currentStep = currentMovementsForChoice[index];
