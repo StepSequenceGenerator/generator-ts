@@ -23,7 +23,7 @@ class StepSequenceGenerator {
     this.stepSequence = [];
   }
 
-  generate(stepAmountBySequenceLevel: DifficultLevelAmountStep) {
+  public generate(stepAmountBySequenceLevel: DifficultLevelAmountStep) {
     this.stepSequence = [];
 
     while (

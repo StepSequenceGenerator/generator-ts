@@ -27,8 +27,13 @@ function run() {
     typeof ColumnName
   >(parsedData, ColumnName);
 
-  const movementLibrary = new MovementLibrary(preparedDataForLibrary);
+  // const uploaderMovement = new UploaderMovements();
+  // uploaderMovement.upload(
+  //   preparedDataForLibrary,
+  //   `${PUBLIC_DIR}/movementsNew.ts`
+  // );
 
+  const movementLibrary = new MovementLibrary(preparedDataForLibrary);
   const stepContext = new StepContext();
   const stepCounter = new StepCounter();
   const generator = new StepSequenceGenerator(
@@ -36,21 +41,18 @@ function run() {
     stepContext,
     stepCounter
   );
-  console.log(
-    'дорожка',
-    generator
-      .generate(DifficultLevelAmountStep.LEVEL_3)
-      .map(
-        (item, index) =>
-          `${index} : ${item.id} ${item.name} ${item.absoluteName}`
-      )
-  );
+  const sequence = generator
+    .generate(DifficultLevelAmountStep.LEVEL_4)
+    .map(
+      (item, index) => `${index} : ${item.id} ${item.name} ${item.absoluteName}`
+    );
+  console.log('дорожка', sequence);
 }
 
 function prepareDataForMovementLibrary<T extends Record<string, string>>(
   data: Map<string, MapValueTypeBase>[],
   columnName: T
-) {
+): Movement[] {
   const movements: Movement[] = [];
   for (const line of data) {
     const movement = MovementFactory.createFromExcelData<T>(line, columnName);

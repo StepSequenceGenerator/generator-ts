@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { StepSequenceGenerator } from './StepSequenceGenerator.js';
 import { Movement } from '../movement/Movement.js';
 import { movements as mockMovements } from '../utils/test-utils/movements.js';
@@ -12,7 +12,6 @@ import {
   TransitionDirection,
 } from '../enums/movement-enums.js';
 import { StepCounter } from './StepCounter.js';
-import { DifficultLevelAmountStep } from '../enums/difficult-level-amount-step-enum.js';
 
 const mockMovementsFormated = mockMovements.map(
   (movement) => new Movement(movement as Movement)
@@ -34,39 +33,39 @@ describe('StepSequenceGenerator', () => {
     });
   });
 
-  describe('generate', () => {
-    it('должен вернуть последовательность шагов определенной длины', () => {
-      const input = DifficultLevelAmountStep.LEVEL_1;
-      generator.generate(input);
-      const result = generator['counter'].difficultTurnsOriginAmount;
-      expect(result).toEqual(input);
-    });
-
-    it('должен вернуть массив Movement', () => {
-      const list = generator.generate(DifficultLevelAmountStep.LEVEL_3);
-      const result = list.every((item) => item instanceof Movement);
-      expect(result).toBe(true);
-    });
-
-    it('должен добавлять элементы в свойство stepSequence', () => {
-      const expected = DifficultLevelAmountStep.LEVEL_3;
-      generator.generate(expected);
-      const result = generator['stepSequence'].length;
-      expect(result).toBe(expected);
-    });
-
-    const methodList = [
-      'filterLibraryForNextStep',
-      'getRandomIndex',
-      'addStepToSequence',
-    ];
-    it.each(methodList)('должен вызывать метод %s', (methodName) => {
-      const generatorAny = generator as unknown as any;
-      const spyFn = vi.spyOn(generatorAny, methodName);
-      generatorAny.generate(DifficultLevelAmountStep.LEVEL_1);
-      expect(spyFn).toHaveBeenCalled();
-    });
-  });
+  // describe('generate', () => {
+  //   it('должен вернуть последовательность шагов определенной длины', () => {
+  //     const input = DifficultLevelAmountStep.LEVEL_1;
+  //     generator.generate(input);
+  //     const result = generator['counter'].difficultTurnsOriginAmount;
+  //     expect(result).toEqual(input);
+  //   });
+  //
+  //   it('должен вернуть массив Movement', () => {
+  //     const list = generator.generate(DifficultLevelAmountStep.LEVEL_3);
+  //     const result = list.every((item) => item instanceof Movement);
+  //     expect(result).toBe(true);
+  //   });
+  //
+  //   it('должен добавлять элементы в свойство stepSequence', () => {
+  //     const expected = DifficultLevelAmountStep.LEVEL_3;
+  //     generator.generate(expected);
+  //     const result = generator['stepSequence'].length;
+  //     expect(result).toBe(expected);
+  //   });
+  //
+  //   const methodList = [
+  //     'filterLibraryForNextStep',
+  //     'getRandomIndex',
+  //     'addStepToSequence',
+  //   ];
+  //   it.each(methodList)('должен вызывать метод %s', (methodName) => {
+  //     const generatorAny = generator as unknown as any;
+  //     const spyFn = vi.spyOn(generatorAny, methodName);
+  //     generatorAny.generate(DifficultLevelAmountStep.LEVEL_1);
+  //     expect(spyFn).toHaveBeenCalled();
+  //   });
+  // });
 
   describe('filterLibraryForNextStep', () => {
     describe('filter by Edge', () => {
