@@ -3,10 +3,12 @@ import { Movement } from '../movement/Movement.js';
 import {
   Edge,
   Leg,
+  MovementCharacter,
   RotationDegree,
   RotationDirection,
   TransitionDirection,
 } from '../enums/movement-enums.js';
+import { TurnAbsoluteName } from '../enums/turn-absolute-name-enum.js';
 
 const enumMap: Record<string, any> = {
   transitionDirection: {
@@ -36,6 +38,14 @@ const enumMap: Record<string, any> = {
   endEdge: {
     obj: Edge,
     name: 'Edge',
+  },
+  type: {
+    obj: MovementCharacter,
+    name: 'MovementCharacter',
+  },
+  absoluteName: {
+    obj: TurnAbsoluteName,
+    name: 'TurnAbsoluteName',
   },
 };
 
@@ -74,8 +84,8 @@ export class UploaderMovements extends UploaderAbstract {
 
   private addImports(importPath: string, formatedData: string) {
     const imports =
-      `import { Movement } from '${importPath}/classes/Movement.js';\n` +
-      `import { Leg, Edge, RotationDirection, RotationDegree, TransitionDirection } from '${importPath}/enums/movement-enums.js';\n\n` +
+      `import { Movement } from '${importPath}/movement/Movement.js';\n` +
+      `import { Leg, Edge, RotationDirection, RotationDegree, TransitionDirection, MovementCharacter } from '${importPath}/enums/movement-enums.js';\n\n` +
       `export const movements: Movement[] = `;
     return `${imports} ${formatedData};\n`;
   }

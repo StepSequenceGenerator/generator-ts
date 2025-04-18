@@ -10,6 +10,7 @@ import {
   TransitionDirection,
 } from '../enums/movement-enums.js';
 import { MapValueTypeBase } from '../shared/types/map-value-type-base.js';
+import { TurnAbsoluteName } from '../enums/turn-absolute-name-enum.js';
 
 const { isEqual } = lodash;
 
@@ -63,6 +64,7 @@ class MovementFactory {
       isDifficult: this.parseIsDifficult(data.get(columnName.IS_DIFFICULT)),
       type: this.parseType(data.get(columnName.TYPE)),
       description: this.parseDescription(data.get(columnName.DESCRIPTION)),
+      absoluteName: this.parseAbsoluteName(data.get(columnName.ABSOLUTE_NAME)),
     };
     return new Movement(movementData);
   }
@@ -215,16 +217,34 @@ class MovementFactory {
   }
 
   private static parseType(value: unknown): MovementCharacter {
-    const formattedValue = String(value).trim() as MovementCharacter;
-    if (Object.values(MovementCharacter).includes(formattedValue)) {
-      return formattedValue;
-    } else {
-      return MovementCharacter.UNKNOWN;
-    }
+    return this.straightParse<typeof MovementCharacter, MovementCharacter>(
+      value,
+      MovementCharacter,
+      MovementCharacter.UNKNOWN
+    );
   }
 
   private static parseDescription(value: unknown): string {
     return String(value || '');
+  }
+
+  private static parseAbsoluteName(value: unknown): TurnAbsoluteName {
+    return this.straightParse<typeof TurnAbsoluteName, TurnAbsoluteName>(
+      value,
+      TurnAbsoluteName,
+      TurnAbsoluteName.UNKNOWN
+    );
+  }
+
+  private static straightParse<
+    E extends Record<string, string>,
+    T extends E[keyof E],
+  >(value: unknown, enumObj: E, defaultValue: T): T {
+    const formattedValue = String(value).trim().toLowerCase();
+
+    const match = Object.values(enumObj).find((val) => val === formattedValue);
+
+    return (match as unknown as T) ?? defaultValue;
   }
 }
 

@@ -11,6 +11,7 @@ import {
 } from '../enums/movement-enums.js';
 import { convertFromObjectToMap } from '../utils/converters/from-object-to-map.js';
 import { ColumnName } from '../enums/column-name-enum.js';
+import { TurnAbsoluteName } from '../enums/turn-absolute-name-enum.js';
 
 const RIGHT_LEG = 'правая';
 const LEFT_LEG = 'левая';
@@ -399,6 +400,7 @@ describe('MovementFactory', () => {
         isDifficult: false,
         type: MovementCharacter.UNKNOWN,
         description: '',
+        absoluteName: TurnAbsoluteName.UNKNOWN,
       });
 
       const result = MovementFactory.createFromExcelData<typeof ColumnName>(

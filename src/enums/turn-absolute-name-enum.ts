@@ -6,6 +6,7 @@ enum TurnAbsoluteName {
   TWIZZLE = 'twizzle', // твизл
   LOOP = 'loop', // петля
   CHOCTAW = 'chocktaw', // чоктау
+  UNKNOWN = 'unknown',
 }
 
 export { TurnAbsoluteName };

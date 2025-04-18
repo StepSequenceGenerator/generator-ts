@@ -66,19 +66,18 @@ describe('StepCounter', () => {
       });
     });
 
-    describe('conditionIsTurnDifficult', () => {
+    describe('conditionIsMovementDifficult', () => {
       it('должен вернуть true', () => {
         const mockMovement = {
           isDifficult: true,
-          type: MovementCharacter.TURN,
         } as Movement;
-        const result = counter['conditionIsTurnDifficult'](mockMovement);
+        const result = counter['conditionIsMovementDifficult'](mockMovement);
         expect(result).toBeTruthy();
       });
 
       it('должен вернуть false', () => {
         const mockMovement = { isDifficult: false } as Movement;
-        const result = counter['conditionIsTurnDifficult'](mockMovement);
+        const result = counter['conditionIsMovementDifficult'](mockMovement);
         expect(result).toBeFalsy();
       });
     });
@@ -220,7 +219,7 @@ describe('StepCounter', () => {
 
       describe('должен вызывать', () => {
         const methodNameList = [
-          'conditionIsTurnDifficult',
+          'conditionIsMovementDifficult',
           'conditionToIncreaseDifficultOrigin',
           'conditionToIncreaseRotations',
           'increaseTurnsDifficultAll',
@@ -233,6 +232,7 @@ describe('StepCounter', () => {
           type: MovementCharacter.TURN,
           rotationDirection: RotationDirection.CLOCKWISE,
           rotationDegree: RotationDegree.DEGREE_360,
+          absoluteName: TurnAbsoluteName.ROCKER,
         } as Movement;
         it.each(methodNameList)('метод %s', (methodName) => {
           const spyFn = vi.spyOn(counterAny, methodName);

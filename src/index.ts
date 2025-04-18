@@ -9,6 +9,9 @@ import { StepSequenceGenerator } from './sequence-generator/StepSequenceGenerato
 import { StepContext } from './sequence-generator/StepContext.js';
 
 import { MapValueTypeBase } from './shared/types/map-value-type-base.js';
+import { StepCounter } from './sequence-generator/StepCounter.js';
+import { DifficultLevelAmountStep } from './enums/difficult-level-amount-step-enum.js';
+import { RouletteGenerator } from './sequence-generator/RouletteGenerator.js';
 
 dotenv.config();
 
@@ -25,20 +28,34 @@ function run() {
     typeof ColumnName
   >(parsedData, ColumnName);
 
-  const movementLibrary = new MovementLibrary(preparedDataForLibrary);
+  // const uploaderMovement = new UploaderMovements();
+  // uploaderMovement.upload(
+  //   preparedDataForLibrary,
+  //   `${PUBLIC_DIR}/movementsNew.ts`
+  // );
 
+  const movementLibrary = new MovementLibrary(preparedDataForLibrary);
   const stepContext = new StepContext();
-  const generator = new StepSequenceGenerator(movementLibrary, stepContext);
-  console.log(
-    'дорожка',
-    generator.generate(11).map((item, index) => `${index} : ${item.name}`)
+  const stepCounter = new StepCounter();
+  const rouletteGenerator = new RouletteGenerator();
+  const generator = new StepSequenceGenerator(
+    movementLibrary,
+    stepContext,
+    stepCounter,
+    rouletteGenerator
   );
+  const sequence = generator
+    .generate(DifficultLevelAmountStep.LEVEL_4)
+    .map(
+      (item, index) => `${index} : ${item.id} ${item.name} ${item.absoluteName}`
+    );
+  console.log('дорожка', sequence);
 }
 
 function prepareDataForMovementLibrary<T extends Record<string, string>>(
   data: Map<string, MapValueTypeBase>[],
   columnName: T
-) {
+): Movement[] {
   const movements: Movement[] = [];
   for (const line of data) {
     const movement = MovementFactory.createFromExcelData<T>(line, columnName);
@@ -47,5 +64,4 @@ function prepareDataForMovementLibrary<T extends Record<string, string>>(
   return movements;
 }
 
-// 5, 7, 9, 11
 run();
