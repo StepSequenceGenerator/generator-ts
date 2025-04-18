@@ -5,21 +5,25 @@ import { StepContext } from './StepContext.js';
 import { Edge, Leg, TransitionDirection } from '../enums/movement-enums.js';
 import { StepCounter } from './StepCounter.js';
 import { DifficultLevelAmountStep } from '../enums/difficult-level-amount-step-enum.js';
+import { RouletteGenerator } from './RouletteGenerator.js';
 
 class StepSequenceGenerator {
   private readonly library: MovementLibrary;
   private readonly context: StepContext;
   private readonly counter: StepCounter;
+  private readonly randomGenerator: RouletteGenerator;
   private stepSequence: Movement[] = [];
 
   constructor(
     library: MovementLibrary,
     context: StepContext,
-    counter: StepCounter
+    counter: StepCounter,
+    randomGenerator: RouletteGenerator
   ) {
     this.library = library;
     this.context = context;
     this.counter = counter;
+    this.randomGenerator = randomGenerator;
     this.stepSequence = [];
   }
 
@@ -30,7 +34,10 @@ class StepSequenceGenerator {
       this.counter.difficultTurnsOriginAmount < stepAmountBySequenceLevel
     ) {
       const currentMovementsForChoice = this.filterLibraryForNextStep();
-      const index = this.getRandomIndex(currentMovementsForChoice.length);
+      const index = this.randomGenerator.generateNumber(
+        currentMovementsForChoice,
+        2
+      );
       this.context.currentStep = currentMovementsForChoice[index];
       this.addStepToSequence(this.context.currentStep);
       this.counter.update(this.context.currentStep);

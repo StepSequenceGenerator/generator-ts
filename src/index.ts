@@ -11,6 +11,7 @@ import { StepContext } from './sequence-generator/StepContext.js';
 import { MapValueTypeBase } from './shared/types/map-value-type-base.js';
 import { StepCounter } from './sequence-generator/StepCounter.js';
 import { DifficultLevelAmountStep } from './enums/difficult-level-amount-step-enum.js';
+import { RouletteGenerator } from './sequence-generator/RouletteGenerator.js';
 
 dotenv.config();
 
@@ -36,10 +37,12 @@ function run() {
   const movementLibrary = new MovementLibrary(preparedDataForLibrary);
   const stepContext = new StepContext();
   const stepCounter = new StepCounter();
+  const rouletteGenerator = new RouletteGenerator();
   const generator = new StepSequenceGenerator(
     movementLibrary,
     stepContext,
-    stepCounter
+    stepCounter,
+    rouletteGenerator
   );
   const sequence = generator
     .generate(DifficultLevelAmountStep.LEVEL_4)

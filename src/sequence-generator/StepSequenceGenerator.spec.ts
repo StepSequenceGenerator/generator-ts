@@ -12,6 +12,7 @@ import {
   TransitionDirection,
 } from '../enums/movement-enums.js';
 import { StepCounter } from './StepCounter.js';
+import { RouletteGenerator } from './RouletteGenerator.js';
 
 const mockMovementsFormated = mockMovements.map(
   (movement) => new Movement(movement as Movement)
@@ -21,9 +22,15 @@ describe('StepSequenceGenerator', () => {
   const library: MovementLibrary = new MovementLibrary(mockMovementsFormated);
   const context: StepContext = new StepContext();
   const counter = new StepCounter();
+  const randomGenerator = new RouletteGenerator();
   let generator: StepSequenceGenerator;
   beforeEach(() => {
-    generator = new StepSequenceGenerator(library, context, counter);
+    generator = new StepSequenceGenerator(
+      library,
+      context,
+      counter,
+      randomGenerator
+    );
   });
 
   describe('implementation', () => {
