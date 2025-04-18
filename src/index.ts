@@ -39,7 +39,7 @@ function run() {
   console.log(
     'дорожка',
     generator
-      .generate(DifficultLevelAmountStep.LEVEL_4)
+      .generate(DifficultLevelAmountStep.LEVEL_3)
       .map(
         (item, index) =>
           `${index} : ${item.id} ${item.name} ${item.absoluteName}`
