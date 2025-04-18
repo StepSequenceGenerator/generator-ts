@@ -1,7 +1,6 @@
 import { Movement } from '../movement/Movement.js';
 import { TurnAbsoluteName } from '../enums/turn-absolute-name-enum.js';
 import {
-  MovementCharacter,
   RotationDegree,
   RotationDirection,
   RotationDirectionString,
@@ -28,15 +27,18 @@ export class StepCounter {
   }
 
   public update(currentMovement: Movement): void {
-    const turnAbsoluteName = TurnAbsoluteName.ROCKER;
-    if (this.conditionIsTurnDifficult(currentMovement)) {
+    const turnAbsoluteName = currentMovement.absoluteName;
+
+    if (this.conditionIsMovementDifficult(currentMovement)) {
       this.increaseTurnsDifficultAll();
       if (this.conditionToIncreaseDifficultOrigin(turnAbsoluteName)) {
+        console.log(turnAbsoluteName);
         this.increaseDifficultOrigin(
           turnAbsoluteName,
           this.getCurrentDifficultOriginAmount(turnAbsoluteName)
         );
       }
+      console.log(this.turns.difficultOrigin);
     }
 
     if (this.conditionToIncreaseRotations(currentMovement)) {
@@ -104,9 +106,8 @@ export class StepCounter {
     }
   }
 
-  private conditionIsTurnDifficult(currentMovement: Movement): boolean {
-    const { isDifficult, type } = currentMovement;
-    return isDifficult && type === MovementCharacter.TURN;
+  private conditionIsMovementDifficult(currentMovement: Movement): boolean {
+    return currentMovement.isDifficult;
   }
 
   private conditionToIncreaseDifficultOrigin(
