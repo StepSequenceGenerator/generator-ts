@@ -12,7 +12,7 @@
     "format": "prettier --write 'src/**/*.ts'",
     "test": "vitest",
     "test:coverage": "vitest --coverage",
-    "test:report": "vitest --reporter verbose"
+    "test:details": "vitest --reporter verbose"
   },
   "keywords": [],
   "author": "",
