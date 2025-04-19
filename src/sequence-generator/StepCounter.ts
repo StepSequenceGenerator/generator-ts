@@ -32,13 +32,11 @@ export class StepCounter {
     if (this.conditionIsMovementDifficult(currentMovement)) {
       this.increaseTurnsDifficultAll();
       if (this.conditionToIncreaseDifficultOrigin(turnAbsoluteName)) {
-        console.log(turnAbsoluteName);
         this.increaseDifficultOrigin(
           turnAbsoluteName,
           this.getCurrentDifficultOriginAmount(turnAbsoluteName)
         );
       }
-      console.log(this.turns.difficultOrigin);
     }
 
     if (this.conditionToIncreaseRotations(currentMovement)) {

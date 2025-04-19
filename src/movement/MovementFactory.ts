@@ -177,7 +177,6 @@ class MovementFactory {
   private static parseRotationDirection(value: unknown): RotationDirection {
     let direction: RotationDirection;
     const formatedValue = Number(value);
-    // console.log(Number.isNaN(formatedValue));
     if (Number.isNaN(formatedValue)) {
       throw new MovementParserError(
         'from parseRotationDirection: wrong value for rotationDirection',
