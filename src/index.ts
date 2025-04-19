@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import { XlsxBook } from './file-parser/xlsx-book.js';
+
 import { ExcelParser } from './file-parser/excel-parser.js';
 import { ColumnName } from './enums/column-name-enum.js';
 import { Movement } from './movement/Movement.js';
@@ -12,6 +12,7 @@ import { MapValueTypeBase } from './shared/types/map-value-type-base.js';
 import { StepCounter } from './sequence-generator/StepCounter.js';
 import { DifficultLevelAmountStep } from './enums/difficult-level-amount-step-enum.js';
 import { RouletteGenerator } from './sequence-generator/RouletteGenerator.js';
+import { ExcelWorkbookLoader } from './file-parser/excel-workbook-loader.js';
 
 dotenv.config();
 
@@ -19,8 +20,8 @@ function run() {
   const PUBLIC_DIR: string = process.env.PUBLIC_DIR || '';
   const fileName = 'steps.xlsx';
 
-  const xlsxBook = new XlsxBook(PUBLIC_DIR, fileName);
-  const workBook = xlsxBook.getWorkBook();
+  const xlsxBookLoader = new ExcelWorkbookLoader();
+  const workBook = xlsxBookLoader.getWorkBook(PUBLIC_DIR, fileName);
   const parser = new ExcelParser<typeof ColumnName>(workBook, ColumnName);
   const parsedData = parser.parse();
 
