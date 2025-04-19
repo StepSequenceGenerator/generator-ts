@@ -6,8 +6,7 @@ export class RouletteGenerator {
     const chanceList = this.createChanceList(selection, chance);
     const virtualChanceListLength = this.getVirtualChanceListLength(chanceList);
     const randomIndex = this.getRandomIndex(virtualChanceListLength);
-    const movementIndex = this.getMovementIndex(chanceList, randomIndex);
-    return movementIndex;
+    return this.getMovementIndex(chanceList, randomIndex);
   }
 
   private createChanceList(selection: Movement[], chance: number): number[] {

@@ -1,0 +1,99 @@
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { MovementEqualWeightCalculator } from './MovementEqualWeightCalculator.js';
+import { MovementCharacter } from '../enums/movement-enums.js';
+import type { Movement } from '../movement/Movement.js';
+
+describe('MovementEqualWeightCalculator', () => {
+  // unknown = 3, turn = 1, step = 1, difficult = 1, glide = 1, hop = 1, sequence = 2
+  const mockMovements: Movement[] = [
+    { type: MovementCharacter.UNKNOWN, isDifficult: false } as Movement,
+    { type: MovementCharacter.UNKNOWN, isDifficult: false } as Movement,
+    { type: MovementCharacter.UNKNOWN, isDifficult: false } as Movement,
+    { type: MovementCharacter.TURN, isDifficult: false } as Movement,
+    { type: MovementCharacter.TURN, isDifficult: true } as Movement,
+    { type: MovementCharacter.STEP, isDifficult: true } as Movement,
+    { type: MovementCharacter.STEP, isDifficult: false } as Movement,
+    { type: MovementCharacter.GLIDE, isDifficult: false } as Movement,
+    { type: MovementCharacter.HOP, isDifficult: false } as Movement,
+    { type: MovementCharacter.SEQUENCE, isDifficult: false } as Movement,
+    { type: MovementCharacter.SEQUENCE, isDifficult: false } as Movement,
+  ];
+
+  const mockCharacterCounted = new Map([
+    ['unknown', 3],
+    ['difficult', 2],
+    ['sequence', 2],
+    ['turn', 1],
+    ['step', 1],
+    ['glide', 1],
+    ['hop', 1],
+  ]);
+
+  const equalWeightMap = new Map([
+    ['unknown', 1],
+    ['difficult', Math.round((3 / 2) * 100) / 100],
+    ['sequence', Math.round((3 / 2) * 100) / 100],
+    ['turn', Math.round((3 / 1) * 100) / 100],
+    ['step', Math.round((3 / 1) * 100) / 100],
+    ['glide', Math.round((3 / 1) * 100) / 100],
+    ['hop', Math.round((3 / 1) * 100) / 100],
+  ]);
+
+  let calculator: MovementEqualWeightCalculator;
+
+  beforeEach(() => {
+    calculator = new MovementEqualWeightCalculator();
+  });
+
+  describe('implementation', () => {
+    it('implementation', () => {
+      expect(calculator).toBeDefined();
+      expect(calculator).toBeInstanceOf(MovementEqualWeightCalculator);
+    });
+  });
+
+  describe('count', () => {
+    const funcNameList = [
+      'countEachCharacterAmount',
+      'getMaxAmount',
+      'calcWeight',
+    ];
+
+    it.each([funcNameList])('должен вызвать %s', (name) => {
+      const calculatorAny = calculator as unknown as any;
+      const spyFn = vi.spyOn(calculatorAny, name);
+      calculator.count(mockMovements);
+      expect(spyFn).toBeCalled();
+    });
+
+    it('должен вернуть данные определенного типа', () => {
+      const result = calculator.count(mockMovements);
+      expect(result).toBeInstanceOf(Map);
+    });
+  });
+
+  describe('countEachCharacterAmount', () => {
+    it('должен корректно посчитать количество элементов каждого типа', () => {
+      const expected = mockCharacterCounted;
+      const result = calculator['countEachCharacterAmount'](mockMovements);
+      expect(result).toStrictEqual(expected);
+    });
+  });
+
+  describe('getMaxAmount', () => {
+    it('должен отдать максимальное количество', () => {
+      const input = mockCharacterCounted;
+      const expected = 3;
+      const result = calculator['getMaxAmount'](input);
+      expect(result).toEqual(expected);
+    });
+  });
+
+  describe('calcWeight', () => {
+    it('должен вернуть Map с подсчитанными весами', () => {
+      const expected = equalWeightMap;
+      const result = calculator['calcWeight'](3, mockCharacterCounted);
+      expect(result).toStrictEqual(expected);
+    });
+  });
+});
