@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { MovementEqualWeightCalculator } from './MovementEqualWeightCalculator.js';
+import { MovementEqualizingWeightCalculator } from './MovementEqualizingWeightCalculator.js';
 import { MovementCharacter } from '../enums/movement-enums.js';
 import type { Movement } from '../movement/Movement.js';
 
@@ -39,23 +39,23 @@ describe('MovementEqualWeightCalculator', () => {
     ['hop', Math.round((3 / 1) * 100) / 100],
   ]);
 
-  let calculator: MovementEqualWeightCalculator;
+  let calculator: MovementEqualizingWeightCalculator;
 
   beforeEach(() => {
-    calculator = new MovementEqualWeightCalculator();
+    calculator = new MovementEqualizingWeightCalculator();
   });
 
   describe('implementation', () => {
     it('implementation', () => {
       expect(calculator).toBeDefined();
-      expect(calculator).toBeInstanceOf(MovementEqualWeightCalculator);
+      expect(calculator).toBeInstanceOf(MovementEqualizingWeightCalculator);
     });
   });
 
   describe('count', () => {
     const funcNameList = [
-      'countEachCharacterAmount',
-      'getMaxAmount',
+      'groupAndCountMovements',
+      'getMaxGroupSize',
       'calcWeight',
     ];
 
@@ -75,24 +75,27 @@ describe('MovementEqualWeightCalculator', () => {
   describe('countEachCharacterAmount', () => {
     it('должен корректно посчитать количество элементов каждого типа', () => {
       const expected = mockCharacterCounted;
-      const result = calculator['countEachCharacterAmount'](mockMovements);
+      const result = calculator['groupAndCountMovements'](mockMovements);
       expect(result).toStrictEqual(expected);
     });
   });
 
-  describe('getMaxAmount', () => {
+  describe('getMaxGroupSize', () => {
     it('должен отдать максимальное количество', () => {
       const input = mockCharacterCounted;
       const expected = 3;
-      const result = calculator['getMaxAmount'](input);
+      const result = calculator['getMaxGroupSize'](input);
       expect(result).toEqual(expected);
     });
   });
 
-  describe('calcWeight', () => {
+  describe('calcEqualizingWeights', () => {
     it('должен вернуть Map с подсчитанными весами', () => {
       const expected = equalWeightMap;
-      const result = calculator['calcWeight'](3, mockCharacterCounted);
+      const result = calculator['calcEqualizingWeights'](
+        3,
+        mockCharacterCounted
+      );
       expect(result).toStrictEqual(expected);
     });
   });
