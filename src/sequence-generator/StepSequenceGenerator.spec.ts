@@ -13,6 +13,7 @@ import {
 } from '../enums/movement-enums.js';
 import { StepCounter } from './StepCounter.js';
 import { RouletteGenerator } from './RouletteGenerator.js';
+import { MovementEqualizingWeightCalculator } from './MovementEqualizingWeightCalculator.js';
 
 const mockMovementsFormated = mockMovements.map(
   (movement) => new Movement(movement as Movement)
@@ -22,7 +23,8 @@ describe('StepSequenceGenerator', () => {
   const library: MovementLibrary = new MovementLibrary(mockMovementsFormated);
   const context: StepContext = new StepContext();
   const counter = new StepCounter();
-  const randomGenerator = new RouletteGenerator();
+  const equalizer = new MovementEqualizingWeightCalculator();
+  const randomGenerator = new RouletteGenerator(equalizer);
   let generator: StepSequenceGenerator;
   beforeEach(() => {
     generator = new StepSequenceGenerator(

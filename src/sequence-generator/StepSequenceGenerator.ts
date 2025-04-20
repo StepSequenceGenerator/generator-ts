@@ -7,6 +7,16 @@ import { StepCounter } from './StepCounter.js';
 import { DifficultLevelAmountStep } from '../enums/difficult-level-amount-step-enum.js';
 import { RouletteGenerator } from './RouletteGenerator.js';
 
+const chanceRatioMap = new Map<string, number>([
+  ['step', 8],
+  ['turn', 9],
+  ['sequence', 9],
+  ['hop', 8],
+  ['glide', 8],
+  ['unknown', 8],
+  ['difficult', 50],
+]);
+
 class StepSequenceGenerator {
   private readonly library: MovementLibrary;
   private readonly context: StepContext;
@@ -34,11 +44,11 @@ class StepSequenceGenerator {
       this.counter.difficultTurnsOriginAmount < stepAmountBySequenceLevel
     ) {
       const currentMovementsForChoice = this.filterLibraryForNextStep();
-      const index = this.randomGenerator.generateNumber(
+      const movementIndex = this.randomGenerator.generateNumber(
         currentMovementsForChoice,
-        2
+        chanceRatioMap
       );
-      this.context.currentStep = currentMovementsForChoice[index];
+      this.context.currentStep = currentMovementsForChoice[movementIndex];
       this.addStepToSequence(this.context.currentStep);
       this.counter.update(this.context.currentStep);
     }

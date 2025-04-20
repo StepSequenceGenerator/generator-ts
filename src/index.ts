@@ -13,6 +13,7 @@ import { StepCounter } from './sequence-generator/StepCounter.js';
 import { DifficultLevelAmountStep } from './enums/difficult-level-amount-step-enum.js';
 import { RouletteGenerator } from './sequence-generator/RouletteGenerator.js';
 import { ExcelWorkbookLoader } from './file-parser/excel-workbook-loader.js';
+import { MovementWeightCalculator } from './sequence-generator/MovementWeightCalculator.js';
 
 dotenv.config();
 
@@ -38,7 +39,8 @@ function run() {
   const movementLibrary = new MovementLibrary(preparedDataForLibrary);
   const stepContext = new StepContext();
   const stepCounter = new StepCounter();
-  const rouletteGenerator = new RouletteGenerator();
+  const weightCalc = new MovementWeightCalculator();
+  const rouletteGenerator = new RouletteGenerator(weightCalc);
   const generator = new StepSequenceGenerator(
     movementLibrary,
     stepContext,
