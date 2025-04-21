@@ -1,6 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { MovementEqualizingWeightCalculator } from './MovementEqualizingWeightCalculator.js';
-import { MovementCharacter } from '../enums/movement-enums.js';
+import {
+  ExtendedMovementCharacter,
+  MovementCharacter,
+} from '../enums/movement-enums.js';
 import type { Movement } from '../movement/Movement.js';
 
 describe('MovementEqualWeightCalculator', () => {
@@ -20,13 +23,13 @@ describe('MovementEqualWeightCalculator', () => {
   ];
 
   const mockCharacterCounted = new Map([
-    ['unknown', 3],
-    ['difficult', 2],
-    ['sequence', 2],
-    ['turn', 1],
-    ['step', 1],
-    ['glide', 1],
-    ['hop', 1],
+    [ExtendedMovementCharacter.UNKNOWN, 3],
+    [ExtendedMovementCharacter.DIFFICULT, 2],
+    [ExtendedMovementCharacter.SEQUENCE, 2],
+    [ExtendedMovementCharacter.TURN, 1],
+    [ExtendedMovementCharacter.STEP, 1],
+    [ExtendedMovementCharacter.GLIDE, 1],
+    [ExtendedMovementCharacter.HOP, 1],
   ]);
 
   const equalWeightMap = new Map([

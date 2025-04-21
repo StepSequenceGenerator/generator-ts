@@ -2,20 +2,28 @@ import { MovementLibrary } from '../movement/MovementLibrary.js';
 import { randomInt } from 'node:crypto';
 import { Movement } from '../movement/Movement.js';
 import { StepContext } from './StepContext.js';
-import { Edge, Leg, TransitionDirection } from '../enums/movement-enums.js';
+import {
+  Edge,
+  ExtendedMovementCharacter,
+  Leg,
+  TransitionDirection,
+} from '../enums/movement-enums.js';
 import { StepCounter } from './StepCounter.js';
 import { DifficultLevelAmountStep } from '../enums/difficult-level-amount-step-enum.js';
 import { RouletteGenerator } from './RouletteGenerator.js';
 import { ChanceRatioMapType } from '../shared/types/chance-ratio-map-type.js';
 
-const chanceRatioMap: ChanceRatioMapType = new Map<string, number>([
-  ['step', 8],
-  ['turn', 9],
-  ['sequence', 9],
-  ['hop', 8],
-  ['glide', 8],
-  ['unknown', 8],
-  ['difficult', 50],
+const chanceRatioMap: ChanceRatioMapType = new Map<
+  ExtendedMovementCharacter,
+  number
+>([
+  [ExtendedMovementCharacter.STEP, 8],
+  [ExtendedMovementCharacter.TURN, 9],
+  [ExtendedMovementCharacter.SEQUENCE, 9],
+  [ExtendedMovementCharacter.HOP, 8],
+  [ExtendedMovementCharacter.GLIDE, 8],
+  [ExtendedMovementCharacter.UNKNOWN, 8],
+  [ExtendedMovementCharacter.DIFFICULT, 50],
 ]);
 
 class StepSequenceGenerator {

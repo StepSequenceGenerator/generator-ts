@@ -5,6 +5,8 @@ import {
   WeightMapType,
 } from '../shared/types/chance-ratio-map-type.js';
 import { round2 } from '../utils/round2.js';
+import { ExtendedMovementCharacter } from '../enums/movement-enums.js';
+import { transformToExtendedMovementCharacterType } from '../utils/is-extended-movement-character.js';
 
 export class MovementWeightCalculator extends WeightCalculatorBase {
   public count(
@@ -17,19 +19,15 @@ export class MovementWeightCalculator extends WeightCalculatorBase {
       chanceRatioMap
     );
 
-    const itemsWeight = this.calcWeight(
-      groupMovementCounted,
-      recalculatedChanceRatio
-    );
-    return itemsWeight;
+    return this.calcWeight(groupMovementCounted, recalculatedChanceRatio);
   }
 
   private recalculateChanceRatio(
-    movementCharaterInUse: string[],
+    movementCharacterInUse: string[],
     chanceRatioMap: ChanceRatioMapType
   ) {
     const actualChanceRatioMap: ChanceRatioMapType =
-      this.getActualChanceRatioMap(movementCharaterInUse, chanceRatioMap);
+      this.getActualChanceRatioMap(movementCharacterInUse, chanceRatioMap);
 
     const percentSeparated = this.separatePercentByType(actualChanceRatioMap);
 
@@ -40,7 +38,10 @@ export class MovementWeightCalculator extends WeightCalculatorBase {
     percentSeparated: { unusedPercent: number; usedPercent: number },
     actualChanceRatioMap: Map<string, number>
   ): ChanceRatioMapType {
-    const map: ChanceRatioMapType = new Map<string, number>();
+    const map: ChanceRatioMapType = new Map<
+      ExtendedMovementCharacter,
+      number
+    >();
     const { unusedPercent, usedPercent } = percentSeparated;
     const maxPercentCurrentChanceRatioMap = Math.max(
       ...actualChanceRatioMap.values()
@@ -49,11 +50,12 @@ export class MovementWeightCalculator extends WeightCalculatorBase {
       usedPercent === 0 ? 0 : round2(unusedPercent / usedPercent);
 
     for (const [key, percent] of actualChanceRatioMap.entries()) {
+      const typedKey = transformToExtendedMovementCharacterType(key);
       if (percent < maxPercentCurrentChanceRatioMap) {
         const adjusted = percent + percent * redistributionFactor;
-        map.set(key, adjusted);
+        map.set(typedKey, adjusted);
       } else {
-        map.set(key, percent);
+        map.set(typedKey, percent);
       }
     }
 
@@ -64,7 +66,7 @@ export class MovementWeightCalculator extends WeightCalculatorBase {
     charactersInUse: string[],
     chanceRatioMap: ChanceRatioMapType
   ): ChanceRatioMapType {
-    const map = new Map<string, number>();
+    const map = new Map<ExtendedMovementCharacter, number>();
     for (const [key, percent] of chanceRatioMap.entries()) {
       if (charactersInUse.includes(key)) {
         map.set(key, percent);
@@ -94,14 +96,17 @@ export class MovementWeightCalculator extends WeightCalculatorBase {
   }
 
   private calcWeight(
-    groupMovementCounted: Map<string, number>,
+    groupMovementCounted: Map<ExtendedMovementCharacter, number>,
     recalculatedChanceRatio: ChanceRatioMapType
   ): WeightMapType {
     const totalItems = Array.from(groupMovementCounted.values()).reduce(
       (acc, cur) => acc + cur,
       0
     );
-    const weightMap: WeightMapType = new Map<string, number>();
+    const weightMap: WeightMapType = new Map<
+      ExtendedMovementCharacter,
+      number
+    >();
     for (let [key, currentItemAmount] of groupMovementCounted.entries()) {
       const desirePercent = recalculatedChanceRatio.get(key) ?? 0;
       const desireItemAmount = round2((totalItems / 100) * desirePercent);
