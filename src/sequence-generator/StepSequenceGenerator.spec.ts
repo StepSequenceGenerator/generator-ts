@@ -12,8 +12,8 @@ import {
   TransitionDirection,
 } from '../enums/movement-enums.js';
 import { StepCounter } from './StepCounter.js';
-import { RouletteGenerator } from './RouletteGenerator.js';
-import { MovementEqualizingWeightCalculator } from './MovementEqualizingWeightCalculator.js';
+import { RouletteGenerator } from '../roulette/RouletteGenerator.js';
+import { MovementEqualizingWeightCalculator } from '../roulette/MovementEqualizingWeightCalculator.js';
 
 const mockMovementsFormated = mockMovements.map(
   (movement) => new Movement(movement as Movement)
