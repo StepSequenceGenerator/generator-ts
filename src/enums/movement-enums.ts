@@ -47,6 +47,20 @@ enum MovementCharacter {
   UNKNOWN = 'unknown',
 }
 
+enum SpecialCharacter {
+  DIFFICULT = 'difficult',
+}
+
+enum ExtendedMovementCharacter {
+  STEP = 'step',
+  TURN = 'turn',
+  SEQUENCE = 'sequence',
+  HOP = 'hop',
+  GLIDE = 'glide',
+  UNKNOWN = 'unknown',
+  DIFFICULT = 'difficult',
+}
+
 export {
   Edge,
   Leg,
@@ -55,4 +69,5 @@ export {
   RotationDirectionString,
   TransitionDirection,
   MovementCharacter,
+  ExtendedMovementCharacter,
 };

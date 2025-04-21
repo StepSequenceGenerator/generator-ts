@@ -3,7 +3,10 @@ import { MovementWeightCalculator } from './MovementWeightCalculator.js';
 import { WeightCalculatorBase } from './WeightCalculatorBase.js';
 import { ChanceRatioMapType } from '../shared/types/chance-ratio-map-type.js';
 import type { Movement } from '../movement/Movement.js';
-import { MovementCharacter } from '../enums/movement-enums.js';
+import {
+  ExtendedMovementCharacter,
+  MovementCharacter,
+} from '../enums/movement-enums.js';
 
 const mockMovements: Movement[] = [
   { type: MovementCharacter.UNKNOWN, isDifficult: false } as Movement,
@@ -16,20 +19,23 @@ const mockMovements: Movement[] = [
 ];
 
 const mockGroupMovementCounted = new Map([
-  [MovementCharacter.UNKNOWN, 3],
-  [MovementCharacter.TURN, 1],
-  ['difficult', 2],
-  [MovementCharacter.STEP, 1],
+  [ExtendedMovementCharacter.UNKNOWN, 3],
+  [ExtendedMovementCharacter.TURN, 1],
+  [ExtendedMovementCharacter.DIFFICULT, 2],
+  [ExtendedMovementCharacter.STEP, 1],
 ]);
 
-const mockChanceRatioMap: ChanceRatioMapType = new Map<string, number>([
-  ['step', 8],
-  ['turn', 9],
-  ['sequence', 9],
-  ['hop', 8],
-  ['glide', 8],
-  ['unknown', 8],
-  ['difficult', 50],
+const mockChanceRatioMap: ChanceRatioMapType = new Map<
+  ExtendedMovementCharacter,
+  number
+>([
+  [ExtendedMovementCharacter.STEP, 8],
+  [ExtendedMovementCharacter.TURN, 9],
+  [ExtendedMovementCharacter.SEQUENCE, 9],
+  [ExtendedMovementCharacter.HOP, 8],
+  [ExtendedMovementCharacter.GLIDE, 8],
+  [ExtendedMovementCharacter.UNKNOWN, 8],
+  [ExtendedMovementCharacter.DIFFICULT, 50],
 ]);
 
 describe('MovementWeightCalculator', () => {
@@ -72,10 +78,10 @@ describe('MovementWeightCalculator', () => {
     describe('groupAndCountMovements', () => {
       it('должен вернуть корректно подсчитанное количество типов движений', () => {
         const expected = new Map([
-          [MovementCharacter.UNKNOWN, 3],
-          [MovementCharacter.TURN, 1],
-          ['difficult', 2],
-          [MovementCharacter.STEP, 1],
+          [ExtendedMovementCharacter.UNKNOWN, 3],
+          [ExtendedMovementCharacter.TURN, 1],
+          [ExtendedMovementCharacter.DIFFICULT, 2],
+          [ExtendedMovementCharacter.STEP, 1],
         ]);
         const result = calc['groupAndCountMovements'](mockMovements);
         expect(result).toStrictEqual(expected);
@@ -106,11 +112,11 @@ describe('MovementWeightCalculator', () => {
 
     describe('getActualChanceRatioMap', () => {
       it('должен вернуть Map с актуальными ключами и значениями процентов', () => {
-        const expected = new Map<string, number>([
-          [MovementCharacter.UNKNOWN, 8],
-          [MovementCharacter.TURN, 9],
-          ['difficult', 50],
-          [MovementCharacter.STEP, 8],
+        const expected = new Map<ExtendedMovementCharacter, number>([
+          [ExtendedMovementCharacter.UNKNOWN, 8],
+          [ExtendedMovementCharacter.TURN, 9],
+          [ExtendedMovementCharacter.DIFFICULT, 50],
+          [ExtendedMovementCharacter.STEP, 8],
         ]);
         const result = calc['getActualChanceRatioMap'](
           Array.from(mockGroupMovementCounted.keys()),
@@ -122,11 +128,11 @@ describe('MovementWeightCalculator', () => {
 
     describe('separatePercentByType', () => {
       it('должен вернуть количество используемых и неиспользуемых процентов', () => {
-        const mockMap = new Map<string, number>([
-          [MovementCharacter.UNKNOWN, 8],
-          [MovementCharacter.TURN, 9],
-          ['difficult', 50],
-          [MovementCharacter.STEP, 8],
+        const mockMap = new Map<ExtendedMovementCharacter, number>([
+          [ExtendedMovementCharacter.UNKNOWN, 8],
+          [ExtendedMovementCharacter.TURN, 9],
+          [ExtendedMovementCharacter.DIFFICULT, 50],
+          [ExtendedMovementCharacter.STEP, 8],
         ]);
         const expected = { unusedPercent: 25, usedPercent: 25 };
         const result = calc['separatePercentByType'](mockMap);
@@ -137,17 +143,17 @@ describe('MovementWeightCalculator', () => {
     describe('redistributeChanceRatio', () => {
       it('должен вернуть Map с обновленными значениями процентов ', () => {
         const mockPercentageSeparate = { unusedPercent: 25, usedPercent: 25 };
-        const mockMap = new Map<string, number>([
-          [MovementCharacter.UNKNOWN, 8],
-          [MovementCharacter.TURN, 9],
-          ['difficult', 50],
-          [MovementCharacter.STEP, 8],
+        const mockMap = new Map<ExtendedMovementCharacter, number>([
+          [ExtendedMovementCharacter.UNKNOWN, 8],
+          [ExtendedMovementCharacter.TURN, 9],
+          [ExtendedMovementCharacter.DIFFICULT, 50],
+          [ExtendedMovementCharacter.STEP, 8],
         ]);
-        const expected = new Map<string, number>([
-          [MovementCharacter.UNKNOWN, 16],
-          [MovementCharacter.TURN, 18],
-          ['difficult', 50],
-          [MovementCharacter.STEP, 16],
+        const expected = new Map<ExtendedMovementCharacter, number>([
+          [ExtendedMovementCharacter.UNKNOWN, 16],
+          [ExtendedMovementCharacter.TURN, 18],
+          [ExtendedMovementCharacter.DIFFICULT, 50],
+          [ExtendedMovementCharacter.STEP, 16],
         ]);
         const result = calc['redistributeChanceRatio'](
           mockPercentageSeparate,
@@ -160,23 +166,23 @@ describe('MovementWeightCalculator', () => {
     describe('calcWeight', () => {
       it('должен вернуть', () => {
         const mockGroupMovementCounted = new Map([
-          [MovementCharacter.UNKNOWN, 3], // 1.17
-          [MovementCharacter.TURN, 1], // 1.26
-          ['difficult', 2], // 3.5
-          [MovementCharacter.STEP, 1], // 1.12
+          [ExtendedMovementCharacter.UNKNOWN, 3], // 1.17
+          [ExtendedMovementCharacter.TURN, 1], // 1.26
+          [ExtendedMovementCharacter.DIFFICULT, 2], // 3.5
+          [ExtendedMovementCharacter.STEP, 1], // 1.12
         ]);
-        const mockRecalculatedMap = new Map<string, number>([
-          [MovementCharacter.UNKNOWN, 16],
-          [MovementCharacter.TURN, 18],
-          ['difficult', 50],
-          [MovementCharacter.STEP, 16],
+        const mockRecalculatedMap = new Map<ExtendedMovementCharacter, number>([
+          [ExtendedMovementCharacter.UNKNOWN, 16],
+          [ExtendedMovementCharacter.TURN, 18],
+          [ExtendedMovementCharacter.DIFFICULT, 50],
+          [ExtendedMovementCharacter.STEP, 16],
         ]);
 
-        const expected = new Map<string, number>([
-          [MovementCharacter.UNKNOWN, 0.37],
-          [MovementCharacter.TURN, 1.26],
-          ['difficult', 1.75],
-          [MovementCharacter.STEP, 1.12],
+        const expected = new Map<ExtendedMovementCharacter, number>([
+          [ExtendedMovementCharacter.UNKNOWN, 0.37],
+          [ExtendedMovementCharacter.TURN, 1.26],
+          [ExtendedMovementCharacter.DIFFICULT, 1.75],
+          [ExtendedMovementCharacter.STEP, 1.12],
         ]);
         const result = calc['calcWeight'](
           mockGroupMovementCounted,
