@@ -1,11 +1,16 @@
 import type { Movement } from '../movement/Movement.js';
 import { WeightCalculatorBase } from './WeightCalculatorBase.js';
+import {
+  ChanceRatioMapType,
+  WeightMapType,
+} from '../shared/types/chance-ratio-map-type.js';
+import { round2 } from '../utils/round2.js';
 
 export class MovementWeightCalculator extends WeightCalculatorBase {
   public count(
     selection: Movement[],
-    chanceRatioMap: Map<string, number>
-  ): Map<string, number> {
+    chanceRatioMap: ChanceRatioMapType
+  ): WeightMapType {
     const groupMovementCounted = this.groupAndCountMovements(selection);
     const recalculatedChanceRatio = this.recalculateChanceRatio(
       Array.from(groupMovementCounted.keys()),
@@ -21,55 +26,87 @@ export class MovementWeightCalculator extends WeightCalculatorBase {
 
   private recalculateChanceRatio(
     movementCharaterInUse: string[],
-    chanceRatioMap: Map<string, number>
+    chanceRatioMap: ChanceRatioMapType
   ) {
-    // 1. Разделение процента на использованный и неиспользованный
-    const currentChanceRatioMap = new Map<string, number>();
-    let unusedPercent = 0;
-    let usedPercent = 0;
+    const actualChanceRatioMap: ChanceRatioMapType =
+      this.getActualChanceRatioMap(movementCharaterInUse, chanceRatioMap);
 
-    const maxPercentOfChanceRatioMap = Math.max(...chanceRatioMap.values());
+    const percentSeparated = this.separatePercentByType(actualChanceRatioMap);
 
-    for (const [key, percent] of chanceRatioMap.entries()) {
-      if (movementCharaterInUse.includes(key)) {
-        currentChanceRatioMap.set(key, percent);
-        if (percent < maxPercentOfChanceRatioMap) usedPercent += percent;
-      } else {
-        unusedPercent += percent;
-      }
-    }
+    return this.redistributeChanceRatio(percentSeparated, actualChanceRatioMap);
+  }
 
-    // 2. Перераспределение "неиспользованного" процента
+  private redistributeChanceRatio(
+    percentSeparated: { unusedPercent: number; usedPercent: number },
+    actualChanceRatioMap: Map<string, number>
+  ): ChanceRatioMapType {
+    const map: ChanceRatioMapType = new Map<string, number>();
+    const { unusedPercent, usedPercent } = percentSeparated;
     const maxPercentCurrentChanceRatioMap = Math.max(
-      ...currentChanceRatioMap.values()
+      ...actualChanceRatioMap.values()
     );
     const redistributionFactor =
-      Math.round((unusedPercent / usedPercent) * 100) / 100;
+      usedPercent === 0 ? 0 : round2(unusedPercent / usedPercent);
 
-    for (const [key, percent] of currentChanceRatioMap.entries()) {
+    for (const [key, percent] of actualChanceRatioMap.entries()) {
       if (percent < maxPercentCurrentChanceRatioMap) {
         const adjusted = percent + percent * redistributionFactor;
-        currentChanceRatioMap.set(key, adjusted);
+        map.set(key, adjusted);
+      } else {
+        map.set(key, percent);
       }
     }
-    return currentChanceRatioMap;
+
+    return map;
+  }
+
+  private getActualChanceRatioMap(
+    charactersInUse: string[],
+    chanceRatioMap: ChanceRatioMapType
+  ): ChanceRatioMapType {
+    const map = new Map<string, number>();
+    for (const [key, percent] of chanceRatioMap.entries()) {
+      if (charactersInUse.includes(key)) {
+        map.set(key, percent);
+      }
+    }
+    return map;
+  }
+
+  private separatePercentByType(actualChanceRatioMap: ChanceRatioMapType): {
+    unusedPercent: number;
+    usedPercent: number;
+  } {
+    const HUNDRED_PERCENTAGE = 100;
+
+    const maxPercentOfChanceRatioMap = Math.max(
+      ...actualChanceRatioMap.values()
+    );
+    const usedPercent =
+      Array.from(actualChanceRatioMap.values()).reduce(
+        (acc, cur) => acc + cur,
+        0
+      ) - maxPercentOfChanceRatioMap;
+
+    const unusedPercent =
+      HUNDRED_PERCENTAGE - usedPercent - maxPercentOfChanceRatioMap;
+    return { unusedPercent, usedPercent };
   }
 
   private calcWeight(
     groupMovementCounted: Map<string, number>,
-    recalculatedChanceRatio: Map<string, number>
-  ): Map<string, number> {
+    recalculatedChanceRatio: ChanceRatioMapType
+  ): WeightMapType {
     const totalItems = Array.from(groupMovementCounted.values()).reduce(
       (acc, cur) => acc + cur,
       0
     );
-    const weightMap = new Map<string, number>();
+    const weightMap: WeightMapType = new Map<string, number>();
     for (let [key, currentItemAmount] of groupMovementCounted.entries()) {
       const desirePercent = recalculatedChanceRatio.get(key) ?? 0;
-      const desireItemAmount =
-        Math.round((totalItems / 100) * desirePercent * 100) / 100;
-      const weight =
-        Math.round((desireItemAmount / currentItemAmount) * 100) / 100;
+      const desireItemAmount = round2((totalItems / 100) * desirePercent);
+      const weight = round2(desireItemAmount / currentItemAmount);
+
       weightMap.set(key, weight);
     }
     return weightMap;

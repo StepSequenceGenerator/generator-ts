@@ -6,8 +6,9 @@ import { Edge, Leg, TransitionDirection } from '../enums/movement-enums.js';
 import { StepCounter } from './StepCounter.js';
 import { DifficultLevelAmountStep } from '../enums/difficult-level-amount-step-enum.js';
 import { RouletteGenerator } from './RouletteGenerator.js';
+import { ChanceRatioMapType } from '../shared/types/chance-ratio-map-type.js';
 
-const chanceRatioMap = new Map<string, number>([
+const chanceRatioMap: ChanceRatioMapType = new Map<string, number>([
   ['step', 8],
   ['turn', 9],
   ['sequence', 9],
