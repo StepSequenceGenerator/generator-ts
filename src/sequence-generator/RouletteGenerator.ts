@@ -1,6 +1,10 @@
 import { Movement } from '../movement/Movement.js';
 import { randomInt } from 'node:crypto';
 import { WeightCalculatorBase } from './WeightCalculatorBase.js';
+import {
+  ChanceRatioMapType,
+  WeightMapType,
+} from '../shared/types/chance-ratio-map-type.js';
 
 export class RouletteGenerator {
   private weightCalc: WeightCalculatorBase;
@@ -12,9 +16,12 @@ export class RouletteGenerator {
 
   public generateNumber(
     selection: Movement[],
-    chanceRatio: Map<string, number>
+    chanceRatio: ChanceRatioMapType
   ): number {
-    const weightMap = this.weightCalc.count(selection, chanceRatio);
+    const weightMap: WeightMapType = this.weightCalc.count(
+      selection,
+      chanceRatio
+    );
 
     // todo createWeightList отдает числа с большим количеством цифр после запятой. Найти и округлить
     const weightList = this.createWeightList(selection, weightMap);
