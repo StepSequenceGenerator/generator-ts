@@ -5,6 +5,8 @@ import {
   ChanceRatioMapType,
   WeightMapType,
 } from '../shared/types/chance-ratio-map-type.js';
+import { ExtendedMovementCharacter } from '../enums/movement-enums.js';
+import { isExtendedMovementCharacter } from '../utils/is-extended-movement-character.js';
 
 export class RouletteGenerator {
   private weightCalc: WeightCalculatorBase;
@@ -32,12 +34,21 @@ export class RouletteGenerator {
 
   private createWeightList(
     selection: Movement[],
-    weights: Map<string, number>
+    weights: WeightMapType
   ): number[] {
     return selection.map((item: Movement) => {
-      const weightKey = item.isDifficult ? 'difficult' : item.type;
+      const weightKey = this.getWeightKey(item);
       return weights.get(weightKey) ?? this.fallbackWeight;
     });
+  }
+
+  // todo написать тест
+  private getWeightKey(movement: Movement): ExtendedMovementCharacter {
+    return movement.isDifficult
+      ? ExtendedMovementCharacter.DIFFICULT
+      : isExtendedMovementCharacter(movement.type)
+        ? (movement.type as unknown as ExtendedMovementCharacter)
+        : ExtendedMovementCharacter.UNKNOWN;
   }
 
   private getVirtualChanceListLength(chanceList: number[]): number {
