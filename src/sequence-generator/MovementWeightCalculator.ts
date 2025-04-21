@@ -31,10 +31,7 @@ export class MovementWeightCalculator extends WeightCalculatorBase {
     const actualChanceRatioMap: ChanceRatioMapType =
       this.getActualChanceRatioMap(movementCharaterInUse, chanceRatioMap);
 
-    const percentSeparated = this.separatePercentByType(
-      movementCharaterInUse,
-      chanceRatioMap
-    );
+    const percentSeparated = this.separatePercentByType(actualChanceRatioMap);
 
     return this.redistributeChanceRatio(percentSeparated, actualChanceRatioMap);
   }
@@ -55,8 +52,11 @@ export class MovementWeightCalculator extends WeightCalculatorBase {
       if (percent < maxPercentCurrentChanceRatioMap) {
         const adjusted = percent + percent * redistributionFactor;
         map.set(key, adjusted);
+      } else {
+        map.set(key, percent);
       }
     }
+
     return map;
   }
 
@@ -73,22 +73,23 @@ export class MovementWeightCalculator extends WeightCalculatorBase {
     return map;
   }
 
-  private separatePercentByType(
-    movementCharaterInUse: string[],
-    chanceRatioMap: ChanceRatioMapType
-  ): { unusedPercent: number; usedPercent: number } {
-    let unusedPercent = 0;
-    let usedPercent = 0;
+  private separatePercentByType(actualChanceRatioMap: ChanceRatioMapType): {
+    unusedPercent: number;
+    usedPercent: number;
+  } {
+    const HUNDRED_PERCENTAGE = 100;
 
-    const maxPercentOfChanceRatioMap = Math.max(...chanceRatioMap.values());
+    const maxPercentOfChanceRatioMap = Math.max(
+      ...actualChanceRatioMap.values()
+    );
+    const usedPercent =
+      Array.from(actualChanceRatioMap.values()).reduce(
+        (acc, cur) => acc + cur,
+        0
+      ) - maxPercentOfChanceRatioMap;
 
-    for (const [key, percent] of chanceRatioMap.entries()) {
-      if (movementCharaterInUse.includes(key)) {
-        if (percent < maxPercentOfChanceRatioMap) usedPercent += percent;
-      } else {
-        unusedPercent += percent;
-      }
-    }
+    const unusedPercent =
+      HUNDRED_PERCENTAGE - usedPercent - maxPercentOfChanceRatioMap;
     return { unusedPercent, usedPercent };
   }
 
