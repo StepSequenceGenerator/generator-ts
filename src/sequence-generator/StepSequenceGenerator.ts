@@ -10,7 +10,7 @@ import {
 } from '../enums/movement-enums.js';
 import { StepCounter } from './StepCounter.js';
 import { DifficultLevelAmountStep } from '../enums/difficult-level-amount-step-enum.js';
-import { RouletteGenerator } from './RouletteGenerator.js';
+import { RouletteGenerator } from '../roulette/RouletteGenerator.js';
 import { ChanceRatioMapType } from '../shared/types/chance-ratio-map-type.js';
 
 const chanceRatioMap: ChanceRatioMapType = new Map<
