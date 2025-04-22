@@ -1,5 +1,5 @@
 import { UploaderAbstract } from './UploaderAbstract.js';
-import { FilePathType } from '../shared/types/file-path-type.js';
+import { FilePathType } from '../../shared/types/file-path-type.js';
 
 export class UploaderMap extends UploaderAbstract {
   upload(data: Map<string, any>[], filePath: FilePathType) {

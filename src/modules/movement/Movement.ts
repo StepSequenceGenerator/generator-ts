@@ -5,8 +5,8 @@ import {
   RotationDegree,
   RotationDirection,
   TransitionDirection,
-} from '../enums/movement-enums.js';
-import { TurnAbsoluteName } from '../enums/turn-absolute-name-enum.js';
+} from '../../enums/movement-enums.js';
+import { TurnAbsoluteName } from '../../enums/turn-absolute-name-enum.js';
 
 export interface IMovement {
   readonly id: string;

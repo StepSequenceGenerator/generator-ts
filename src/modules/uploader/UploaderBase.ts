@@ -1,5 +1,5 @@
 import { UploaderAbstract } from './UploaderAbstract.js';
-import { FilePathType } from '../shared/types/file-path-type.js';
+import { FilePathType } from '../../shared/types/file-path-type.js';
 
 export class UploaderBase extends UploaderAbstract {
   upload(data: any, filePath: FilePathType) {

@@ -1,5 +1,5 @@
 import { WorkBook, WorkSheet } from 'xlsx';
-import { MapValueTypeBase } from '../shared/types/map-value-type-base.js';
+import { MapValueTypeBase } from '../../shared/types/map-value-type-base.js';
 
 type SheetKeysType = string[];
 

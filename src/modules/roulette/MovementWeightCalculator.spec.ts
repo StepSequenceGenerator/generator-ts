@@ -1,12 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { MovementWeightCalculator } from './MovementWeightCalculator.js';
 import { WeightCalculatorBase } from '../sequence-generator/WeightCalculatorBase.js';
-import { ChanceRatioMapType } from '../shared/types/chance-ratio-map-type.js';
+import { ChanceRatioMapType } from '../../shared/types/chance-ratio-map-type.js';
 import type { Movement } from '../movement/Movement.js';
 import {
   ExtendedMovementCharacter,
   MovementCharacter,
-} from '../enums/movement-enums.js';
+} from '../../enums/movement-enums.js';
 
 const mockMovements: Movement[] = [
   { type: MovementCharacter.UNKNOWN, isDifficult: false } as Movement,

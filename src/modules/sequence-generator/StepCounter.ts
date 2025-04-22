@@ -1,10 +1,10 @@
 import { Movement } from '../movement/Movement.js';
-import { TurnAbsoluteName } from '../enums/turn-absolute-name-enum.js';
+import { TurnAbsoluteName } from '../../enums/turn-absolute-name-enum.js';
 import {
   RotationDegree,
   RotationDirection,
   RotationDirectionString,
-} from '../enums/movement-enums.js';
+} from '../../enums/movement-enums.js';
 
 type TurnsType = {
   difficultAll: number;

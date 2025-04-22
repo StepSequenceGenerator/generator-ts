@@ -5,7 +5,7 @@ import {
   RotationDegree,
   RotationDirection,
   TransitionDirection,
-} from '../enums/movement-enums.js';
+} from '../../enums/movement-enums.js';
 
 class StepContext {
   private _currentStep: Movement | null = null;
