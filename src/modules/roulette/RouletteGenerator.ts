@@ -1,6 +1,6 @@
 import { Movement } from '../movement/Movement.js';
 import { randomInt } from 'node:crypto';
-import { WeightCalculatorBase } from '../sequence-generator/WeightCalculatorBase.js';
+import { WeightCalculatorBase } from './WeightCalculatorBase.js';
 import {
   ChanceRatioMapType,
   WeightMapType,

@@ -1,5 +1,5 @@
 import type { Movement } from '../movement/Movement.js';
-import { WeightCalculatorBase } from '../sequence-generator/WeightCalculatorBase.js';
+import { WeightCalculatorBase } from './WeightCalculatorBase.js';
 import { WeightMapType } from '../../shared/types/chance-ratio-map-type.js';
 import { ExtendedMovementCharacter } from '../../enums/movement-enums.js';
 
