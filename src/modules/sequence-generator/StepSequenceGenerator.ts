@@ -7,11 +7,11 @@ import {
   ExtendedMovementCharacter,
   Leg,
   TransitionDirection,
-} from '../enums/movement-enums.js';
+} from '../../enums/movement-enums.js';
 import { StepCounter } from './StepCounter.js';
-import { DifficultLevelAmountStep } from '../enums/difficult-level-amount-step-enum.js';
+import { DifficultLevelAmountStep } from '../../enums/difficult-level-amount-step-enum.js';
 import { RouletteGenerator } from '../roulette/RouletteGenerator.js';
-import { ChanceRatioMapType } from '../shared/types/chance-ratio-map-type.js';
+import { ChanceRatioMapType } from '../../shared/types/chance-ratio-map-type.js';
 
 const chanceRatioMap: ChanceRatioMapType = new Map<
   ExtendedMovementCharacter,

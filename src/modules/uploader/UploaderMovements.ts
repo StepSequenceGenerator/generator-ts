@@ -7,8 +7,8 @@ import {
   RotationDegree,
   RotationDirection,
   TransitionDirection,
-} from '../enums/movement-enums.js';
-import { TurnAbsoluteName } from '../enums/turn-absolute-name-enum.js';
+} from '../../enums/movement-enums.js';
+import { TurnAbsoluteName } from '../../enums/turn-absolute-name-enum.js';
 
 const enumMap: Record<string, any> = {
   transitionDirection: {

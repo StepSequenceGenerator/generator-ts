@@ -7,7 +7,7 @@ import {
   RotationDegree,
   RotationDirection,
   TransitionDirection,
-} from '../enums/movement-enums.js';
+} from '../../enums/movement-enums.js';
 
 describe('Uploader Movements', () => {
   let uploader: UploaderMovements;

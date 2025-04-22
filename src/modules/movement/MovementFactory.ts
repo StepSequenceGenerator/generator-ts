@@ -1,5 +1,5 @@
 import lodash from 'lodash';
-import { MovementParserError } from '../errors/custom-errors.js';
+import { MovementParserError } from '../../errors/custom-errors.js';
 import { IMovement, Movement } from './Movement.js';
 import {
   Edge,
@@ -8,9 +8,9 @@ import {
   RotationDegree,
   RotationDirection,
   TransitionDirection,
-} from '../enums/movement-enums.js';
-import { MapValueTypeBase } from '../shared/types/map-value-type-base.js';
-import { TurnAbsoluteName } from '../enums/turn-absolute-name-enum.js';
+} from '../../enums/movement-enums.js';
+import { MapValueTypeBase } from '../../shared/types/map-value-type-base.js';
+import { TurnAbsoluteName } from '../../enums/turn-absolute-name-enum.js';
 
 const { isEqual } = lodash;
 

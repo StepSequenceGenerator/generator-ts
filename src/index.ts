@@ -1,19 +1,19 @@
 import dotenv from 'dotenv';
 
-import { ExcelParser } from './file-parser/excel-parser.js';
+import { ExcelParser } from './modules/file-parser/excel-parser.js';
 import { ColumnName } from './enums/column-name-enum.js';
-import { Movement } from './movement/Movement.js';
-import { MovementFactory } from './movement/MovementFactory.js';
-import { MovementLibrary } from './movement/MovementLibrary.js';
-import { StepSequenceGenerator } from './sequence-generator/StepSequenceGenerator.js';
-import { StepContext } from './sequence-generator/StepContext.js';
+import { Movement } from './modules/movement/Movement.js';
+import { MovementFactory } from './modules/movement/MovementFactory.js';
+import { MovementLibrary } from './modules/movement/MovementLibrary.js';
+import { StepSequenceGenerator } from './modules/sequence-generator/StepSequenceGenerator.js';
+import { StepContext } from './modules/sequence-generator/StepContext.js';
 
 import { MapValueTypeBase } from './shared/types/map-value-type-base.js';
-import { StepCounter } from './sequence-generator/StepCounter.js';
+import { StepCounter } from './modules/sequence-generator/StepCounter.js';
 import { DifficultLevelAmountStep } from './enums/difficult-level-amount-step-enum.js';
-import { RouletteGenerator } from './roulette/RouletteGenerator.js';
-import { ExcelWorkbookLoader } from './file-parser/excel-workbook-loader.js';
-import { MovementWeightCalculator } from './roulette/MovementWeightCalculator.js';
+import { RouletteGenerator } from './modules/roulette/RouletteGenerator.js';
+import { ExcelWorkbookLoader } from './modules/file-parser/excel-workbook-loader.js';
+import { MovementWeightCalculator } from './modules/roulette/MovementWeightCalculator.js';
 
 dotenv.config();
 

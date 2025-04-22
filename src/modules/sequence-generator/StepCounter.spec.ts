@@ -1,13 +1,13 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { StepCounter } from './StepCounter.js';
-import { TurnAbsoluteName } from '../enums/turn-absolute-name-enum.js';
+import { TurnAbsoluteName } from '../../enums/turn-absolute-name-enum.js';
 import { Movement } from '../movement/Movement.js';
 import {
   MovementCharacter,
   RotationDegree,
   RotationDirection,
   RotationDirectionString,
-} from '../enums/movement-enums.js';
+} from '../../enums/movement-enums.js';
 
 describe('StepCounter', () => {
   let counter: StepCounter;

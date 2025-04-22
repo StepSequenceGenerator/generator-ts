@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { StepSequenceGenerator } from './StepSequenceGenerator.js';
 import { Movement } from '../movement/Movement.js';
-import { movements as mockMovements } from '../utils/test-utils/movements.js';
+import { movements as mockMovements } from '../../utils/test-utils/movements.js';
 import { MovementLibrary } from '../movement/MovementLibrary.js';
 import { StepContext } from './StepContext.js';
 import {
@@ -10,7 +10,7 @@ import {
   RotationDegree,
   RotationDirection,
   TransitionDirection,
-} from '../enums/movement-enums.js';
+} from '../../enums/movement-enums.js';
 import { StepCounter } from './StepCounter.js';
 import { RouletteGenerator } from '../roulette/RouletteGenerator.js';
 import { MovementEqualizingWeightCalculator } from '../roulette/MovementEqualizingWeightCalculator.js';

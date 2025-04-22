@@ -4,9 +4,9 @@ import { WeightCalculatorBase } from '../sequence-generator/WeightCalculatorBase
 import {
   ChanceRatioMapType,
   WeightMapType,
-} from '../shared/types/chance-ratio-map-type.js';
-import { ExtendedMovementCharacter } from '../enums/movement-enums.js';
-import { isExtendedMovementCharacter } from '../utils/is-extended-movement-character.js';
+} from '../../shared/types/chance-ratio-map-type.js';
+import { ExtendedMovementCharacter } from '../../enums/movement-enums.js';
+import { isExtendedMovementCharacter } from '../../utils/is-extended-movement-character.js';
 
 export class RouletteGenerator {
   private weightCalc: WeightCalculatorBase;

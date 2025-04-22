@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { getFuncResult } from '../utils/test-utils/get-func-result.js';
+import { getFuncResult } from '../../utils/test-utils/get-func-result.js';
 import { Movement } from './Movement.js';
 import { MovementLibrary } from './MovementLibrary.js';
 import {
@@ -7,7 +7,7 @@ import {
   Leg,
   RotationDirection,
   TransitionDirection,
-} from '../enums/movement-enums.js';
+} from '../../enums/movement-enums.js';
 
 describe('MovementLibrary', () => {
   let movementLibrary: MovementLibrary;

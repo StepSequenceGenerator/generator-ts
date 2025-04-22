@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { FilePathType } from '../shared/types/file-path-type.js';
+import { FilePathType } from '../../shared/types/file-path-type.js';
 
 export abstract class UploaderAbstract {
   protected uploadToFile(filePath: FilePathType, content: string) {
