@@ -11,21 +11,27 @@ type TurnsType = {
   difficultOrigin: Map<TurnAbsoluteName, number>;
 };
 
+type ThreeTurnsBlockType = {
+  blockAmount: number;
+  turns: Map<TurnAbsoluteName, number>;
+};
+
 type RotationsType = Map<RotationDirectionString, number>;
 
 export class StepCounter {
   private lastStep: Movement | null;
   private turns: TurnsType;
   private rotations: RotationsType;
-  private threeTurnsBlockAmount: number = 0;
+  private threeTurnsBlock: ThreeTurnsBlockType;
+
   private distance: number;
 
-  // todo если можно убрать конструктор
   constructor() {
     this.lastStep = null;
     this.turns = this.initTurns();
     this.rotations = this.initRotations();
     this.distance = 0;
+    this.threeTurnsBlock = this.initThreeTurnsBlock();
   }
 
   public update(currentMovement: Movement): void {
@@ -48,12 +54,25 @@ export class StepCounter {
     this.updateLastStep(currentMovement);
   }
 
-  public increaseThreeTurnsBlock() {
-    this.threeTurnsBlockAmount++;
+  private increaseThreeTurnsBlockAmount() {
+    this.threeTurnsBlock.blockAmount++;
   }
 
-  public get difficultTurnsBlockAmount() {
-    return this.threeTurnsBlockAmount;
+  private updateThreeTurnsBlockOrigin(turnName: TurnAbsoluteName) {
+    const { turns } = this.threeTurnsBlock;
+    const values = Array.from(turns.values());
+    if (!values.includes(2) && turns.has(turnName)) {
+      turns.set(turnName, turns.get(turnName) ?? 0 + 1);
+    }
+  }
+
+  public updateThreeTurnsBlock(turnName: TurnAbsoluteName) {
+    this.increaseThreeTurnsBlockAmount();
+    this.updateThreeTurnsBlockOrigin(turnName);
+  }
+
+  public get threeTurnsBlockAmount() {
+    return this.threeTurnsBlock.blockAmount;
   }
 
   public get difficultTurnsAllAmount() {
@@ -153,6 +172,17 @@ export class StepCounter {
       difficultOrigin: new Map<TurnAbsoluteName, number>(
         Object.values(TurnAbsoluteName).map((key) => [key, 0])
       ),
+    };
+  }
+
+  private initThreeTurnsBlock(): ThreeTurnsBlockType {
+    const keys = Object.values(TurnAbsoluteName).filter(
+      (name) =>
+        ![TurnAbsoluteName.CHOCTAW, TurnAbsoluteName.UNKNOWN].includes(name)
+    );
+    return {
+      blockAmount: 0,
+      turns: new Map(keys.map((key) => [key, 0])),
     };
   }
 

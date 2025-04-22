@@ -12,6 +12,7 @@ import { StepCounter } from './StepCounter.js';
 import { DifficultLevelAmountStep } from '../../enums/difficult-level-amount-step-enum.js';
 import { RouletteGenerator } from '../roulette/RouletteGenerator.js';
 import { ChanceRatioMapType } from '../../shared/types/chance-ratio-map-type.js';
+import { TurnAbsoluteName } from '../../enums/turn-absolute-name-enum.js';
 
 const chanceRatioMap: ChanceRatioMapType = new Map<
   ExtendedMovementCharacter,
@@ -64,7 +65,7 @@ class StepSequenceGenerator {
   }
 
   private isTimeToInsertThreeTurnsBlock() {
-    return this.counter.difficultTurnsBlockAmount < 2
+    return this.counter.threeTurnsBlockAmount < 2
       ? this.getRandomIndex(2) === 1
       : false;
   }
@@ -76,7 +77,9 @@ class StepSequenceGenerator {
       );
       this.generateStep(currentLibrary.movements);
     }
-    this.counter.increaseThreeTurnsBlock();
+    this.counter.updateThreeTurnsBlock(
+      this.context.currentStep?.absoluteName || TurnAbsoluteName.UNKNOWN
+    );
   }
 
   private generateStep(movements: Movement[]) {
