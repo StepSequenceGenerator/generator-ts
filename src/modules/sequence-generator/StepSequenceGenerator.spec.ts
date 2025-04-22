@@ -83,7 +83,7 @@ describe('StepSequenceGenerator', () => {
         'должен вернуть массив с Edge.%s и Edge.TWO_EDGES',
         (current) => {
           generator['context'].currentStep = { endEdge: current } as Movement;
-          const result = generator['filterLibraryForNextStep']();
+          const result = generator['filterLibraryForNextStep']().movements;
           result.forEach((item) => {
             expect(
               item.startEdge === current || item.startEdge === Edge.TWO_EDGES
@@ -99,7 +99,7 @@ describe('StepSequenceGenerator', () => {
         'должен вернуть массив с Leg.%s и Leg.BOTH',
         (current) => {
           generator['context'].currentStep = { endLeg: current } as Movement;
-          const result = generator['filterLibraryForNextStep']();
+          const result = generator['filterLibraryForNextStep']().movements;
           result.forEach((item) => {
             expect(
               item.startLeg === current || item.startLeg === Leg.BOTH
@@ -122,7 +122,7 @@ describe('StepSequenceGenerator', () => {
             rotationDirection: RotationDirection.NONE,
             rotationDegree: RotationDegree.DEGREES_0,
           } as Movement;
-          const result = generator['filterLibraryForNextStep']();
+          const result = generator['filterLibraryForNextStep']().movements;
           result.forEach((item) => {
             expect(
               item.transitionDirection === current ||

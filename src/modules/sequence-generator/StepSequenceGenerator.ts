@@ -54,27 +54,39 @@ class StepSequenceGenerator {
     ) {
       let currentLibrary: MovementLibrary;
       if (this.isTimeToInsertThreeTurnsBlock()) {
-        currentLibrary = this.filterForThreeTurnsBlock(
-          this.filterLibraryForNextStep()
-        );
+        this.generateThreeTurnsBlock();
       } else {
         currentLibrary = this.filterLibraryForNextStep();
+        this.generateStep(currentLibrary.movements);
       }
-      const currentMovementsForChoice = currentLibrary.movements;
-      const movementIndex = this.randomGenerator.generateNumber(
-        currentMovementsForChoice,
-        chanceRatioMap
-      );
-
-      this.context.currentStep = currentMovementsForChoice[movementIndex];
-      this.addStepToSequence(this.context.currentStep);
-      this.counter.update(this.context.currentStep);
     }
     return this.stepSequence;
   }
 
   private isTimeToInsertThreeTurnsBlock() {
-    return this.getRandomIndex(2) === 1;
+    return this.counter.difficultTurnsBlockAmount < 2
+      ? this.getRandomIndex(2) === 1
+      : false;
+  }
+
+  private generateThreeTurnsBlock() {
+    for (let i = 0; i < 3; i++) {
+      const currentLibrary = this.filterForThreeTurnsBlock(
+        this.filterLibraryForNextStep()
+      );
+      this.generateStep(currentLibrary.movements);
+    }
+    this.counter.increaseThreeTurnsBlock();
+  }
+
+  private generateStep(movements: Movement[]) {
+    const movementIndex = this.randomGenerator.generateNumber(
+      movements,
+      chanceRatioMap
+    );
+    this.context.currentStep = movements[movementIndex];
+    this.addStepToSequence(this.context.currentStep);
+    this.counter.update(this.context.currentStep);
   }
 
   private filterForThreeTurnsBlock(movementLibrary: MovementLibrary) {
@@ -92,6 +104,7 @@ class StepSequenceGenerator {
         )
       );
   }
+
   private withDefault<T>(value: T | null | undefined, defaultValue: T): T {
     return value !== null && value !== undefined ? value : defaultValue;
   }

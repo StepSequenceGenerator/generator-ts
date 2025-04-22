@@ -29,7 +29,7 @@ export default [
     rules: {
       ...typescriptEslintPlugin.configs.recommended.rules,
       ...prettierConfig.rules,
-      'no-explicit-any': 'error',
+      '@typescript-eslint/no-explicit-any': 'error',
       'prettier/prettier': 'error',
     },
   },

@@ -17,8 +17,10 @@ export class StepCounter {
   private lastStep: Movement | null;
   private turns: TurnsType;
   private rotations: RotationsType;
+  private threeTurnsBlockAmount: number = 0;
   private distance: number;
 
+  // todo если можно убрать конструктор
   constructor() {
     this.lastStep = null;
     this.turns = this.initTurns();
@@ -44,6 +46,14 @@ export class StepCounter {
     }
 
     this.updateLastStep(currentMovement);
+  }
+
+  public increaseThreeTurnsBlock() {
+    this.threeTurnsBlockAmount++;
+  }
+
+  public get difficultTurnsBlockAmount() {
+    return this.threeTurnsBlockAmount;
   }
 
   public get difficultTurnsAllAmount() {
