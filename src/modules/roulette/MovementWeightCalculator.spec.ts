@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { MovementWeightCalculator } from './MovementWeightCalculator.js';
-import { WeightCalculatorBase } from '../sequence-generator/WeightCalculatorBase.js';
+import { WeightCalculatorBase } from './WeightCalculatorBase.js';
 import { ChanceRatioMapType } from '../../shared/types/chance-ratio-map-type.js';
 import type { Movement } from '../movement/Movement.js';
 import {

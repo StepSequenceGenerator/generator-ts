@@ -2,6 +2,7 @@ import { Movement } from './Movement.js';
 import {
   Edge,
   Leg,
+  MovementCharacter,
   RotationDirection,
   TransitionDirection,
 } from '../../enums/movement-enums.js';
@@ -47,6 +48,13 @@ class MovementLibrary {
         direction === RotationDirection.NONE ||
         movement.rotationDirection === direction ||
         movement.rotationDirection === RotationDirection.NONE
+    );
+  }
+
+  filterDifficultTurns() {
+    return this.filterBy(
+      (movement) =>
+        movement.isDifficult && movement.type === MovementCharacter.TURN
     );
   }
 
