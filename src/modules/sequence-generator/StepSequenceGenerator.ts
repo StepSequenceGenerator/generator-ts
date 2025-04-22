@@ -52,16 +52,33 @@ class StepSequenceGenerator {
     while (
       this.counter.difficultTurnsOriginAmount < stepAmountBySequenceLevel
     ) {
-      const currentMovementsForChoice = this.filterLibraryForNextStep();
+      let currentLibrary: MovementLibrary;
+      if (this.isTimeToInsertThreeTurnsBlock()) {
+        currentLibrary = this.filterForThreeTurnsBlock(
+          this.filterLibraryForNextStep()
+        );
+      } else {
+        currentLibrary = this.filterLibraryForNextStep();
+      }
+      const currentMovementsForChoice = currentLibrary.movements;
       const movementIndex = this.randomGenerator.generateNumber(
         currentMovementsForChoice,
         chanceRatioMap
       );
+
       this.context.currentStep = currentMovementsForChoice[movementIndex];
       this.addStepToSequence(this.context.currentStep);
       this.counter.update(this.context.currentStep);
     }
     return this.stepSequence;
+  }
+
+  private isTimeToInsertThreeTurnsBlock() {
+    return this.getRandomIndex(2) === 1;
+  }
+
+  private filterForThreeTurnsBlock(movementLibrary: MovementLibrary) {
+    return movementLibrary.filterDifficultTurns();
   }
 
   private filterLibraryForNextStep() {
@@ -73,9 +90,8 @@ class StepSequenceGenerator {
           this.context.currentDirection,
           TransitionDirection.NONE
         )
-      ).movements;
+      );
   }
-
   private withDefault<T>(value: T | null | undefined, defaultValue: T): T {
     return value !== null && value !== undefined ? value : defaultValue;
   }
