@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 
-import { ExcelParser } from './modules/file-parser/excel-parser.js';
+import { defaultExcelParser } from './modules/file-parser/excel-parsers.js';
 import { ColumnName } from './enums/column-name-enum.js';
 import { Movement } from './modules/movement/Movement.js';
 import { MovementFactory } from './modules/movement/MovementFactory.js';
@@ -23,8 +23,8 @@ function run() {
 
   const xlsxBookLoader = new ExcelWorkbookLoader();
   const workBook = xlsxBookLoader.getWorkBook(PUBLIC_DIR, fileName);
-  const parser = new ExcelParser<typeof ColumnName>(workBook, ColumnName);
-  const parsedData = parser.parse();
+
+  const parsedData = defaultExcelParser.parse(workBook);
 
   const preparedDataForLibrary = prepareDataForMovementLibrary<
     typeof ColumnName
