@@ -12,8 +12,8 @@ import { MapValueTypeBase } from './shared/types/map-value-type-base.js';
 import { StepCounter } from './modules/sequence-generator/StepCounter.js';
 import { DifficultLevelAmountStep } from './enums/difficult-level-amount-step-enum.js';
 import { RouletteGenerator } from './modules/roulette/RouletteGenerator.js';
-import { ExcelWorkbookLoader } from './modules/file-parser/excel-book/ExcelWorkbookLoader.js';
 import { MovementWeightCalculator } from './modules/roulette/MovementWeightCalculator.js';
+import { excelWorkbookLoader } from './modules/file-parser/excel-book/excel-book-loader.js';
 
 dotenv.config();
 
@@ -21,8 +21,7 @@ function run() {
   const PUBLIC_DIR: string = process.env.PUBLIC_DIR || '';
   const fileName = 'steps.xlsx';
 
-  const xlsxBookLoader = new ExcelWorkbookLoader();
-  const workBook = xlsxBookLoader.getWorkBook(PUBLIC_DIR, fileName);
+  const workBook = excelWorkbookLoader.getWorkBook(PUBLIC_DIR, fileName);
 
   const parsedData = defaultExcelParser.parse(workBook);
 
