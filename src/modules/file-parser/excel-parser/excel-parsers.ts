@@ -1,5 +1,5 @@
 import { BaseExcelParser } from './BaseExcelParser.js';
-import { ColumnName } from '../../enums/column-name-enum.js';
+import { ColumnName } from '../../../enums/column-name-enum.js';
 
 export class DefaultExcelParser extends BaseExcelParser<typeof ColumnName> {}
 

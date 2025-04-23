@@ -1,6 +1,6 @@
 import { IExcelParser } from './IExcelParser.js';
 import { WorkBook, WorkSheet } from 'xlsx';
-import { MapValueTypeBase } from '../../shared/types/map-value-type-base.js';
+import { MapValueTypeBase } from '../../../shared/types/map-value-type-base.js';
 
 type SheetKeysType = string[];
 
@@ -8,6 +8,7 @@ export class BaseExcelParser<T extends Record<string, string>>
   implements IExcelParser<T>
 {
   readonly columnNames: T;
+
   constructor(columnNames: T) {
     this.columnNames = columnNames;
   }

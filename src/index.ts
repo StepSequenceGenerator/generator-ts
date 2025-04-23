@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 
-import { defaultExcelParser } from './modules/file-parser/excel-parsers.js';
+import { defaultExcelParser } from './modules/file-parser/excel-parser/excel-parsers.js';
 import { ColumnName } from './enums/column-name-enum.js';
 import { Movement } from './modules/movement/Movement.js';
 import { MovementFactory } from './modules/movement/MovementFactory.js';
@@ -12,7 +12,7 @@ import { MapValueTypeBase } from './shared/types/map-value-type-base.js';
 import { StepCounter } from './modules/sequence-generator/StepCounter.js';
 import { DifficultLevelAmountStep } from './enums/difficult-level-amount-step-enum.js';
 import { RouletteGenerator } from './modules/roulette/RouletteGenerator.js';
-import { ExcelWorkbookLoader } from './modules/file-parser/ExcelWorkbookLoader.js';
+import { ExcelWorkbookLoader } from './modules/file-parser/excel-book/ExcelWorkbookLoader.js';
 import { MovementWeightCalculator } from './modules/roulette/MovementWeightCalculator.js';
 
 dotenv.config();
