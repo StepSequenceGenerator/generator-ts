@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { ExcelParser } from './excel-parser.js';
+import { BaseExcelParser } from './BaseExcelParser.js';
 
 const mockWorkBook = {
   SheetNames: ['Sheet1', 'Sheet2'],
@@ -12,25 +12,23 @@ enum mockColumnName {
   FAKE_NAME_3 = 'Z',
 }
 
-describe('ExcelParser', () => {
-  let parser: ExcelParser<typeof mockColumnName>;
+describe('BaseExcelParser', () => {
+  let parser: BaseExcelParser<typeof mockColumnName>;
   beforeEach(() => {
-    parser = new ExcelParser<typeof mockColumnName>(
-      mockWorkBook,
-      mockColumnName
-    );
+    parser = new BaseExcelParser<typeof mockColumnName>(mockColumnName);
+    // parser.parse(mockWorkBook);
   });
 
   describe('implementation', () => {
     it('должен корректно создаваться', () => {
       expect(parser).toBeDefined();
-      expect(parser).toBeInstanceOf(ExcelParser);
+      expect(parser).toBeInstanceOf(BaseExcelParser);
     });
   });
 
   describe('getFirstSheetsName', () => {
     it('Должен отдавать имя первого листа книги', () => {
-      const receivedName = parser['getFirstSheetsName']();
+      const receivedName = parser['getFirstSheetsName'](mockWorkBook);
       const expectedName = mockWorkBook.SheetNames[0];
       expect(receivedName).toBe(expectedName);
     });
