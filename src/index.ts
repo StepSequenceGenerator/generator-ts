@@ -12,7 +12,7 @@ import { MapValueTypeBase } from './shared/types/map-value-type-base.js';
 import { StepCounter } from './modules/sequence-generator/StepCounter.js';
 import { DifficultLevelAmountStep } from './enums/difficult-level-amount-step-enum.js';
 import { RouletteGenerator } from './modules/roulette/RouletteGenerator.js';
-import { ExcelWorkbookLoader } from './modules/file-parser/excel-workbook-loader.js';
+import { ExcelWorkbookLoader } from './modules/file-parser/ExcelWorkbookLoader.js';
 import { MovementWeightCalculator } from './modules/roulette/MovementWeightCalculator.js';
 
 dotenv.config();

@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import { XlsxBook } from './xlsx-book.js';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import * as XLSX from 'xlsx';
+import { ExcelWorkbookLoader } from './ExcelWorkbookLoader.js';
 
 const fakeWorkbook = { Sheets: {}, SheetNames: ['Sheet1'] };
 
@@ -10,19 +11,30 @@ vi.mock('xlsx', () => ({
   read: vi.fn(() => fakeWorkbook),
 }));
 
-describe('xlsxBook', () => {
+describe('ExcelWorkbookLoader', () => {
+  let bookLoader: ExcelWorkbookLoader;
   const mockPublicDir = '/mock/public';
   const mockFileName = 'test.xlsx';
   const mockFilePath = `${mockPublicDir}/${mockFileName}`;
 
   beforeEach(() => {
+    bookLoader = new ExcelWorkbookLoader();
     vi.resetAllMocks();
+  });
+
+  describe('implementation', () => {
+    it('должен корректно создаваться', () => {
+      expect(bookLoader).toBeDefined();
+      expect(bookLoader).toBeInstanceOf(ExcelWorkbookLoader);
+    });
   });
 
   describe('createPath', () => {
     it('должен возвращать корректный путь', () => {
-      const xlsxBook = new XlsxBook(mockPublicDir, mockFileName);
-      const receivedFilePath = xlsxBook['createPath']();
+      const receivedFilePath = bookLoader['getAbsolutePath'](
+        mockPublicDir,
+        mockFileName
+      );
       expect(receivedFilePath).toBe(mockFilePath);
     });
   });
