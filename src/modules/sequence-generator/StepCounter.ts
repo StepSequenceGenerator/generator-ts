@@ -11,12 +11,19 @@ type TurnsType = {
   difficultOrigin: Map<TurnAbsoluteName, number>;
 };
 
+type ThreeTurnsBlockType = {
+  blockAmount: number;
+  turns: Map<TurnAbsoluteName, number>;
+};
+
 type RotationsType = Map<RotationDirectionString, number>;
 
 export class StepCounter {
   private lastStep: Movement | null;
   private turns: TurnsType;
   private rotations: RotationsType;
+  private threeTurnsBlock: ThreeTurnsBlockType;
+
   private distance: number;
 
   constructor() {
@@ -24,6 +31,7 @@ export class StepCounter {
     this.turns = this.initTurns();
     this.rotations = this.initRotations();
     this.distance = 0;
+    this.threeTurnsBlock = this.initThreeTurnsBlock();
   }
 
   public update(currentMovement: Movement): void {
@@ -44,6 +52,37 @@ export class StepCounter {
     }
 
     this.updateLastStep(currentMovement);
+  }
+
+  public increaseThreeTurnsBlockAmount() {
+    this.threeTurnsBlock.blockAmount++;
+  }
+
+  public updateThreeTurnsBlockOrigin(turnName: TurnAbsoluteName) {
+    const { turns } = this.threeTurnsBlock;
+    const currentCount = turns.get(turnName);
+    const oneTypeTurnMaxAmount = this.getOneTypeTurnMaxAmount();
+    if (currentCount !== undefined && currentCount < oneTypeTurnMaxAmount) {
+      turns.set(turnName, currentCount + 1);
+    }
+  }
+
+  public get unusedDifficultTurns(): TurnAbsoluteName[] {
+    const { turns } = this.threeTurnsBlock;
+
+    const oneTypeTurnMaxAmount = this.getOneTypeTurnMaxAmount();
+    return Array.from(turns.entries())
+      .filter(([, amount]) => amount < oneTypeTurnMaxAmount)
+      .map(([name]) => name);
+  }
+
+  private getOneTypeTurnMaxAmount() {
+    const values = Array.from(this.threeTurnsBlock.turns.values());
+    return values.includes(2) ? 1 : 2;
+  }
+
+  public get threeTurnsBlockAmount() {
+    return this.threeTurnsBlock.blockAmount;
   }
 
   public get difficultTurnsAllAmount() {
@@ -143,6 +182,17 @@ export class StepCounter {
       difficultOrigin: new Map<TurnAbsoluteName, number>(
         Object.values(TurnAbsoluteName).map((key) => [key, 0])
       ),
+    };
+  }
+
+  private initThreeTurnsBlock(): ThreeTurnsBlockType {
+    const keys = Object.values(TurnAbsoluteName).filter(
+      (name) =>
+        ![TurnAbsoluteName.CHOCTAW, TurnAbsoluteName.UNKNOWN].includes(name)
+    );
+    return {
+      blockAmount: 0,
+      turns: new Map(keys.map((key) => [key, 0])),
     };
   }
 

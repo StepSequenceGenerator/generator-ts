@@ -43,20 +43,19 @@ export class MovementWeightCalculator extends WeightCalculatorBase {
       number
     >();
     const { unusedPercent, usedPercent } = percentSeparated;
-    const maxPercentCurrentChanceRatioMap = Math.max(
-      ...actualChanceRatioMap.values()
-    );
+    const maxPercent = Math.max(...actualChanceRatioMap.values());
+    // todo усовершенствовать для случаев, когда несколько элементов равны max
     const redistributionFactor =
       usedPercent === 0 ? 0 : round2(unusedPercent / usedPercent);
 
     for (const [key, percent] of actualChanceRatioMap.entries()) {
       const typedKey = transformToExtendedMovementCharacterType(key);
-      if (percent < maxPercentCurrentChanceRatioMap) {
-        const adjusted = percent + percent * redistributionFactor;
-        map.set(typedKey, adjusted);
-      } else {
-        map.set(typedKey, percent);
-      }
+      const shouldAdjust = usedPercent === maxPercent || percent < maxPercent;
+
+      const adjusted = shouldAdjust
+        ? percent + percent * redistributionFactor
+        : percent;
+      map.set(typedKey, adjusted);
     }
 
     return map;
@@ -80,19 +79,14 @@ export class MovementWeightCalculator extends WeightCalculatorBase {
     usedPercent: number;
   } {
     const HUNDRED_PERCENTAGE = 100;
+    // todo усовершенствовать для случаев, когда несколько элементов равны max
+    const values = Array.from(actualChanceRatioMap.values());
+    const max = Math.max(...values);
+    const total = values.reduce((sum, value) => sum + value, 0);
+    const used = max === total ? total : total - max;
+    const unused = HUNDRED_PERCENTAGE - total;
 
-    const maxPercentOfChanceRatioMap = Math.max(
-      ...actualChanceRatioMap.values()
-    );
-    const usedPercent =
-      Array.from(actualChanceRatioMap.values()).reduce(
-        (acc, cur) => acc + cur,
-        0
-      ) - maxPercentOfChanceRatioMap;
-
-    const unusedPercent =
-      HUNDRED_PERCENTAGE - usedPercent - maxPercentOfChanceRatioMap;
-    return { unusedPercent, usedPercent };
+    return { unusedPercent: unused, usedPercent: used };
   }
 
   private calcWeight(
@@ -114,6 +108,7 @@ export class MovementWeightCalculator extends WeightCalculatorBase {
 
       weightMap.set(key, weight);
     }
+
     return weightMap;
   }
 }
