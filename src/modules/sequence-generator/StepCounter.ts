@@ -54,21 +54,31 @@ export class StepCounter {
     this.updateLastStep(currentMovement);
   }
 
-  private increaseThreeTurnsBlockAmount() {
+  public increaseThreeTurnsBlockAmount() {
     this.threeTurnsBlock.blockAmount++;
   }
 
-  private updateThreeTurnsBlockOrigin(turnName: TurnAbsoluteName) {
+  public updateThreeTurnsBlockOrigin(turnName: TurnAbsoluteName) {
     const { turns } = this.threeTurnsBlock;
-    const values = Array.from(turns.values());
-    if (!values.includes(2) && turns.has(turnName)) {
-      turns.set(turnName, turns.get(turnName) ?? 0 + 1);
+    const currentCount = turns.get(turnName);
+    const oneTypeTurnMaxAmount = this.getOneTypeTurnMaxAmount();
+    if (currentCount !== undefined && currentCount < oneTypeTurnMaxAmount) {
+      turns.set(turnName, currentCount + 1);
     }
   }
 
-  public updateThreeTurnsBlock(turnName: TurnAbsoluteName) {
-    this.increaseThreeTurnsBlockAmount();
-    this.updateThreeTurnsBlockOrigin(turnName);
+  public get unusedDifficultTurns(): TurnAbsoluteName[] {
+    const { turns } = this.threeTurnsBlock;
+
+    const oneTypeTurnMaxAmount = this.getOneTypeTurnMaxAmount();
+    return Array.from(turns.entries())
+      .filter(([, amount]) => amount < oneTypeTurnMaxAmount)
+      .map(([name]) => name);
+  }
+
+  private getOneTypeTurnMaxAmount() {
+    const values = Array.from(this.threeTurnsBlock.turns.values());
+    return values.includes(2) ? 1 : 2;
   }
 
   public get threeTurnsBlockAmount() {

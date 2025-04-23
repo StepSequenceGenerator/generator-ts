@@ -75,11 +75,13 @@ class StepSequenceGenerator {
       const currentLibrary = this.filterForThreeTurnsBlock(
         this.filterLibraryForNextStep()
       );
+
       this.generateStep(currentLibrary.movements);
+      this.counter.updateThreeTurnsBlockOrigin(
+        this.context.currentStep?.absoluteName || TurnAbsoluteName.UNKNOWN
+      );
     }
-    this.counter.updateThreeTurnsBlock(
-      this.context.currentStep?.absoluteName || TurnAbsoluteName.UNKNOWN
-    );
+    this.counter.increaseThreeTurnsBlockAmount();
   }
 
   private generateStep(movements: Movement[]) {
@@ -93,7 +95,12 @@ class StepSequenceGenerator {
   }
 
   private filterForThreeTurnsBlock(movementLibrary: MovementLibrary) {
-    return movementLibrary.filterDifficultTurns();
+    const unusedTurns = this.counter.unusedDifficultTurns;
+    return movementLibrary
+      .filterDifficultTurns()
+      .filterBy((movement: Movement) =>
+        unusedTurns.includes(movement.absoluteName)
+      );
   }
 
   private filterLibraryForNextStep() {
