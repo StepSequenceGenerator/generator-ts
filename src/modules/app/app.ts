@@ -1,13 +1,13 @@
-import { ExcelWorkbookLoader } from '../file-parser/excel-book/ExcelWorkbookLoader.js';
-import { BaseExcelParser } from '../file-parser/excel-parser/BaseExcelParser.js';
+import { ExcelWorkbookLoader } from '../source-formatter/excel-book/ExcelWorkbookLoader.js';
+import { BaseExcelParser } from '../source-formatter/excel-parser/BaseExcelParser.js';
 import { MapValueTypeBase } from '../../shared/types/map-value-type-base.js';
 import { Movement } from '../movement/Movement.js';
 import { MovementFactory } from '../movement/MovementFactory.js';
 import { StepSequenceGenerator } from '../sequence-generator/StepSequenceGenerator.js';
 import { UploaderAbstract } from '../uploader/UploaderAbstract.js';
 import { WorkBook } from 'xlsx';
-import { excelWorkbookLoader } from '../file-parser/excel-book/excel-book-loader.js';
-import { defaultExcelParser } from '../file-parser/excel-parser/excel-parsers.js';
+import { excelWorkbookLoader } from '../source-formatter/excel-book/excel-book-loader.js';
+import { defaultExcelParser } from '../source-formatter/excel-parser/excel-parsers.js';
 
 type AppConstructorType<T extends Record<string, string>> = {
   excelLoader: ExcelWorkbookLoader;

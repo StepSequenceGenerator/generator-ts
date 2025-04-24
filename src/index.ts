@@ -9,8 +9,8 @@ import { StepSequenceGenerator } from './modules/sequence-generator/StepSequence
 import { MapValueTypeBase } from './shared/types/map-value-type-base.js';
 import { DifficultLevelAmountStep } from './enums/difficult-level-amount-step-enum.js';
 
-import { defaultExcelParser } from './modules/file-parser/excel-parser/excel-parsers.js';
-import { excelWorkbookLoader } from './modules/file-parser/excel-book/excel-book-loader.js';
+import { defaultExcelParser } from './modules/source-formatter/excel-parser/excel-parsers.js';
+import { excelWorkbookLoader } from './modules/source-formatter/excel-book/excel-book-loader.js';
 import { stepContext } from './modules/sequence-generator/step-contexts.js';
 import { stepCounter } from './modules/sequence-generator/step-counters.js';
 import { rouletteGenerator } from './modules/roulette/roulette-generator.js';
