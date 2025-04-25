@@ -1,5 +1,5 @@
 {
-  "name": "generator-ts",
+  "name": "step-sequence-generator",
   "version": "1.0.0",
   "main": "src/index.js",
   "type": "module",
@@ -18,11 +18,14 @@
     "test:details": "vitest --reporter verbose"
   },
   "keywords": [
-    "figure skating"
+    "figure skating",
+    "sequence generator",
+    "choreography",
+    "ice skating"
   ],
   "author": "Pulin Tim",
   "license": "ISC",
-  "description": "",
+  "description": "A step sequence generator for figure skating programs",
   "devDependencies": {
     "@eslint/js": "^9.22.0",
     "@types/lodash": "^4.17.16",
@@ -40,9 +43,17 @@
     "typescript-eslint": "^8.26.1",
     "vitest": "^3.1.1"
   },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "dependencies": {
     "dotenv": "^16.5.0",
     "lodash": "^4.17.21",
     "xlsx": "file:vendor/xlsx-0.20.3.tgz"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }
