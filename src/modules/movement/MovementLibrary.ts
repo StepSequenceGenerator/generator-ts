@@ -5,7 +5,7 @@ import {
   MovementCharacter,
   RotationDirection,
   TransitionDirection,
-} from '../../enums/movement-enums.js';
+} from '../../shared/enums/movement-enums.js';
 
 class MovementLibrary {
   private readonly _movements: Movement[];

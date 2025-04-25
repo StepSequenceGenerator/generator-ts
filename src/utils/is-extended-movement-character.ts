@@ -1,4 +1,4 @@
-import { ExtendedMovementCharacter } from '../enums/movement-enums.js';
+import { ExtendedMovementCharacter } from '../shared/enums/movement-enums.js';
 
 function isExtendedMovementCharacter(value: string): boolean {
   return Object.values(ExtendedMovementCharacter).includes(value as any);

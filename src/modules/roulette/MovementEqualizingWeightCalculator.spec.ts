@@ -3,7 +3,7 @@ import { MovementEqualizingWeightCalculator } from './MovementEqualizingWeightCa
 import {
   ExtendedMovementCharacter,
   MovementCharacter,
-} from '../../enums/movement-enums.js';
+} from '../../shared/enums/movement-enums.js';
 import type { Movement } from '../movement/Movement.js';
 
 describe('MovementEqualWeightCalculator', () => {

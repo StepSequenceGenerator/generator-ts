@@ -1,5 +1,5 @@
 import type { Movement } from '../movement/Movement.js';
-import { ExtendedMovementCharacter } from '../../enums/movement-enums.js';
+import { ExtendedMovementCharacter } from '../../shared/enums/movement-enums.js';
 import { transformToExtendedMovementCharacterType } from '../../utils/is-extended-movement-character.js';
 
 export abstract class WeightCalculatorBase {

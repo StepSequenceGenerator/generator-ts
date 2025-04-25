@@ -2,7 +2,7 @@ import {
   AbstractExcelFormatter,
   AbstractExcelFormatterArgsType,
 } from './AbstractExcelFormatter.js';
-import { ColumnName } from '../../enums/column-name-enum.js';
+import { ColumnName } from '../../shared/enums/column-name-enum.js';
 import { Movement } from '../movement/Movement.js';
 import { MapValueTypeBase } from '../../shared/types/map-value-type-base.js';
 import { MovementFactory } from '../movement/MovementFactory.js';

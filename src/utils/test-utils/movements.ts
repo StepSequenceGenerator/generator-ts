@@ -4,7 +4,7 @@ import {
   RotationDegree,
   RotationDirection,
   TransitionDirection,
-} from '../../enums/movement-enums.js';
+} from '../../shared/enums/movement-enums.js';
 
 export const movements = [
   {

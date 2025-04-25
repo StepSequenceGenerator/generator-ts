@@ -5,7 +5,7 @@ import {
   WeightMapType,
 } from '../../shared/types/chance-ratio-map-type.js';
 import { round2 } from '../../utils/round2.js';
-import { ExtendedMovementCharacter } from '../../enums/movement-enums.js';
+import { ExtendedMovementCharacter } from '../../shared/enums/movement-enums.js';
 import { transformToExtendedMovementCharacterType } from '../../utils/is-extended-movement-character.js';
 
 export class MovementWeightCalculator extends WeightCalculatorBase {

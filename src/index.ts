@@ -1,8 +1,8 @@
-import { DifficultLevelAmountStep } from './enums/difficult-level-amount-step-enum.js';
+import { DifficultLevelAmountStep } from './shared/enums/difficult-level-amount-step-enum.js';
 import { twizzle } from './twizzle.js';
 
 export default twizzle;
-export { DifficultLevelAmountStep } from './enums/difficult-level-amount-step-enum.js';
+export { DifficultLevelAmountStep } from './shared/enums/difficult-level-amount-step-enum.js';
 
 const generator = twizzle();
 generator.init();

@@ -7,7 +7,7 @@ import { StepCounter } from '../sequence-generator/StepCounter.js';
 import { RouletteGenerator } from '../roulette/RouletteGenerator.js';
 import { StepContext } from '../sequence-generator/StepContext.js';
 import { MovementWeightCalculator } from '../roulette/MovementWeightCalculator.js';
-import { DifficultLevelAmountStep } from '../../enums/difficult-level-amount-step-enum.js';
+import { DifficultLevelAmountStep } from '../../shared/enums/difficult-level-amount-step-enum.js';
 
 type AppConstructorParamsType<T extends Record<string, string>> = {
   config: Configuration;

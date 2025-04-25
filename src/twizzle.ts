@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import { App } from './modules/app/app.js';
-import { ColumnName } from './enums/column-name-enum.js';
+import { ColumnName } from './shared/enums/column-name-enum.js';
 import { ExcelWorkbookLoader } from './modules/source-formatter/excel-book-loader/ExcelWorkbookLoader.js';
 import { BaseExcelParser } from './modules/source-formatter/excel-parser/BaseExcelParser.js';
 import { UploaderMovements } from './modules/uploader/UploaderMovements.js';
