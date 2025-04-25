@@ -1,84 +1,12 @@
-import dotenv from 'dotenv';
-
-import { ColumnName } from './enums/column-name-enum.js';
-import { Movement } from './modules/movement/Movement.js';
-import { MovementFactory } from './modules/movement/MovementFactory.js';
-import { MovementLibrary } from './modules/movement/MovementLibrary.js';
-import { StepSequenceGenerator } from './modules/sequence-generator/StepSequenceGenerator.js';
-
-import { MapValueTypeBase } from './shared/types/map-value-type-base.js';
 import { DifficultLevelAmountStep } from './enums/difficult-level-amount-step-enum.js';
+import { twizzle } from './twizzle.js';
 
-import { defaultExcelParser } from './modules/source-formatter/excel-parser/excel-parsers.js';
-import { excelWorkbookLoader } from './modules/source-formatter/excel-book-loader/excel-book-loader.js';
-import { stepContext } from './modules/sequence-generator/step-contexts.js';
-import { stepCounter } from './modules/sequence-generator/step-counters.js';
-import { rouletteGenerator } from './modules/roulette/roulette-generator.js';
-import { App } from './modules/app/app.js';
-import { DefaultExcelFormatter } from './modules/source-formatter/DefaultExcelFormatter.js';
-import { ExcelWorkbookLoader } from './modules/source-formatter/excel-book-loader/ExcelWorkbookLoader.js';
-import { UploaderMovements } from './modules/uploader/UploaderMovements.js';
-import { BaseExcelParser } from './modules/source-formatter/excel-parser/BaseExcelParser.js';
-import { Configuration } from './modules/config/Configuration.js';
+export default twizzle;
+export { DifficultLevelAmountStep } from './enums/difficult-level-amount-step-enum.js';
 
-dotenv.config();
-
-function run() {
-  const PUBLIC_DIR: string = process.env.PUBLIC_DIR || '';
-  const fileName = 'steps.xlsx';
-
-  const workBook = excelWorkbookLoader.getWorkBook(PUBLIC_DIR, fileName);
-
-  const parsedData = defaultExcelParser.parse(workBook);
-
-  const preparedDataForLibrary = prepareDataForMovementLibrary<
-    typeof ColumnName
-  >(parsedData, ColumnName);
-
-  // const uploaderMovement = new UploaderMovements();
-  // uploaderMovement.upload(
-  //   preparedDataForLibrary,
-  //   `${PUBLIC_DIR}/movementsNew.ts`
-  // );
-
-  const movementLibrary = new MovementLibrary(preparedDataForLibrary);
-
-  const generator = new StepSequenceGenerator(
-    movementLibrary,
-    stepContext,
-    stepCounter,
-    rouletteGenerator
-  );
-  const sequence = generator
-    .generate(DifficultLevelAmountStep.LEVEL_4)
-    .map(
-      (item, index) => `${index} : ${item.id} ${item.name} ${item.absoluteName}`
-    );
-  console.log('дорожка', sequence);
-}
-
-function prepareDataForMovementLibrary<T extends Record<string, string>>(
-  data: Map<string, MapValueTypeBase>[],
-  columnName: T
-): Movement[] {
-  const movements: Movement[] = [];
-  for (const line of data) {
-    const movement = MovementFactory.createFromExcelData<T>(line, columnName);
-    movements.push(movement);
-  }
-  return movements;
-}
-
-function lutz() {
-  const loader = new ExcelWorkbookLoader();
-  const parser = new BaseExcelParser<typeof ColumnName>(ColumnName);
-  const fileUploader = new UploaderMovements();
-  const sourceFormatter = new DefaultExcelFormatter({
-    loader,
-    parser,
-    fileUploader,
-    columnName: ColumnName,
-  });
-  const config = new Configuration();
-  return new App<typeof ColumnName>({ config, sourceFormatter });
-}
+const generator = twizzle();
+generator.init();
+const sequence = generator.generateSequence(DifficultLevelAmountStep.LEVEL_4);
+console.log(
+  sequence.map((item, index) => `${index} : ${item.id} ${item.name}`)
+);
