@@ -10,11 +10,16 @@ import { MapValueTypeBase } from './shared/types/map-value-type-base.js';
 import { DifficultLevelAmountStep } from './enums/difficult-level-amount-step-enum.js';
 
 import { defaultExcelParser } from './modules/source-formatter/excel-parser/excel-parsers.js';
-import { excelWorkbookLoader } from './modules/source-formatter/excel-book/excel-book-loader.js';
+import { excelWorkbookLoader } from './modules/source-formatter/excel-book-loader/excel-book-loader.js';
 import { stepContext } from './modules/sequence-generator/step-contexts.js';
 import { stepCounter } from './modules/sequence-generator/step-counters.js';
 import { rouletteGenerator } from './modules/roulette/roulette-generator.js';
-import { uploaderMovement } from './modules/uploader/uploaders.js';
+import { App } from './modules/app/app.js';
+import { DefaultExcelFormatter } from './modules/source-formatter/DefaultExcelFormatter.js';
+import { ExcelWorkbookLoader } from './modules/source-formatter/excel-book-loader/ExcelWorkbookLoader.js';
+import { UploaderMovements } from './modules/uploader/UploaderMovements.js';
+import { BaseExcelParser } from './modules/source-formatter/excel-parser/BaseExcelParser.js';
+import { Configuration } from './modules/config/Configuration.js';
 
 dotenv.config();
 
@@ -64,4 +69,16 @@ function prepareDataForMovementLibrary<T extends Record<string, string>>(
   return movements;
 }
 
-run();
+function lutz() {
+  const loader = new ExcelWorkbookLoader();
+  const parser = new BaseExcelParser<typeof ColumnName>(ColumnName);
+  const fileUploader = new UploaderMovements();
+  const sourceFormatter = new DefaultExcelFormatter({
+    loader,
+    parser,
+    fileUploader,
+    columnName: ColumnName,
+  });
+  const config = new Configuration();
+  return new App<typeof ColumnName>({ config, sourceFormatter });
+}

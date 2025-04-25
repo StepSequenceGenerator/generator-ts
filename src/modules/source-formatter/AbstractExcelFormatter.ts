@@ -1,11 +1,11 @@
 import { BaseExcelParser } from './excel-parser/BaseExcelParser.js';
 import { UploaderAbstract } from '../uploader/UploaderAbstract.js';
-import { IXlsxBook } from './excel-book/IExcelBook.js';
+import { IXlsxBook } from './excel-book-loader/IExcelBook.js';
 import { BaseExcelParserConstructor } from './excel-parser/excel-parsers.js';
 
 type AbstractExcelFormatterArgsType<T extends Record<string, string>> = {
   loader: IXlsxBook;
-  parser: BaseExcelParserConstructor<T>;
+  parser: BaseExcelParser<T>;
   fileUploader: UploaderAbstract;
   columnName: T;
 };
@@ -16,14 +16,14 @@ abstract class AbstractExcelFormatter<T extends Record<string, string>, D> {
   fileUploader: UploaderAbstract;
   columnName: T;
 
-  constructor({
+  protected constructor({
     loader,
     parser,
     fileUploader,
     columnName,
   }: AbstractExcelFormatterArgsType<T>) {
     this.excelLoader = loader;
-    this.excelParser = new parser(columnName);
+    this.excelParser = parser;
     this.fileUploader = fileUploader;
     this.columnName = columnName;
   }

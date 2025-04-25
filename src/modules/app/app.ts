@@ -48,13 +48,12 @@ export class App<T extends Record<string, string>> {
     const stepCounter = new StepCounter();
     const weightCalc = new MovementWeightCalculator();
     const rouletteGenerator = new RouletteGenerator(weightCalc);
-    const generator = new StepSequenceGenerator(
+    return new StepSequenceGenerator(
       movementLibrary,
       stepContext,
       stepCounter,
       rouletteGenerator
     );
-    return generator;
   }
 
   private loadExcelSource(dirPath: string, srcFileName: string): Movement[] {
