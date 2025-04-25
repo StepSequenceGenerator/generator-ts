@@ -1,20 +1,21 @@
+import { IExcelParser } from './IExcelParser.js';
 import { WorkBook, WorkSheet } from 'xlsx';
-import { MapValueTypeBase } from '../../shared/types/map-value-type-base.js';
+import { MapValueTypeBase } from '../../../shared/types/map-value-type-base.js';
 
 type SheetKeysType = string[];
 
-class ExcelParser<T extends Record<string, string>> {
-  private readonly columnNames: T;
-  private readonly workBook: WorkBook;
+export class BaseExcelParser<T extends Record<string, string>>
+  implements IExcelParser<T>
+{
+  readonly columnNames: T;
 
-  constructor(workBook: WorkBook, columnNames: T) {
-    this.workBook = workBook;
+  constructor(columnNames: T) {
     this.columnNames = columnNames;
   }
 
-  public parse() {
-    const firstSheetName = this.getFirstSheetsName();
-    const sheet = this.workBook.Sheets[firstSheetName];
+  public parse(workBook: WorkBook) {
+    const firstSheetName = this.getFirstSheetsName(workBook);
+    const sheet = workBook.Sheets[firstSheetName];
     const lastLineNumber: number = this.findLastLineNumber(
       this.cleanUpAndSortSheetKeys(Object.keys(sheet))
     );
@@ -23,8 +24,8 @@ class ExcelParser<T extends Record<string, string>> {
     return this.createData(sheet, lastLineNumber, columnNameKeys);
   }
 
-  private getFirstSheetsName() {
-    return this.workBook.SheetNames[0];
+  private getFirstSheetsName(workBook: WorkBook) {
+    return workBook.SheetNames[0];
   }
 
   private findLastLineNumber(arr: SheetKeysType): number {
@@ -87,5 +88,3 @@ class ExcelParser<T extends Record<string, string>> {
     return line;
   }
 }
-
-export { ExcelParser };

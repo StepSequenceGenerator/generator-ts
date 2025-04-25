@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { Movement } from './Movement.js';
-import { MovementCharacter } from '../../enums/movement-enums.js';
-import { TurnAbsoluteName } from '../../enums/turn-absolute-name-enum.js';
+import { MovementCharacter } from '../../shared/enums/movement-enums.js';
+import { TurnAbsoluteName } from '../../shared/enums/turn-absolute-name-enum.js';
 
 describe('Movement', () => {
   const movementData = {

@@ -6,7 +6,7 @@ import type { Movement } from '../movement/Movement.js';
 import {
   ExtendedMovementCharacter,
   MovementCharacter,
-} from '../../enums/movement-enums.js';
+} from '../../shared/enums/movement-enums.js';
 
 const mockMovements: Movement[] = [
   { type: MovementCharacter.UNKNOWN, isDifficult: false } as Movement,

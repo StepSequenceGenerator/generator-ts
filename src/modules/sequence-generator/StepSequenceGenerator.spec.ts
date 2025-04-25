@@ -10,7 +10,7 @@ import {
   RotationDegree,
   RotationDirection,
   TransitionDirection,
-} from '../../enums/movement-enums.js';
+} from '../../shared/enums/movement-enums.js';
 import { StepCounter } from './StepCounter.js';
 import { RouletteGenerator } from '../roulette/RouletteGenerator.js';
 import { MovementEqualizingWeightCalculator } from '../roulette/MovementEqualizingWeightCalculator.js';

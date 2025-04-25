@@ -1,7 +1,8 @@
 import * as fs from 'fs';
-import { XlsxBook } from './xlsx-book.js';
+import { XlsxBook } from './XlsxBook.js';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import * as XLSX from 'xlsx';
+import { ExcelWorkbookLoader } from './ExcelWorkbookLoader.js';
 
 const fakeWorkbook = { Sheets: {}, SheetNames: ['Sheet1'] };
 
@@ -10,28 +11,38 @@ vi.mock('xlsx', () => ({
   read: vi.fn(() => fakeWorkbook),
 }));
 
-describe('xlsxBook', () => {
+describe('ExcelWorkbookLoader', () => {
+  let bookLoader: ExcelWorkbookLoader;
   const mockPublicDir = '/mock/public';
   const mockFileName = 'test.xlsx';
   const mockFilePath = `${mockPublicDir}/${mockFileName}`;
 
   beforeEach(() => {
+    bookLoader = new ExcelWorkbookLoader();
     vi.resetAllMocks();
+  });
+
+  describe('implementation', () => {
+    it('должен корректно создаваться', () => {
+      expect(bookLoader).toBeDefined();
+      expect(bookLoader).toBeInstanceOf(ExcelWorkbookLoader);
+    });
   });
 
   describe('createPath', () => {
     it('должен возвращать корректный путь', () => {
-      const xlsxBook = new XlsxBook(mockPublicDir, mockFileName);
-      const receivedFilePath = xlsxBook['createPath']();
+      const receivedFilePath = bookLoader['getAbsolutePath'](
+        mockPublicDir,
+        mockFileName
+      );
       expect(receivedFilePath).toBe(mockFilePath);
     });
   });
-
+  // todo переделать тест для bookLoader
   describe('initializeWorkBook', () => {
     it('должен корректно загружать workbook', () => {
       const fakeBinaryData = Buffer.from('fake excel data');
       vi.spyOn(fs, 'readFileSync').mockReturnValue(fakeBinaryData);
-
       new XlsxBook(mockPublicDir, mockFileName);
 
       expect(fs.readFileSync).toHaveBeenCalledWith(mockFilePath);
@@ -53,9 +64,11 @@ describe('xlsxBook', () => {
     });
   });
 
+  // todo переделать тест для bookLoader
   describe('getWorkBook', () => {
     it('должен вернуть workbook', () => {
       const xlsxBook = new XlsxBook(mockPublicDir, mockFileName);
+
       const receivedBook = xlsxBook.getWorkBook();
       expect(receivedBook).toBe(fakeWorkbook);
     });

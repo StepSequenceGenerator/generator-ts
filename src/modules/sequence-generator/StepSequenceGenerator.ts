@@ -7,12 +7,12 @@ import {
   ExtendedMovementCharacter,
   Leg,
   TransitionDirection,
-} from '../../enums/movement-enums.js';
+} from '../../shared/enums/movement-enums.js';
 import { StepCounter } from './StepCounter.js';
-import { DifficultLevelAmountStep } from '../../enums/difficult-level-amount-step-enum.js';
+import { DifficultLevelAmountStep } from '../../shared/enums/difficult-level-amount-step-enum.js';
 import { RouletteGenerator } from '../roulette/RouletteGenerator.js';
 import { ChanceRatioMapType } from '../../shared/types/chance-ratio-map-type.js';
-import { TurnAbsoluteName } from '../../enums/turn-absolute-name-enum.js';
+import { TurnAbsoluteName } from '../../shared/enums/turn-absolute-name-enum.js';
 
 const chanceRatioMap: ChanceRatioMapType = new Map<
   ExtendedMovementCharacter,

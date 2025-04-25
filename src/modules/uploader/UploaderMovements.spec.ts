@@ -1,13 +1,7 @@
-import { vi, describe, beforeEach, expect, it, test } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { UploaderMovements } from './UploaderMovements.js';
 
-import {
-  Edge,
-  Leg,
-  RotationDegree,
-  RotationDirection,
-  TransitionDirection,
-} from '../../enums/movement-enums.js';
+import { RotationDegree } from '../../shared/enums/movement-enums.js';
 
 describe('Uploader Movements', () => {
   let uploader: UploaderMovements;

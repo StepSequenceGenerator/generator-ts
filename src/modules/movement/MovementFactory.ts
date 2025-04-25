@@ -8,9 +8,9 @@ import {
   RotationDegree,
   RotationDirection,
   TransitionDirection,
-} from '../../enums/movement-enums.js';
+} from '../../shared/enums/movement-enums.js';
 import { MapValueTypeBase } from '../../shared/types/map-value-type-base.js';
-import { TurnAbsoluteName } from '../../enums/turn-absolute-name-enum.js';
+import { TurnAbsoluteName } from '../../shared/enums/turn-absolute-name-enum.js';
 
 const { isEqual } = lodash;
 

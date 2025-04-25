@@ -1,4 +1,4 @@
-import { ExtendedMovementCharacter } from '../../enums/movement-enums.js';
+import { ExtendedMovementCharacter } from '../enums/movement-enums.js';
 
 /**
  keys: типы поворотов + difficult;
