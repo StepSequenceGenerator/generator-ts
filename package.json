@@ -19,7 +19,8 @@
     "test:details": "vitest --reporter verbose",
     "clean-dist": "rm -r ./dist",
     "prepare-publish": "node prepare-publish.js",
-    "publish:patch": "git add . && git commit -m 'fix' &&  npm version patch && npm run clean-dist && npm run build && npm run prepare-publish && npm publish ./dist"
+    "publish:patch": "npm version patch && npm run clean-dist && npm run build && npm run prepare-publish && npm publish ./dist",
+    "publish:raw": "git add . && git commit -m 'publish raw' && npm run publish:patch"
   },
   "keywords": [
     "figure skating",
