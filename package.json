@@ -18,7 +18,7 @@
     "test:details": "vitest --reporter verbose",
     "clean-dist": "rm -r ./dist",
     "prepare-publish": "node prepare-publish.js",
-    "publish:lib": "npm version patch && npm run clean-dist && npm run build && npm run prepare-publish && npm run publish ./dist"
+    "publish:lib": "npm version patch && npm run clean-dist && npm run build && npm run prepare-publish && npm publish ./dist"
   },
   "keywords": [
     "figure skating",
