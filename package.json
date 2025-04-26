@@ -1,6 +1,6 @@
 {
   "name": "step-sequence-generator",
-  "version": "1.0.2",
+  "version": "1.0.1",
   "main": "src/index.js",
   "type": "module",
   "exports": {
@@ -16,8 +16,9 @@
     "test": "vitest",
     "test:coverage": "vitest --coverage",
     "test:details": "vitest --reporter verbose",
+    "clean-dist": "rm -r ./dist",
     "prepare-publish": "node prepare-publish.js",
-    "publish:lib": "npm build && npm prepare-publish && npm publish ./dist"
+    "publish:lib": "npm version patch && npm run clean-dist && npm run build && npm run prepare-publish && npm run publish ./dist"
   },
   "keywords": [
     "figure skating",
