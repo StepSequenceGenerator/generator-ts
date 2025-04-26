@@ -3,7 +3,7 @@ import path from 'path';
 
 const FILE_NAME = 'package.json';
 const pathToFile = path.resolve(FILE_NAME);
-const pathToPublish = path.resolve('.dist/package.json');
+const pathToPublish = path.resolve('dist/package.json');
 const packageJson = JSON.parse(fs.readFileSync(pathToFile, 'utf8'));
 
 const minimalPackageJSON = {
