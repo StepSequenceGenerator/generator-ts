@@ -18,6 +18,7 @@
     "test:coverage": "vitest --coverage",
     "test:details": "vitest --reporter verbose",
     "clean-dist": "rm -r ./dist",
+    "move-package": "",
     "prepare-publish": "node prepare-publish.js",
     "publish:patch": "npm version patch && npm run clean-dist && npm run build && npm run prepare-publish && npm publish ./dist",
     "publish:raw": "git add . && git commit -m 'publish raw' && npm run publish:patch"
