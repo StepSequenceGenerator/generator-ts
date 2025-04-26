@@ -19,5 +19,5 @@ const minimalPackageJSON = {
   engines: packageJson.engines,
 };
 
-fs.writeFileSync(pathToFile, JSON.stringify(packageJson, null, 2));
+fs.writeFileSync(pathToFile, JSON.stringify(minimalPackageJSON, null, 2));
 console.log('packageJson updated');
