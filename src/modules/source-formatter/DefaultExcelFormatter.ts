@@ -7,10 +7,7 @@ import { Movement } from '../movement/Movement.js';
 import { MapValueTypeBase } from '../../shared/types/map-value-type-base.js';
 import { MovementFactory } from '../movement/MovementFactory.js';
 
-export class DefaultExcelFormatter extends AbstractExcelFormatter<
-  typeof ColumnName,
-  Movement[]
-> {
+export class DefaultExcelFormatter extends AbstractExcelFormatter<typeof ColumnName, Movement[]> {
   constructor(args: AbstractExcelFormatterArgsType<typeof ColumnName>) {
     super(args);
   }
@@ -23,14 +20,11 @@ export class DefaultExcelFormatter extends AbstractExcelFormatter<
 
   private prepareDataForMovementLibrary(
     data: Map<string, MapValueTypeBase>[],
-    columnName: typeof ColumnName
+    columnName: typeof ColumnName,
   ): Movement[] {
     const movements: Movement[] = [];
     for (const line of data) {
-      const movement = MovementFactory.createFromExcelData<typeof ColumnName>(
-        line,
-        columnName
-      );
+      const movement = MovementFactory.createFromExcelData<typeof ColumnName>(line, columnName);
       movements.push(movement);
     }
     return movements;

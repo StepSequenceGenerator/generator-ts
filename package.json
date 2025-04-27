@@ -1,13 +1,20 @@
 {
-  "name": "generator-ts",
-  "version": "1.0.0",
-  "main": "src/index.js",
+  "name": "step-sequence-generator",
+  "version": "1.0.12",
+  "main": "./dist/index.js",
   "type": "module",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": "./dist/index.js"
   },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
-    "build": "tsc",
+    "copy-public": "cp -r ./public ./dist/",
+    "build": "tsc && npm run copy-public",
     "start": "node dist/index.js",
     "watch": "tsc --watch",
     "dev": "npm run build && npm run start",
@@ -15,14 +22,21 @@
     "format": "prettier --write 'src/**/*.ts'",
     "test": "vitest",
     "test:coverage": "vitest --coverage",
-    "test:details": "vitest --reporter verbose"
+    "test:details": "vitest --reporter verbose",
+    "clean-dist": "rm -r ./dist",
+    "prepare-publish": "node prepare-publish.js",
+    "publish:patch": "npm version patch && npm run clean-dist && npm run build && npm publish",
+    "publish:raw": "git add . && git commit -m 'publish raw' && npm run publish:patch"
   },
   "keywords": [
-    "figure skating"
+    "figure skating",
+    "sequence generator",
+    "choreography",
+    "ice skating"
   ],
   "author": "Pulin Tim",
   "license": "ISC",
-  "description": "",
+  "description": "A step sequence generator for figure skating programs",
   "devDependencies": {
     "@eslint/js": "^9.22.0",
     "@types/lodash": "^4.17.16",
@@ -35,6 +49,7 @@
     "eslint-plugin-prettier": "^5.2.3",
     "globals": "^16.0.0",
     "prettier": "^3.5.3",
+    "prettier-plugin-packagejson": "^2.5.10",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.26.1",
@@ -43,6 +58,9 @@
   "dependencies": {
     "dotenv": "^16.5.0",
     "lodash": "^4.17.21",
-    "xlsx": "file:vendor/xlsx-0.20.3.tgz"
+    "xlsx": "^0.18.5"
+  },
+  "engines": {
+    "node": ">=22"
   }
 }
