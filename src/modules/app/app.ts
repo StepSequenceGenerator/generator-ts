@@ -24,9 +24,7 @@ export class App<T extends Record<string, string>> {
     this.config = config;
   }
 
-  public generateSequence(
-    stepAmountBySequenceLevel: DifficultLevelAmountStep
-  ): Movement[] {
+  public generateSequence(stepAmountBySequenceLevel: DifficultLevelAmountStep): Movement[] {
     if (this.sequenceGenerator) {
       return this.sequenceGenerator.generate(stepAmountBySequenceLevel);
     } else {
@@ -35,10 +33,7 @@ export class App<T extends Record<string, string>> {
   }
 
   public init() {
-    const data = this.loadExcelSource(
-      this.config.excelPath,
-      this.config.excelName
-    );
+    const data = this.loadExcelSource(this.config.excelPath, this.config.excelName);
     this.sequenceGenerator = this.createSequenceGenerator(data);
   }
 
@@ -48,12 +43,7 @@ export class App<T extends Record<string, string>> {
     const stepCounter = new StepCounter();
     const weightCalc = new MovementWeightCalculator();
     const rouletteGenerator = new RouletteGenerator(weightCalc);
-    return new StepSequenceGenerator(
-      movementLibrary,
-      stepContext,
-      stepCounter,
-      rouletteGenerator
-    );
+    return new StepSequenceGenerator(movementLibrary, stepContext, stepCounter, rouletteGenerator);
   }
 
   private loadExcelSource(dirPath: string, srcFileName: string): Movement[] {

@@ -4,9 +4,7 @@ import { MapValueTypeBase } from '../../../shared/types/map-value-type-base.js';
 
 type SheetKeysType = string[];
 
-export class BaseExcelParser<T extends Record<string, string>>
-  implements IExcelParser<T>
-{
+export class BaseExcelParser<T extends Record<string, string>> implements IExcelParser<T> {
   readonly columnNames: T;
 
   constructor(columnNames: T) {
@@ -17,7 +15,7 @@ export class BaseExcelParser<T extends Record<string, string>>
     const firstSheetName = this.getFirstSheetsName(workBook);
     const sheet = workBook.Sheets[firstSheetName];
     const lastLineNumber: number = this.findLastLineNumber(
-      this.cleanUpAndSortSheetKeys(Object.keys(sheet))
+      this.cleanUpAndSortSheetKeys(Object.keys(sheet)),
     );
 
     const columnNameKeys = Object.keys(this.columnNames);
@@ -43,15 +41,13 @@ export class BaseExcelParser<T extends Record<string, string>>
   }
 
   private cleanUpAndSortSheetKeys(arr: SheetKeysType): SheetKeysType {
-    return arr
-      .filter((item) => !item.includes('!'))
-      .sort((a, b) => a.localeCompare(b));
+    return arr.filter((item) => !item.includes('!')).sort((a, b) => a.localeCompare(b));
   }
 
   private createData(
     sheet: WorkSheet,
     lastLineNumber: number,
-    columnNameKeys: string[]
+    columnNameKeys: string[],
   ): Map<string, MapValueTypeBase>[] {
     const data: Map<string, MapValueTypeBase>[] = [];
     for (let i = 2; i <= lastLineNumber; i++) {
@@ -64,7 +60,7 @@ export class BaseExcelParser<T extends Record<string, string>>
   private createLine(
     sheet: WorkSheet,
     columnNameKeys: string[],
-    index: number
+    index: number,
   ): Map<string, MapValueTypeBase> {
     const line: Map<string, MapValueTypeBase> = new Map();
 
