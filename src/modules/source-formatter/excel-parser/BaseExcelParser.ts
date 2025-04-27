@@ -76,7 +76,7 @@ export class BaseExcelParser<T extends Record<string, string>> implements IExcel
       if (sheet[cellKey]) {
         cellValue = String(sheet[cellKey].v).trim().toLowerCase();
       } else {
-        console.warn(`Ячейка ${cellKey} не найдена.`);
+        // console.warn(`Ячейка ${cellKey} не найдена.`);
         cellValue = null;
       }
       line.set(this.columnNames[key], cellValue);

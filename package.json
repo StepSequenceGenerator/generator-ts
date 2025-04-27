@@ -7,8 +7,13 @@
   "exports": {
     ".": "./dist/index.js"
   },
+  "files": [
+    "dist",
+    "public"
+  ],
   "scripts": {
-    "build": "tsc",
+    "copy-public": "cp -r ./public ./dist/",
+    "build": "tsc && npm run copy-public",
     "start": "node dist/index.js",
     "watch": "tsc --watch",
     "dev": "npm run build && npm run start",
@@ -18,9 +23,7 @@
     "test:coverage": "vitest --coverage",
     "test:details": "vitest --reporter verbose",
     "clean-dist": "rm -r ./dist",
-    "move-package": "",
     "prepare-publish": "node prepare-publish.js",
-    "publish:patch1": "npm version patch && npm run clean-dist && npm run build && npm run prepare-publish && npm publish ./dist",
     "publish:patch": "npm version patch && npm run clean-dist && npm run build && npm publish",
     "publish:raw": "git add . && git commit -m 'publish raw' && npm run publish:patch"
   },
