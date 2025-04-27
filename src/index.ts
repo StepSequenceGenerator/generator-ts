@@ -3,3 +3,8 @@ import { DifficultLevelAmountStep } from './shared/enums/difficult-level-amount-
 
 export default twizzle;
 export { DifficultLevelAmountStep };
+
+const gen = twizzle();
+gen.init();
+const seq = gen.generateSequence(DifficultLevelAmountStep.LEVEL_4);
+console.log(seq);

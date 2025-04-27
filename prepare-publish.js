@@ -11,7 +11,7 @@ const minimalPackageJSON = {
   version: packageJson.version,
   description: packageJson.description,
   main: 'dist/index.js',
-  types: 'dist/index.d.js',
+  types: packageJson.types,
   exports: packageJson.exports,
   keywords: packageJson.keywords,
   author: packageJson.author,

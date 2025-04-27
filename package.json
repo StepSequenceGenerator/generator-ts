@@ -1,7 +1,7 @@
 {
   "name": "step-sequence-generator",
   "version": "1.0.9",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "type": "module",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -20,7 +20,8 @@
     "clean-dist": "rm -r ./dist",
     "move-package": "",
     "prepare-publish": "node prepare-publish.js",
-    "publish:patch": "npm version patch && npm run clean-dist && npm run build && npm run prepare-publish && npm publish ./dist",
+    "publish:patch1": "npm version patch && npm run clean-dist && npm run build && npm run prepare-publish && npm publish ./dist",
+    "publish:patch": "npm version patch && npm run clean-dist && npm run build && npm publish",
     "publish:raw": "git add . && git commit -m 'publish raw' && npm run publish:patch"
   },
   "keywords": [
