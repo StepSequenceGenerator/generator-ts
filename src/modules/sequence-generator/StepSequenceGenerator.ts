@@ -14,10 +14,7 @@ import { RouletteGenerator } from '../roulette/RouletteGenerator.js';
 import { ChanceRatioMapType } from '../../shared/types/chance-ratio-map-type.js';
 import { TurnAbsoluteName } from '../../shared/enums/turn-absolute-name-enum.js';
 
-const chanceRatioMap: ChanceRatioMapType = new Map<
-  ExtendedMovementCharacter,
-  number
->([
+const chanceRatioMap: ChanceRatioMapType = new Map<ExtendedMovementCharacter, number>([
   [ExtendedMovementCharacter.STEP, 8],
   [ExtendedMovementCharacter.TURN, 9],
   [ExtendedMovementCharacter.SEQUENCE, 9],
@@ -38,7 +35,7 @@ class StepSequenceGenerator {
     library: MovementLibrary,
     context: StepContext,
     counter: StepCounter,
-    randomGenerator: RouletteGenerator
+    randomGenerator: RouletteGenerator,
   ) {
     this.library = library;
     this.context = context;
@@ -48,11 +45,9 @@ class StepSequenceGenerator {
   }
 
   public generate(stepAmountBySequenceLevel: DifficultLevelAmountStep) {
-    this.stepSequence = [];
+    this.resetGenerator();
 
-    while (
-      this.counter.difficultTurnsOriginAmount < stepAmountBySequenceLevel
-    ) {
+    while (this.counter.difficultTurnsOriginAmount < stepAmountBySequenceLevel) {
       let currentLibrary: MovementLibrary;
       if (this.isTimeToInsertThreeTurnsBlock()) {
         this.generateThreeTurnsBlock();
@@ -64,31 +59,30 @@ class StepSequenceGenerator {
     return this.stepSequence;
   }
 
+  private resetGenerator() {
+    this.stepSequence = [];
+    this.counter.resetCounter();
+    this.context.resetCurrentStep();
+  }
+
   private isTimeToInsertThreeTurnsBlock() {
-    return this.counter.threeTurnsBlockAmount < 2
-      ? this.getRandomIndex(2) === 1
-      : false;
+    return this.counter.threeTurnsBlockAmount < 2 ? this.getRandomIndex(2) === 1 : false;
   }
 
   private generateThreeTurnsBlock() {
     for (let i = 0; i < 3; i++) {
-      const currentLibrary = this.filterForThreeTurnsBlock(
-        this.filterLibraryForNextStep()
-      );
+      const currentLibrary = this.filterForThreeTurnsBlock(this.filterLibraryForNextStep());
 
       this.generateStep(currentLibrary.movements);
       this.counter.updateThreeTurnsBlockOrigin(
-        this.context.currentStep?.absoluteName || TurnAbsoluteName.UNKNOWN
+        this.context.currentStep?.absoluteName || TurnAbsoluteName.UNKNOWN,
       );
     }
     this.counter.increaseThreeTurnsBlockAmount();
   }
 
   private generateStep(movements: Movement[]) {
-    const movementIndex = this.randomGenerator.generateNumber(
-      movements,
-      chanceRatioMap
-    );
+    const movementIndex = this.randomGenerator.generateNumber(movements, chanceRatioMap);
     this.context.currentStep = movements[movementIndex];
     this.addStepToSequence(this.context.currentStep);
     this.counter.update(this.context.currentStep);
@@ -98,9 +92,7 @@ class StepSequenceGenerator {
     const unusedTurns = this.counter.unusedDifficultTurns;
     return movementLibrary
       .filterDifficultTurns()
-      .filterBy((movement: Movement) =>
-        unusedTurns.includes(movement.absoluteName)
-      );
+      .filterBy((movement: Movement) => unusedTurns.includes(movement.absoluteName));
   }
 
   private filterLibraryForNextStep() {
@@ -108,10 +100,7 @@ class StepSequenceGenerator {
       .filterByEdge(this.withDefault(this.context.currentEdge, Edge.TWO_EDGES))
       .filterByLeg(this.withDefault(this.context.currentLeg, Leg.BOTH))
       .filterByTransitionDirection(
-        this.withDefault(
-          this.context.currentDirection,
-          TransitionDirection.NONE
-        )
+        this.withDefault(this.context.currentDirection, TransitionDirection.NONE),
       );
   }
 

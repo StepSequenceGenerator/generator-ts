@@ -10,6 +10,10 @@ import {
 class StepContext {
   private _currentStep: Movement | null = null;
 
+  resetCurrentStep() {
+    this._currentStep = null;
+  }
+
   set currentStep(step: Movement) {
     this._currentStep = step;
   }
@@ -29,8 +33,7 @@ class StepContext {
   get currentDirection() {
     if (this.currentStep === null) return TransitionDirection.NONE;
 
-    const { rotationDirection, rotationDegree, transitionDirection } =
-      this.currentStep;
+    const { rotationDirection, rotationDegree, transitionDirection } = this.currentStep;
 
     if (rotationDirection === RotationDirection.NONE) {
       return transitionDirection;

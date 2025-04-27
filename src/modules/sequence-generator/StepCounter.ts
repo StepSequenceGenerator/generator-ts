@@ -42,7 +42,7 @@ export class StepCounter {
       if (this.conditionToIncreaseDifficultOrigin(turnAbsoluteName)) {
         this.increaseDifficultOrigin(
           turnAbsoluteName,
-          this.getCurrentDifficultOriginAmount(turnAbsoluteName)
+          this.getCurrentDifficultOriginAmount(turnAbsoluteName),
         );
       }
     }
@@ -90,17 +90,13 @@ export class StepCounter {
   }
 
   public get difficultTurnsOriginAmount(): number {
-    return Array.from(this.turns.difficultOrigin.values()).reduce(
-      (a, b) => a + b,
-      0
-    );
+    return Array.from(this.turns.difficultOrigin.values()).reduce((a, b) => a + b, 0);
   }
 
   public get rotationAmount() {
     return {
       clockwise: this.rotations.get(RotationDirectionString.CLOCKWISE) || 0,
-      counterclockwise:
-        this.rotations.get(RotationDirectionString.COUNTERCLOCKWISE) || 0,
+      counterclockwise: this.rotations.get(RotationDirectionString.COUNTERCLOCKWISE) || 0,
     };
   }
 
@@ -112,13 +108,10 @@ export class StepCounter {
     );
   }
 
-  private increaseRotations(
-    currentMovement: Movement,
-    lastStepRotationDegree: number
-  ) {
+  private increaseRotations(currentMovement: Movement, lastStepRotationDegree: number) {
     this.rotations.set(
       this.mappingRotationDirection(currentMovement.rotationDirection),
-      currentMovement.rotationDegree + lastStepRotationDegree
+      currentMovement.rotationDegree + lastStepRotationDegree,
     );
   }
 
@@ -126,9 +119,7 @@ export class StepCounter {
     return this.lastStep?.rotationDegree || 0;
   }
 
-  private mappingRotationDirection(
-    direction: RotationDirection
-  ): RotationDirectionString {
+  private mappingRotationDirection(direction: RotationDirection): RotationDirectionString {
     switch (direction) {
       case RotationDirection.COUNTERCLOCKWISE:
         return RotationDirectionString.COUNTERCLOCKWISE;
@@ -137,9 +128,7 @@ export class StepCounter {
       case RotationDirection.NONE:
         return RotationDirectionString.NONE;
       default:
-        throw new Error(
-          'from mappingRotationDirection: Unrecognized RotationDirection'
-        );
+        throw new Error('from mappingRotationDirection: Unrecognized RotationDirection');
     }
   }
 
@@ -147,9 +136,7 @@ export class StepCounter {
     return currentMovement.isDifficult;
   }
 
-  private conditionToIncreaseDifficultOrigin(
-    absoluteName: TurnAbsoluteName
-  ): boolean {
+  private conditionToIncreaseDifficultOrigin(absoluteName: TurnAbsoluteName): boolean {
     const currentAmount = this.turns.difficultOrigin.get(absoluteName) || 0;
     return currentAmount < 2;
   }
@@ -160,12 +147,9 @@ export class StepCounter {
 
   private increaseDifficultOrigin(
     absoluteName: TurnAbsoluteName,
-    currentDifficultOriginAmount: number
+    currentDifficultOriginAmount: number,
   ) {
-    this.turns.difficultOrigin.set(
-      absoluteName,
-      currentDifficultOriginAmount + 1
-    );
+    this.turns.difficultOrigin.set(absoluteName, currentDifficultOriginAmount + 1);
   }
 
   private getCurrentDifficultOriginAmount(absoluteName: TurnAbsoluteName) {
@@ -176,19 +160,26 @@ export class StepCounter {
     this.lastStep = movement;
   }
 
+  public resetCounter() {
+    this.lastStep = null;
+    this.turns = this.initTurns();
+    this.rotations = this.initRotations();
+    this.distance = 0;
+    this.threeTurnsBlock = this.initThreeTurnsBlock();
+  }
+
   private initTurns(): TurnsType {
     return {
       difficultAll: 0,
       difficultOrigin: new Map<TurnAbsoluteName, number>(
-        Object.values(TurnAbsoluteName).map((key) => [key, 0])
+        Object.values(TurnAbsoluteName).map((key) => [key, 0]),
       ),
     };
   }
 
   private initThreeTurnsBlock(): ThreeTurnsBlockType {
     const keys = Object.values(TurnAbsoluteName).filter(
-      (name) =>
-        ![TurnAbsoluteName.CHOCTAW, TurnAbsoluteName.UNKNOWN].includes(name)
+      (name) => ![TurnAbsoluteName.CHOCTAW, TurnAbsoluteName.UNKNOWN].includes(name),
     );
     return {
       blockAmount: 0,
@@ -198,7 +189,7 @@ export class StepCounter {
 
   private initRotations(): RotationsType {
     return new Map<RotationDirectionString, number>(
-      Object.values(RotationDirectionString).map((key) => [key, 0])
+      Object.values(RotationDirectionString).map((key) => [key, 0]),
     );
   }
 }
