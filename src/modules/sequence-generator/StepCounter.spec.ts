@@ -25,6 +25,75 @@ describe('StepCounter', () => {
 
   //  note turns methods
   describe('turns methods', () => {
+    describe('resetCounter', () => {
+      it('должен всем свойствам в counter выставить 0', () => {
+        counter['turns'] = {
+          difficultAll: 6,
+          difficultOrigin: new Map<TurnAbsoluteName, number>([
+            [TurnAbsoluteName.ROCKER, 2],
+            [TurnAbsoluteName.COUNTER, 1],
+            [TurnAbsoluteName.BRACKET, 1],
+            [TurnAbsoluteName.TWIZZLE, 1],
+            [TurnAbsoluteName.LOOP, 1],
+            [TurnAbsoluteName.CHOCTAW, 1],
+            [TurnAbsoluteName.UNKNOWN, 1],
+          ]),
+        };
+        counter['lastStep'] = { name: 'test' } as Movement;
+        counter['rotations'] = new Map<RotationDirectionString, number>([
+          [RotationDirectionString.NONE, 10],
+          [RotationDirectionString.COUNTERCLOCKWISE, 10],
+          [RotationDirectionString.CLOCKWISE, 10],
+        ]);
+        counter['distance'] = 5;
+        counter['threeTurnsBlock'] = {
+          blockAmount: 2,
+          turns: new Map<TurnAbsoluteName, number>([
+            [TurnAbsoluteName.ROCKER, 1],
+            [TurnAbsoluteName.COUNTER, 1],
+            [TurnAbsoluteName.BRACKET, 1],
+            [TurnAbsoluteName.TWIZZLE, 1],
+            [TurnAbsoluteName.LOOP, 1],
+          ]),
+        };
+
+        counter.resetCounter();
+
+        // note проверки
+        expect(counter['lastStep']).toEqual(null);
+        expect(counter['turns'].difficultAll).toEqual(0);
+        expect(counter['turns'].difficultOrigin).toStrictEqual(
+          new Map<TurnAbsoluteName, number>([
+            [TurnAbsoluteName.ROCKER, 0],
+            [TurnAbsoluteName.COUNTER, 0],
+            [TurnAbsoluteName.BRACKET, 0],
+            [TurnAbsoluteName.TWIZZLE, 0],
+            [TurnAbsoluteName.LOOP, 0],
+            [TurnAbsoluteName.CHOCTAW, 0],
+            [TurnAbsoluteName.UNKNOWN, 0],
+          ]),
+        );
+        expect(counter['rotations']).toStrictEqual(
+          new Map<RotationDirectionString, number>([
+            [RotationDirectionString.NONE, 0],
+            [RotationDirectionString.COUNTERCLOCKWISE, 0],
+            [RotationDirectionString.CLOCKWISE, 0],
+          ]),
+        );
+        expect(counter['distance']).toEqual(0);
+        expect(counter['threeTurnsBlock']).toStrictEqual({
+          blockAmount: 0,
+          turns: new Map<TurnAbsoluteName, number>([
+            [TurnAbsoluteName.ROCKER, 0],
+            [TurnAbsoluteName.COUNTER, 0],
+            [TurnAbsoluteName.BRACKET, 0],
+            [TurnAbsoluteName.TWIZZLE, 0],
+            [TurnAbsoluteName.LOOP, 0],
+          ]),
+        });
+      });
+    });
+
     describe('increaseDifficultAll', () => {
       it('должен увеличить на единицу turns.difficultAll', () => {
         counter['turns'].difficultAll = 1;
@@ -41,10 +110,7 @@ describe('StepCounter', () => {
       it('должен увеличить на единицу одно свойство в turns.difficultOrigin', () => {
         const turnAbsoluteName = TurnAbsoluteName.ROCKER;
         const currentDifficultOriginAmount = 1;
-        counter['increaseDifficultOrigin'](
-          turnAbsoluteName,
-          currentDifficultOriginAmount
-        );
+        counter['increaseDifficultOrigin'](turnAbsoluteName, currentDifficultOriginAmount);
 
         const expected = 2;
         const result = counter['turns'].difficultOrigin.get(turnAbsoluteName);
@@ -58,8 +124,7 @@ describe('StepCounter', () => {
         const turnAbsoluteName = TurnAbsoluteName.ROCKER;
         counter['turns'].difficultOrigin.set(turnAbsoluteName, 1);
 
-        const result =
-          counter['getCurrentDifficultOriginAmount'](turnAbsoluteName);
+        const result = counter['getCurrentDifficultOriginAmount'](turnAbsoluteName);
         const expected = 1;
 
         expect(result).toEqual(expected);
@@ -86,16 +151,14 @@ describe('StepCounter', () => {
       it('должен вернуть true', () => {
         const turnAbsoluteName = TurnAbsoluteName.ROCKER;
         counter['turns'].difficultOrigin.set(turnAbsoluteName, 1);
-        const result =
-          counter['conditionToIncreaseDifficultOrigin'](turnAbsoluteName);
+        const result = counter['conditionToIncreaseDifficultOrigin'](turnAbsoluteName);
         expect(result).toBeTruthy();
       });
 
       it('должен вернуть false', () => {
         const turnAbsoluteName = TurnAbsoluteName.ROCKER;
         counter['turns'].difficultOrigin.set(turnAbsoluteName, 2);
-        const result =
-          counter['conditionToIncreaseDifficultOrigin'](turnAbsoluteName);
+        const result = counter['conditionToIncreaseDifficultOrigin'](turnAbsoluteName);
         expect(result).toBeFalsy();
       });
     });
@@ -105,10 +168,7 @@ describe('StepCounter', () => {
   describe('rotations methods', () => {
     describe('mappingRotationDirection', () => {
       const propList: [RotationDirection, RotationDirectionString][] = [
-        [
-          RotationDirection.COUNTERCLOCKWISE,
-          RotationDirectionString.COUNTERCLOCKWISE,
-        ],
+        [RotationDirection.COUNTERCLOCKWISE, RotationDirectionString.COUNTERCLOCKWISE],
         [RotationDirection.NONE, RotationDirectionString.NONE],
         [RotationDirection.CLOCKWISE, RotationDirectionString.CLOCKWISE],
       ];
@@ -121,7 +181,7 @@ describe('StepCounter', () => {
       it('должен выбросить ошибку, если передано неверное значение', () => {
         const input = 'wrong value' as unknown as RotationDirection;
         expect(() => counter['mappingRotationDirection'](input)).toThrowError(
-          'from mappingRotationDirection: Unrecognized RotationDirection'
+          'from mappingRotationDirection: Unrecognized RotationDirection',
         );
       });
     });
@@ -135,9 +195,7 @@ describe('StepCounter', () => {
 
         counter['increaseRotations'](mockCurrentMovement, 180);
         const expected = 360;
-        const result = counter['rotations'].get(
-          RotationDirectionString.CLOCKWISE
-        );
+        const result = counter['rotations'].get(RotationDirectionString.CLOCKWISE);
         expect(result).toEqual(expected);
       });
     });
@@ -154,8 +212,7 @@ describe('StepCounter', () => {
 
         counter['lastStep'] = mockLastStep;
 
-        const result =
-          counter['conditionToIncreaseRotations'](mockCurrentMovement);
+        const result = counter['conditionToIncreaseRotations'](mockCurrentMovement);
         expect(result).toBeTruthy();
       });
 
@@ -170,8 +227,7 @@ describe('StepCounter', () => {
 
         counter['lastStep'] = mockLastStep;
 
-        const result =
-          counter['conditionToIncreaseRotations'](mockCurrentMovement);
+        const result = counter['conditionToIncreaseRotations'](mockCurrentMovement);
         expect(result).toBeTruthy();
       });
 
@@ -186,8 +242,7 @@ describe('StepCounter', () => {
 
         counter['lastStep'] = mockLastStep;
 
-        const result =
-          counter['conditionToIncreaseRotations'](mockCurrentMovement);
+        const result = counter['conditionToIncreaseRotations'](mockCurrentMovement);
         expect(result).toBeFalsy();
       });
 
@@ -202,8 +257,7 @@ describe('StepCounter', () => {
 
         counter['lastStep'] = mockLastStep;
 
-        const result =
-          counter['conditionToIncreaseRotations'](mockCurrentMovement);
+        const result = counter['conditionToIncreaseRotations'](mockCurrentMovement);
         expect(result).toBeFalsy();
       });
     });

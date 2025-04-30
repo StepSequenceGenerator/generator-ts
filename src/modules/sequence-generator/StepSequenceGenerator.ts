@@ -80,19 +80,18 @@ class StepSequenceGenerator {
     }
     this.counter.increaseThreeTurnsBlockAmount();
   }
+  private filterForThreeTurnsBlock(movementLibrary: MovementLibrary) {
+    const unusedTurns = this.counter.unusedDifficultTurns;
+    return movementLibrary
+      .filterDifficultTurns()
+      .filterBy((movement: Movement) => unusedTurns.includes(movement.absoluteName));
+  }
 
   private generateStep(movements: Movement[]) {
     const movementIndex = this.randomGenerator.generateNumber(movements, chanceRatioMap);
     this.context.currentStep = movements[movementIndex];
     this.addStepToSequence(this.context.currentStep);
     this.counter.update(this.context.currentStep);
-  }
-
-  private filterForThreeTurnsBlock(movementLibrary: MovementLibrary) {
-    const unusedTurns = this.counter.unusedDifficultTurns;
-    return movementLibrary
-      .filterDifficultTurns()
-      .filterBy((movement: Movement) => unusedTurns.includes(movement.absoluteName));
   }
 
   private filterLibraryForNextStep() {
