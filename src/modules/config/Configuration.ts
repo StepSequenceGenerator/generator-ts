@@ -23,9 +23,8 @@ export class Configuration {
   }
 
   setExcelFilePath() {
-    const __filename = fileURLToPath(import.meta.url);
+    const __filename = fileURLToPath(require.resolve('../config/Configuration'));
     const __dirname = dirname(__filename);
-    const filePath = resolve(__dirname, '../../public/');
-    return filePath;
+    return resolve(__dirname, '../../public/');
   }
 }
