@@ -3,3 +3,6 @@ import { DifficultLevelAmountStep } from './shared/enums/difficult-level-amount-
 
 export default twizzle;
 export { DifficultLevelAmountStep };
+
+const s = twizzle();
+s.init();
