@@ -1,5 +1,4 @@
-import path, { dirname, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import path, { resolve } from 'node:path';
 
 export class Configuration {
   private readonly excelFilePath: string;
@@ -23,9 +22,6 @@ export class Configuration {
   }
 
   setExcelFilePath() {
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = dirname(__filename);
-    const filePath = resolve(__dirname, '../../public/');
-    return filePath;
+    return resolve(__dirname, '../../public/');
   }
 }
