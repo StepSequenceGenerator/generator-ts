@@ -25,8 +25,8 @@ describe('StepCounter', () => {
 
   //  note turns methods
   describe('turns methods', () => {
-    describe('resetCounter', () => {
-      it('должен всем свойствам в counter выставить 0', () => {
+    describe('resetCounter должен всем свойствам в counter выставить 0', () => {
+      beforeEach(() => {
         counter['turns'] = {
           difficultAll: 6,
           difficultOrigin: new Map<TurnAbsoluteName, number>([
@@ -56,12 +56,18 @@ describe('StepCounter', () => {
             [TurnAbsoluteName.LOOP, 1],
           ]),
         };
-
         counter.resetCounter();
+      });
 
-        // note проверки
+      it('lastStep должен быть null', () => {
         expect(counter['lastStep']).toEqual(null);
+      });
+
+      it('turns.difficultAll должен быть 0', () => {
         expect(counter['turns'].difficultAll).toEqual(0);
+      });
+
+      it('все turns.difficultOrigin должны быть 0', () => {
         expect(counter['turns'].difficultOrigin).toStrictEqual(
           new Map<TurnAbsoluteName, number>([
             [TurnAbsoluteName.ROCKER, 0],
@@ -73,6 +79,9 @@ describe('StepCounter', () => {
             [TurnAbsoluteName.UNKNOWN, 0],
           ]),
         );
+      });
+
+      it('все turns.rotations должны быть 0', () => {
         expect(counter['rotations']).toStrictEqual(
           new Map<RotationDirectionString, number>([
             [RotationDirectionString.NONE, 0],
@@ -80,7 +89,13 @@ describe('StepCounter', () => {
             [RotationDirectionString.CLOCKWISE, 0],
           ]),
         );
+      });
+
+      it('distance должен быть 0', () => {
         expect(counter['distance']).toEqual(0);
+      });
+
+      it('все свойства в threeTurnsBlock должны быть 0', () => {
         expect(counter['threeTurnsBlock']).toStrictEqual({
           blockAmount: 0,
           turns: new Map<TurnAbsoluteName, number>([
