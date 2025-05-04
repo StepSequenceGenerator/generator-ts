@@ -1,7 +1,6 @@
 import { BaseExcelParser } from './excel-parser/BaseExcelParser.js';
 import { UploaderAbstract } from '../uploader/UploaderAbstract.js';
 import { IXlsxBook } from './excel-book-loader/IExcelBook.js';
-import { BaseExcelParserConstructor } from './excel-parser/excel-parsers.js';
 
 type AbstractExcelFormatterArgsType<T extends Record<string, string>> = {
   loader: IXlsxBook;
