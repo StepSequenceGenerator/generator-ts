@@ -21,9 +21,17 @@ describe('Movement', () => {
     type: MovementCharacter.UNKNOWN,
     description: '',
     absoluteName: TurnAbsoluteName.UNKNOWN,
+    testName: '',
   };
 
   let movement: Movement;
+
+  it('ключи в movementData должны соответствовать ключам в Movement', () => {
+    const mockInstance = new Movement({} as Movement);
+    const originKeys = Object.keys(mockInstance).sort((a, b) => a.localeCompare(b));
+    const movementDataKeys = Object.keys(movementData).sort((a, b) => a.localeCompare(b));
+    expect(movementDataKeys).toStrictEqual(originKeys);
+  });
 
   beforeEach(() => {
     movement = new Movement(movementData);
