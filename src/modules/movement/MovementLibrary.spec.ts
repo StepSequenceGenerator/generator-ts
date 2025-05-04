@@ -38,16 +38,10 @@ describe('MovementLibrary', () => {
     it('должен вернуть шаг с Leg.LEFT', () => {
       const input = (m: Movement) => m.startLeg === Leg.LEFT;
       const expected = [{ name: 'A', startLeg: Leg.LEFT }];
-      const result = getFuncResult<MovementLibrary>(
-        movementLibrary,
-        'filterBy',
-        input
-      );
+      const result = getFuncResult<MovementLibrary>(movementLibrary, 'filterBy', input);
       expect(result.movements).toEqual(expected);
     });
   });
-
-  // todo изменить все фильтры, чтобы всегда отдавать movement с NONE или BOTH
 
   describe('filterByLeg', () => {
     const mockMovements: Movement[] = [
@@ -66,11 +60,7 @@ describe('MovementLibrary', () => {
         { name: 'A', startLeg: Leg.LEFT },
         { name: 'B', startLeg: Leg.BOTH },
       ];
-      const result = getFuncResult<MovementLibrary>(
-        movementLibrary,
-        'filterByLeg',
-        input
-      );
+      const result = getFuncResult<MovementLibrary>(movementLibrary, 'filterByLeg', input);
       expect(result.movements).toEqual(expected);
     });
 
@@ -80,22 +70,14 @@ describe('MovementLibrary', () => {
         { name: 'B', startLeg: Leg.RIGHT },
         { name: 'B', startLeg: Leg.BOTH },
       ];
-      const result = getFuncResult<MovementLibrary>(
-        movementLibrary,
-        'filterByLeg',
-        input
-      );
+      const result = getFuncResult<MovementLibrary>(movementLibrary, 'filterByLeg', input);
       expect(result.movements).toEqual(expected);
     });
 
     it('должен вернуть массив без фильтрации', () => {
       const input = Leg.BOTH;
       const expected = mockMovements;
-      const result = getFuncResult<MovementLibrary>(
-        movementLibrary,
-        'filterByLeg',
-        input
-      );
+      const result = getFuncResult<MovementLibrary>(movementLibrary, 'filterByLeg', input);
       expect(result.movements).toEqual(expected);
     });
   });
@@ -113,40 +95,22 @@ describe('MovementLibrary', () => {
 
     it('должен вернуть массив с Edge.INNER и Edge.TWO_EDGES', () => {
       const input = Edge.INNER;
-      const expected = [
-        { startEdge: Edge.INNER },
-        { startEdge: Edge.TWO_EDGES },
-      ];
-      const result = getFuncResult<MovementLibrary>(
-        movementLibrary,
-        'filterByEdge',
-        input
-      );
+      const expected = [{ startEdge: Edge.INNER }, { startEdge: Edge.TWO_EDGES }];
+      const result = getFuncResult<MovementLibrary>(movementLibrary, 'filterByEdge', input);
       expect(result.movements).toEqual(expected);
     });
 
     it('должен вернуть массив с Edge.INNER и Edge.TWO_EDGES', () => {
       const input = Edge.INNER;
-      const expected = [
-        { startEdge: Edge.INNER },
-        { startEdge: Edge.TWO_EDGES },
-      ];
-      const result = getFuncResult<MovementLibrary>(
-        movementLibrary,
-        'filterByEdge',
-        input
-      );
+      const expected = [{ startEdge: Edge.INNER }, { startEdge: Edge.TWO_EDGES }];
+      const result = getFuncResult<MovementLibrary>(movementLibrary, 'filterByEdge', input);
       expect(result.movements).toEqual(expected);
     });
 
     it('должен вернуть массив без изменений', () => {
       const input = Edge.TWO_EDGES;
       const expected = mockMovements;
-      const result = getFuncResult<MovementLibrary>(
-        movementLibrary,
-        'filterByEdge',
-        input
-      );
+      const result = getFuncResult<MovementLibrary>(movementLibrary, 'filterByEdge', input);
       expect(result.movements).toEqual(expected);
     });
   });
@@ -171,7 +135,7 @@ describe('MovementLibrary', () => {
       const result = getFuncResult<MovementLibrary>(
         movementLibrary,
         'filterByTransitionDirection',
-        input
+        input,
       );
       expect(result.movements).toEqual(expected);
     });
@@ -185,7 +149,7 @@ describe('MovementLibrary', () => {
       const result = getFuncResult<MovementLibrary>(
         movementLibrary,
         'filterByTransitionDirection',
-        input
+        input,
       );
       expect(result.movements).toEqual(expected);
     });
@@ -196,7 +160,7 @@ describe('MovementLibrary', () => {
       const result = getFuncResult<MovementLibrary>(
         movementLibrary,
         'filterByTransitionDirection',
-        input
+        input,
       );
       expect(result.movements).toEqual(expected);
     });
@@ -222,7 +186,7 @@ describe('MovementLibrary', () => {
       const result = getFuncResult<MovementLibrary>(
         movementLibrary,
         'filterByRotationDirection',
-        input
+        input,
       );
       expect(result.movements).toEqual(expected);
     });
@@ -236,7 +200,7 @@ describe('MovementLibrary', () => {
       const result = getFuncResult<MovementLibrary>(
         movementLibrary,
         'filterByRotationDirection',
-        input
+        input,
       );
       expect(result.movements).toEqual(expected);
     });
@@ -247,7 +211,7 @@ describe('MovementLibrary', () => {
       const result = getFuncResult<MovementLibrary>(
         movementLibrary,
         'filterByRotationDirection',
-        input
+        input,
       );
       expect(result.movements).toEqual(expected);
     });

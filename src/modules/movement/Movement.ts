@@ -32,7 +32,6 @@ export interface IMovement {
 
   readonly description: string;
   readonly absoluteName: TurnAbsoluteName;
-  readonly testName: string;
 }
 
 export class Movement implements IMovement {
@@ -52,7 +51,6 @@ export class Movement implements IMovement {
   readonly type: MovementCharacter;
   readonly description: string;
   readonly absoluteName: TurnAbsoluteName;
-  readonly testName: string;
 
   constructor(movement: IMovement) {
     this.id = movement.id;
@@ -71,6 +69,5 @@ export class Movement implements IMovement {
     this.type = movement.type;
     this.description = movement.description;
     this.absoluteName = movement.absoluteName;
-    this.testName = 'add test name';
   }
 }

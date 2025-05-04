@@ -21,7 +21,6 @@ describe('Movement', () => {
     type: MovementCharacter.UNKNOWN,
     description: '',
     absoluteName: TurnAbsoluteName.UNKNOWN,
-    testName: '',
   };
 
   let movement: Movement;
