@@ -13,6 +13,7 @@ enum ColumnName {
   IS_SEQUENCE = 'K',
   DESCRIPTION = 'L',
   ABSOLUTE_NAME = 'M',
+  DISTANCE = 'N',
 }
 
 export { ColumnName };
