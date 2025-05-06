@@ -84,7 +84,7 @@ class MovementFactory {
   }
 
   private static parseName(value: unknown): string {
-    const formattedValue = String(value);
+    const formattedValue = this.formatToString(value);
     if (formattedValue) {
       return String(formattedValue);
     } else {
@@ -93,7 +93,7 @@ class MovementFactory {
   }
 
   private static parseEdge(value: unknown): Edge {
-    const formatedValue = String(value);
+    const formatedValue = this.formatToString(value);
 
     this.validateEdge(formatedValue);
 
@@ -107,9 +107,9 @@ class MovementFactory {
   }
 
   private static parseIsChangeEdge(startEdge: unknown, endEdge: unknown): boolean {
-    const formatedStartEdge = String(startEdge);
+    const formatedStartEdge = this.formatToString(startEdge);
     this.validateEdge(formatedStartEdge);
-    const formatedEndEdge = String(endEdge);
+    const formatedEndEdge = this.formatToString(endEdge);
     this.validateEdge(formatedEndEdge);
 
     return formatedStartEdge !== formatedEndEdge;
@@ -123,9 +123,9 @@ class MovementFactory {
   }
 
   private static parseIsSpeedIncrease(value: unknown): boolean {
-    const formatedValue = Number(value);
+    const formatedValue = this.formatToNumber(value);
 
-    if (Number.isNaN(formatedValue))
+    if (formatedValue === null)
       throw new MovementParserError('wrong value for speedIncrease', 'INVALID_SPEED_INCREASE');
 
     return Boolean(formatedValue);
@@ -167,8 +167,8 @@ class MovementFactory {
   }
 
   private static parseTransitionDirection(value: unknown): TransitionDirection {
-    const formattedValue = Number(value);
-    if (Number.isNaN(formattedValue)) {
+    const formattedValue = this.formatToNumber(value);
+    if (formattedValue === null) {
       return TransitionDirection.NONE;
     } else if (formattedValue === 0) {
       return TransitionDirection.FORWARD;
@@ -179,8 +179,8 @@ class MovementFactory {
 
   private static parseRotationDirection(value: unknown): RotationDirection {
     let direction: RotationDirection;
-    const formatedValue = Number(value);
-    if (Number.isNaN(formatedValue)) {
+    const formatedValue = this.formatToNumber(value);
+    if (formatedValue === null) {
       throw new MovementParserError(
         'from parseRotationDirection: wrong value for rotationDirection',
         'INVALID_ROTATION_DIRECTION',
