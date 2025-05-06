@@ -31,41 +31,50 @@ export type ParseTypeArgsType = {
 class MovementFactory {
   static createFromExcelData<T extends Record<string, string>>(
     data: Map<string, MapValueTypeBase>,
-    columnName: T
+    columnName: T,
   ): Movement {
     const movementData: IMovement = {
       id: this.parseId(data.get(columnName.ID)),
       name: this.parseName(data.get(columnName.NAME)),
 
       transitionDirection: this.parseTransitionDirection(
-        data.get(columnName.TRANSLATION_DIRECTION)
+        data.get(columnName.TRANSLATION_DIRECTION),
       ),
-      rotationDirection: this.parseRotationDirection(
-        data.get(columnName.ROTATION_DIRECTION)
-      ),
-      rotationDegree: this.parseRotationDegree(
-        data.get(columnName.ROTATION_DIRECTION)
-      ),
+
+      rotationDirection: this.parseRotationDirection(data.get(columnName.ROTATION_DIRECTION)),
+
+      rotationDegree: this.parseRotationDegree(data.get(columnName.ROTATION_DIRECTION)),
+
       startLeg: this.parseLeg(data.get(columnName.START_LEG)),
+
       endLeg: this.parseLeg(data.get(columnName.END_LEG)),
+
       isChangeLeg: this.parseIsChangeLeg(
         data.get(columnName.START_LEG),
-        data.get(columnName.END_LEG)
+        data.get(columnName.END_LEG),
       ),
       startEdge: this.parseEdge(data.get(columnName.START_EDGE)),
+
       endEdge: this.parseEdge(data.get(columnName.END_EDGE)),
+
       isChangeEdge: this.parseIsChangeEdge(
         data.get(columnName.START_EDGE),
-        data.get(columnName.END_EDGE)
+        data.get(columnName.END_EDGE),
       ),
-      isSpeedIncrease: this.parseIsSpeedIncrease(
-        data.get(columnName.IS_SPEED_INCREASE)
-      ),
+
+      isSpeedIncrease: this.parseIsSpeedIncrease(data.get(columnName.IS_SPEED_INCREASE)),
+
       isDifficult: this.parseIsDifficult(data.get(columnName.IS_DIFFICULT)),
+
       type: this.parseType(data.get(columnName.TYPE)),
+
       description: this.parseDescription(data.get(columnName.DESCRIPTION)),
+
       absoluteName: this.parseAbsoluteName(data.get(columnName.ABSOLUTE_NAME)),
+
+      distance: this.parseDistance(data.get(columnName.DISTANCE)),
     };
+
     return new Movement(movementData);
   }
 
@@ -75,7 +84,7 @@ class MovementFactory {
   }
 
   private static parseName(value: unknown): string {
-    const formattedValue = String(value);
+    const formattedValue = this.formatToString(value);
     if (formattedValue) {
       return String(formattedValue);
     } else {
@@ -84,7 +93,7 @@ class MovementFactory {
   }
 
   private static parseEdge(value: unknown): Edge {
-    const formatedValue = String(value);
+    const formatedValue = this.formatToString(value);
 
     this.validateEdge(formatedValue);
 
@@ -97,13 +106,10 @@ class MovementFactory {
     }
   }
 
-  private static parseIsChangeEdge(
-    startEdge: unknown,
-    endEdge: unknown
-  ): boolean {
-    const formatedStartEdge = String(startEdge);
+  private static parseIsChangeEdge(startEdge: unknown, endEdge: unknown): boolean {
+    const formatedStartEdge = this.formatToString(startEdge);
     this.validateEdge(formatedStartEdge);
-    const formatedEndEdge = String(endEdge);
+    const formatedEndEdge = this.formatToString(endEdge);
     this.validateEdge(formatedEndEdge);
 
     return formatedStartEdge !== formatedEndEdge;
@@ -117,13 +123,10 @@ class MovementFactory {
   }
 
   private static parseIsSpeedIncrease(value: unknown): boolean {
-    const formatedValue = Number(value);
+    const formatedValue = this.formatToNumber(value);
 
-    if (Number.isNaN(formatedValue))
-      throw new MovementParserError(
-        'wrong value for speedIncrease',
-        'INVALID_SPEED_INCREASE'
-      );
+    if (formatedValue === null)
+      throw new MovementParserError('wrong value for speedIncrease', 'INVALID_SPEED_INCREASE');
 
     return Boolean(formatedValue);
   }
@@ -164,8 +167,8 @@ class MovementFactory {
   }
 
   private static parseTransitionDirection(value: unknown): TransitionDirection {
-    const formattedValue = Number(value);
-    if (Number.isNaN(formattedValue)) {
+    const formattedValue = this.formatToNumber(value);
+    if (formattedValue === null) {
       return TransitionDirection.NONE;
     } else if (formattedValue === 0) {
       return TransitionDirection.FORWARD;
@@ -176,11 +179,11 @@ class MovementFactory {
 
   private static parseRotationDirection(value: unknown): RotationDirection {
     let direction: RotationDirection;
-    const formatedValue = Number(value);
-    if (Number.isNaN(formatedValue)) {
+    const formatedValue = this.formatToNumber(value);
+    if (formatedValue === null) {
       throw new MovementParserError(
         'from parseRotationDirection: wrong value for rotationDirection',
-        'INVALID_ROTATION_DIRECTION'
+        'INVALID_ROTATION_DIRECTION',
       );
     }
 
@@ -199,7 +202,7 @@ class MovementFactory {
     if (Number.isNaN(formatedValue))
       throw new MovementParserError(
         'from parseRotationDegree: wrong value for rotationDirection',
-        'INVALID_ROTATION_DIRECTION'
+        'INVALID_ROTATION_DIRECTION',
       );
 
     const validDegrees = Object.values(RotationDegree);
@@ -216,10 +219,10 @@ class MovementFactory {
   }
 
   private static parseType(value: unknown): MovementCharacter {
-    return this.straightParse<typeof MovementCharacter, MovementCharacter>(
+    return this.straightParseString<typeof MovementCharacter, MovementCharacter>(
       value,
       MovementCharacter,
-      MovementCharacter.UNKNOWN
+      MovementCharacter.UNKNOWN,
     );
   }
 
@@ -228,22 +231,36 @@ class MovementFactory {
   }
 
   private static parseAbsoluteName(value: unknown): TurnAbsoluteName {
-    return this.straightParse<typeof TurnAbsoluteName, TurnAbsoluteName>(
+    return this.straightParseString<typeof TurnAbsoluteName, TurnAbsoluteName>(
       value,
       TurnAbsoluteName,
-      TurnAbsoluteName.UNKNOWN
+      TurnAbsoluteName.UNKNOWN,
     );
   }
 
-  private static straightParse<
-    E extends Record<string, string>,
-    T extends E[keyof E],
-  >(value: unknown, enumObj: E, defaultValue: T): T {
-    const formattedValue = String(value).trim().toLowerCase();
+  private static parseDistance(value: unknown): number {
+    const formattedValue = this.formatToNumber(value);
+    return formattedValue === null ? 1 : formattedValue;
+  }
+
+  private static straightParseString<E extends Record<string, string>, T extends E[keyof E]>(
+    value: unknown,
+    enumObj: E,
+    defaultValue: T,
+  ): T {
+    const formattedValue = this.formatToString(value);
 
     const match = Object.values(enumObj).find((val) => val === formattedValue);
 
     return (match as unknown as T) ?? defaultValue;
+  }
+
+  private static formatToString(value: unknown): string {
+    return String(value).trim().toLowerCase();
+  }
+
+  private static formatToNumber(value: unknown): number | null {
+    return Number.isNaN(Number(value)) ? null : Number(value);
   }
 }
 
