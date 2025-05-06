@@ -1,4 +1,10 @@
-import { CoordinatesType, XCoordinateType } from './types';
+import {
+  CoordinatesType,
+  VectorCursorType,
+  XCoordinateType,
+  XCursorType,
+  YCursorType,
+} from './types';
 
 function createXCoordinate(x: number) {
   if (x < 1 && x > 59) {
@@ -22,4 +28,22 @@ function createCoordinates(x: number, y: number) {
   return { x: xC, y: yC } as unknown as CoordinatesType;
 }
 
-export { createCoordinates, createXCoordinate, createYCoordinate };
+function createXCursor(x: number) {
+  if ([1, 0, -1].includes(x)) {
+    return x as XCursorType;
+  }
+}
+
+function createYCursor(y: number) {
+  if ([1, 0, -1].includes(y)) {
+    return y as YCursorType;
+  }
+}
+
+function createVectorCursor(x: number, y: number): VectorCursorType {
+  const xC = createXCoordinate(x);
+  const yC = createXCoordinate(y);
+  return { x: xC, y: yC } as unknown as VectorCursorType;
+}
+
+export { createCoordinates, createVectorCursor };
