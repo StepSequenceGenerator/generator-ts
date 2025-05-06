@@ -31,6 +31,7 @@ export default [
       ...prettierConfig.rules,
       '@typescript-eslint/no-explicit-any': 'error',
       'prettier/prettier': 'error',
+      'eslint-disable-line no-explicit-any': 'warning',
     },
   },
 ];

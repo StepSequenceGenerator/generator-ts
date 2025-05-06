@@ -404,7 +404,15 @@ describe('MovementFactory', () => {
     });
   });
 
-  // todo удалить и импортитировать из utils
+  describe('parseId', () => {
+    it('должен вернуть строку без пробелов вначале и конце', () => {
+      const input = ' testLine ';
+      const expected = 'testLine';
+      const result = getFuncResult('parseId', input);
+      expect(result).toEqual(expected);
+    });
+  });
+
   // eslint-disable-line no-explicit-any
   function getFuncResult(funcName: string, ...args: any) {
     // @ts-expect-error-ignore
