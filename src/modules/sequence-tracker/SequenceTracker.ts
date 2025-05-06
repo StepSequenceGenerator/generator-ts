@@ -11,11 +11,13 @@ import {
 } from './types';
 import { VectorKey } from './enums';
 import { createCoordinates } from './utils';
+import { CoordinatesError, SequenceTrackerError } from '../../errors/custom-errors';
 
 export class SequenceTracker {
   standardStartCoordinates: CoordinatesType[];
   trackVectors: TrackVectorType;
   vectorAngles: VectorAngleType;
+
   constructor(
     standardStartCoordinates: CoordinatesType[],
     trackVectors: TrackVectorType,
@@ -26,15 +28,38 @@ export class SequenceTracker {
     this.trackVectors = trackVectors;
   }
 
-  public main(currentVector: VectorKey, currentCoordinates: CoordinatesType, distance: number) {
-    const vectorKeys = this.filterAllowedVectorKeys(currentVector);
-    const newVectorKey = this.getNextMovementVector(vectorKeys);
-    const vectorCursor = this.getNextTrackVector(newVectorKey);
-    return this.getNewCoordinates({
-      vectorCursor,
-      currentCoordinates,
-      distance,
-    });
+  public getNextPosition(
+    currentVector: VectorKey,
+    currentCoordinates: CoordinatesType,
+    distance: number,
+  ) {
+    const triedVectorKeys = new Set<VectorKey>();
+    let availableVectorKeys = this.getAllowedVectorKeys(currentVector);
+
+    while (availableVectorKeys.length > 0) {
+      const vectorKey = this.getNextMovementVector(availableVectorKeys);
+      triedVectorKeys.add(vectorKey);
+      const vectorCursor = this.getNextTrackVector(vectorKey);
+      const newCoordinates = this.getNewCoordinates({
+        vectorCursor,
+        currentCoordinates,
+        distance,
+      });
+
+      if (newCoordinates) return newCoordinates;
+
+      availableVectorKeys = this.filterVectorKeys(triedVectorKeys, availableVectorKeys);
+    }
+
+    console.debug('getNextPosition; Новые координаты не найдены');
+    throw new SequenceTrackerError(
+      'Unable to find next coordinates within bounds.',
+      'NO_VALID_COORDINATES',
+    );
+  }
+
+  private filterVectorKeys(triedVectorKeys: Set<VectorKey>, vectorKeys: VectorKey[]) {
+    return vectorKeys.filter((vectorKey: VectorKey) => !triedVectorKeys.has(vectorKey));
   }
 
   private getNewCoordinates(data: {
@@ -43,22 +68,31 @@ export class SequenceTracker {
     distance: number;
   }) {
     const { vectorCursor, currentCoordinates, distance } = data;
-    let localDistance = this.calcDistance(vectorCursor, distance);
+    let adjustedDistance = this.calcDistance(vectorCursor, distance);
+
     const newX = this.calcCoordinate({
       cursor: vectorCursor.x,
       coord: currentCoordinates.x,
-      distance: localDistance,
+      distance: adjustedDistance,
     });
     const newY = this.calcCoordinate({
       cursor: vectorCursor.y,
       coord: currentCoordinates.y,
-      distance: localDistance,
+      distance: adjustedDistance,
     });
-    return createCoordinates(newX, newY);
+
+    try {
+      return createCoordinates(newX, newY);
+    } catch (error) {
+      if (error instanceof CoordinatesError && error.code === 'OUTSIDE_BOUNDS') return null;
+
+      console.debug('getNewCoordinates; Неизвестная ошибка');
+      throw error;
+    }
   }
 
   private calcDistance(vectorCursor: VectorCursorType, distance: number) {
-    return vectorCursor.x !== 0 && vectorCursor.y !== 0 ? Math.sqrt(distance) / 2 : distance;
+    return vectorCursor.x !== 0 && vectorCursor.y !== 0 ? Math.sqrt(distance ** 2 * 2) : distance;
   }
 
   private calcCoordinate<
@@ -79,17 +113,18 @@ export class SequenceTracker {
     return vectors[index];
   }
 
-  private filterAllowedVectorKeys(currentVector: VectorKey, maxTurnAngle: number = 90) {
+  private getAllowedVectorKeys(currentVector: VectorKey, maxTurnAngle: number = 90) {
     const currentAngle = this.vectorAngles[currentVector];
     return (Object.keys(this.vectorAngles) as VectorKey[]).filter((key) => {
-      const angle = this.vectorAngles[key];
       const diff = Math.abs(currentAngle - this.vectorAngles[key]);
       return diff <= maxTurnAngle;
     });
   }
 
   public getStartCoordinates() {
-    return this.getRandom(0, this.standardStartCoordinates.length - 1);
+    return this.standardStartCoordinates[
+      this.getRandom(0, this.standardStartCoordinates.length - 1)
+    ];
   }
 
   private getRandom(min: number, max: number) {
