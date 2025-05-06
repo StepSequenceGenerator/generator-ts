@@ -7,7 +7,7 @@ import { createCoordinates } from './utils';
  * @description точка отсчета - левая сторона, ближайший угол судейского борта
  * */
 
-export const STANDARD_START_POINTS: ReadonlyArray<CoordinatesType> = [
+export const START_POINTS: ReadonlyArray<CoordinatesType> = [
   createCoordinates(5, 5),
   createCoordinates(5, 35),
   createCoordinates(55, 5),
