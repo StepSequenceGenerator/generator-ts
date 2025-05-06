@@ -44,9 +44,10 @@ describe('MovementFactory', () => {
 
   describe('implementation', () => {
     it('должен корректно создаваться', () => {
-      const movement = MovementFactory.createFromExcelData<
-        typeof mockColumnName
-      >(mockLine, mockColumnName);
+      const movement = MovementFactory.createFromExcelData<typeof mockColumnName>(
+        mockLine,
+        mockColumnName,
+      );
       expect(movement).toBeDefined();
       expect(movement).toBeInstanceOf(Movement);
     });
@@ -117,7 +118,7 @@ describe('MovementFactory', () => {
       const input = 'test';
 
       expect(() => getFuncResult('parseRotationDirection', input)).toThrowError(
-        'from parseRotationDirection: wrong value for rotationDirection'
+        'from parseRotationDirection: wrong value for rotationDirection',
       );
     });
   });
@@ -146,7 +147,7 @@ describe('MovementFactory', () => {
 
     it('должен выбросить ошибку', () => {
       expect(() => getFuncResult('parseRotationDegree', 'test')).toThrowError(
-        'from parseRotationDegree: wrong value for rotationDirection'
+        'from parseRotationDegree: wrong value for rotationDirection',
       );
     });
   });
@@ -227,9 +228,7 @@ describe('MovementFactory', () => {
 
     it('должен выбросить ошибку при отсутствии в массиве "левая" или "правая"', () => {
       const input = ['wrongString'];
-      expect(() => getFuncResult('validateLegList', input)).toThrowError(
-        'wrong Leg'
-      );
+      expect(() => getFuncResult('validateLegList', input)).toThrowError('wrong Leg');
     });
   });
 
@@ -286,9 +285,7 @@ describe('MovementFactory', () => {
 
     it('должен выбросить ошибку', () => {
       const input = 'wrongString';
-      expect(() => getFuncResult('validateEdge', input)).toThrowError(
-        'wrong value for edge'
-      );
+      expect(() => getFuncResult('validateEdge', input)).toThrowError('wrong value for edge');
     });
   });
 
@@ -310,7 +307,7 @@ describe('MovementFactory', () => {
     it('должен выбросить ошибку', () => {
       const input = 'wrongString';
       expect(() => getFuncResult('parseIsSpeedIncrease', input)).toThrowError(
-        'wrong value for speedIncrease'
+        'wrong value for speedIncrease',
       );
     });
   });
@@ -379,10 +376,7 @@ describe('MovementFactory', () => {
           I: '',
         },
       ];
-      const lineMap = convertFromObjectToMap(lineObj)[0] as unknown as Map<
-        string,
-        string | number
-      >;
+      const lineMap = convertFromObjectToMap(lineObj)[0] as unknown as Map<string, string | number>;
 
       const expected = new Movement({
         id: 'ID134',
@@ -401,12 +395,10 @@ describe('MovementFactory', () => {
         type: MovementCharacter.UNKNOWN,
         description: '',
         absoluteName: TurnAbsoluteName.UNKNOWN,
+        distance: 1,
       });
 
-      const result = MovementFactory.createFromExcelData<typeof ColumnName>(
-        lineMap,
-        ColumnName
-      );
+      const result = MovementFactory.createFromExcelData<typeof ColumnName>(lineMap, ColumnName);
 
       expect(result).toStrictEqual(expected);
     });

@@ -21,6 +21,7 @@ describe('Movement', () => {
     type: MovementCharacter.UNKNOWN,
     description: '',
     absoluteName: TurnAbsoluteName.UNKNOWN,
+    distance: 2,
   };
 
   let movement: Movement;
