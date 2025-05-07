@@ -6,9 +6,11 @@ type CoordinatesType = {
   x: XCoordinateType;
   y: YCoordinateType;
 };
+type AxisType = 'x' | 'y';
 
-type XCursorType = number & { __brand: 'XCursor' };
-type YCursorType = number & { __brand: 'YCursor' };
+type CursorValueType = 1 | 0 | -1;
+type XCursorType = CursorValueType & { __brand: 'XCursor' };
+type YCursorType = CursorValueType & { __brand: 'YCursor' };
 type VectorCursorType = {
   x: XCursorType;
   y: YCursorType;
@@ -22,9 +24,11 @@ export type {
   CoordinatesType,
   XCoordinateType,
   YCoordinateType,
+  AxisType,
   TrackVectorType,
   VectorAngleType,
   VectorCursorType,
   XCursorType,
   YCursorType,
+  CursorValueType,
 };

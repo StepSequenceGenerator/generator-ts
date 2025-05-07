@@ -343,6 +343,7 @@ describe('MovementFactory', () => {
   });
 
   describe('parseType', () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let argList: any[];
     describe('MovementCharacter.SEQUENCE', () => {
       argList = ['step', 'turn', 'sequence', 'hop', 'glide', 'unknown'];
@@ -413,6 +414,7 @@ describe('MovementFactory', () => {
     });
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function getFuncResult(funcName: string, ...args: any) {
     // @ts-expect-error-any
     return MovementFactory[`${funcName}`](...args);

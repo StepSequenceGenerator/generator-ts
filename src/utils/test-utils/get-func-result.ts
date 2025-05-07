@@ -1,8 +1,7 @@
-// eslint-disable-line no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getFuncResult<T>(instance: T, funcName: keyof T, ...args: any) {
   const method = instance[funcName];
-  if (typeof method !== 'function')
-    throw new Error(`${String(funcName)} is not a function`);
+  if (typeof method !== 'function') throw new Error(`${String(funcName)} is not a function`);
 
   return method.apply(instance, args);
 }
