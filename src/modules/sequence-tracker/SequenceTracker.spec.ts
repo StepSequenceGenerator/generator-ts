@@ -21,6 +21,7 @@ describe('SequenceTracker', () => {
 
   describe('getStartCoordinates', () => {
     it('должен вернуть стартовые координаты', () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const sequenceTrackerAny = sequenceTracker as unknown as any;
       vi.spyOn(sequenceTrackerAny, 'getRandom').mockReturnValue(0);
 

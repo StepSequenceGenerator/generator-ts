@@ -1,9 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { MovementEqualizingWeightCalculator } from './MovementEqualizingWeightCalculator.js';
-import {
-  ExtendedMovementCharacter,
-  MovementCharacter,
-} from '../../shared/enums/movement-enums.js';
+import { ExtendedMovementCharacter, MovementCharacter } from '../../shared/enums/movement-enums.js';
 import type { Movement } from '../movement/Movement.js';
 
 describe('MovementEqualWeightCalculator', () => {
@@ -56,13 +53,10 @@ describe('MovementEqualWeightCalculator', () => {
   });
 
   describe('count', () => {
-    const funcNameList = [
-      'groupAndCountMovements',
-      'getMaxGroupSize',
-      'calcWeight',
-    ];
+    const funcNameList = ['groupAndCountMovements', 'getMaxGroupSize', 'calcWeight'];
 
     it.each([funcNameList])('должен вызвать %s', (name) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const calculatorAny = calculator as unknown as any;
       const spyFn = vi.spyOn(calculatorAny, name);
       calculator.count(mockMovements);
@@ -95,10 +89,7 @@ describe('MovementEqualWeightCalculator', () => {
   describe('calcEqualizingWeights', () => {
     it('должен вернуть Map с подсчитанными весами', () => {
       const expected = equalWeightMap;
-      const result = calculator['calcEqualizingWeights'](
-        3,
-        mockCharacterCounted
-      );
+      const result = calculator['calcEqualizingWeights'](3, mockCharacterCounted);
       expect(result).toStrictEqual(expected);
     });
   });
