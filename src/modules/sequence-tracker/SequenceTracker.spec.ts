@@ -5,7 +5,7 @@ import { VECTOR_ANGLES } from './vector-angles';
 import { TRACK_VECTORS } from './track-vectors';
 import { createCoordinates } from './utils';
 import { VectorKey } from './enums';
-import { XCoordinateType, XCursorType } from './types';
+import { CoordinatesType, VectorCursorType, XCoordinateType, XCursorType } from './types';
 
 describe('SequenceTracker', () => {
   let sequenceTracker: SequenceTracker;
@@ -75,6 +75,64 @@ describe('SequenceTracker', () => {
         distance: mockDistance,
       });
       expect(result).toEqual(expected);
+    });
+  });
+
+  describe('getNewCoordinates', () => {
+    it('должен вернуть координаты', () => {
+      const mock_vectorCursor = { x: 1, y: 1 } as VectorCursorType;
+      const mock_currentCoordinates = { x: 29, y: 29 } as CoordinatesType;
+      const mock_distance = 2;
+      const expected = { x: 31, y: 31 };
+      const result = sequenceTracker['getNewCoordinates']({
+        vectorCursor: mock_vectorCursor,
+        currentCoordinates: mock_currentCoordinates,
+        distance: mock_distance,
+      });
+      expect(result).toEqual(expected);
+    });
+
+    const mockCurrentCoordinatesList = [
+      { x: 59, y: 29 },
+      { x: 29, y: 39 },
+    ] as CoordinatesType[];
+    it.each(mockCurrentCoordinatesList)('должен вернуть null при %s', () => {
+      const mock_vectorCursor = { x: 1, y: 1 } as VectorCursorType;
+      const mock_currentCoordinates = { x: 59, y: 39 } as CoordinatesType;
+      const mock_distance = 2;
+      const expected = null;
+      const result = sequenceTracker['getNewCoordinates']({
+        vectorCursor: mock_vectorCursor,
+        currentCoordinates: mock_currentCoordinates,
+        distance: mock_distance,
+      });
+      expect(result).toEqual(expected);
+    });
+  });
+
+  describe('filterVectorKeys', () => {
+    it('должен вернуть отфильтрованный массив', () => {
+      const key = VectorKey.NORTH;
+      const mockTried = new Set<VectorKey>([key]);
+
+      const mockAllowed = ['north_west', 'north_east', 'north'] as VectorKey[];
+      const expected = ['north_west', 'north_east'];
+      const result = sequenceTracker['filterVectorKeys'](mockTried, mockAllowed);
+      expect(result).toStrictEqual(expected);
+    });
+
+    describe('getNextPosition', () => {
+      it('должен выбросить ошибку, если availableVectorKeys = []', () => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const sequenceTrackerAny = sequenceTracker as unknown as any;
+        vi.spyOn(sequenceTrackerAny, 'getAllowedVectorKeys').mockReturnValue([]);
+        const mockCurrentVector = VectorKey.NORTH;
+        const mockCurrentCoordinates = { x: 1, y: 1 } as CoordinatesType;
+        const distance = 1;
+        expect(() =>
+          sequenceTracker.getNextPosition(mockCurrentVector, mockCurrentCoordinates, distance),
+        ).toThrowError('Unable to find next coordinates within bounds.');
+      });
     });
   });
 });
