@@ -1,12 +1,10 @@
 import { Movement } from '../movement/Movement.js';
 import { randomInt } from 'node:crypto';
 import { WeightCalculatorBase } from './WeightCalculatorBase.js';
-import {
-  ChanceRatioMapType,
-  WeightMapType,
-} from '../../shared/types/chance-ratio-map-type.js';
+import { ChanceRatioMapType, WeightMapType } from '../../shared/types/chance-ratio-map-type.js';
 import { ExtendedMovementCharacter } from '../../shared/enums/movement-enums.js';
 import { isExtendedMovementCharacter } from '../../utils/is-extended-movement-character.js';
+import { randomGenerator } from '../../utils/random-generator';
 
 export class RouletteGenerator {
   private weightCalc: WeightCalculatorBase;
@@ -16,14 +14,8 @@ export class RouletteGenerator {
     this.weightCalc = weightCalc;
   }
 
-  public generateNumber(
-    selection: Movement[],
-    chanceRatio: ChanceRatioMapType
-  ): number {
-    const weightMap: WeightMapType = this.weightCalc.count(
-      selection,
-      chanceRatio
-    );
+  public generateNumber(selection: Movement[], chanceRatio: ChanceRatioMapType): number {
+    const weightMap: WeightMapType = this.weightCalc.count(selection, chanceRatio);
 
     // todo createWeightList отдает числа с большим количеством цифр после запятой. Найти и округлить
     const weightList = this.createWeightList(selection, weightMap);
@@ -32,10 +24,7 @@ export class RouletteGenerator {
     return this.getMovementIndex(weightList, randomIndex);
   }
 
-  private createWeightList(
-    selection: Movement[],
-    weights: WeightMapType
-  ): number[] {
+  private createWeightList(selection: Movement[], weights: WeightMapType): number[] {
     return selection.map((item: Movement) => {
       const weightKey = this.getWeightKey(item);
       return weights.get(weightKey) ?? this.fallbackWeight;
@@ -52,9 +41,7 @@ export class RouletteGenerator {
   }
 
   private getVirtualChanceListLength(chanceList: number[]): number {
-    return Math.floor(
-      chanceList.reduce((acc: number, chance: number) => acc + chance, 0)
-    );
+    return Math.floor(chanceList.reduce((acc: number, chance: number) => acc + chance, 0));
   }
 
   private getMovementIndex(chanceList: number[], randomIndex: number): number {
@@ -70,9 +57,7 @@ export class RouletteGenerator {
   }
 
   private getRandomIndex(max: number): number {
-    if (max < 0) {
-      throw new Error('from getRandomIndex: Not enough maximum number');
-    }
-    return randomInt(0, max);
+    const min = 0;
+    return randomGenerator(min, max);
   }
 }

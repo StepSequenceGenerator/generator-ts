@@ -12,18 +12,19 @@ import {
 import { VectorKey } from './enums';
 import { createCoordinates } from './utils';
 import { CoordinatesError, SequenceTrackerError } from '../../errors/custom-errors';
+import { randomGenerator } from '../../utils/random-generator';
 
 export class SequenceTracker {
-  standardStartCoordinates: CoordinatesType[];
-  trackVectors: TrackVectorType;
-  vectorAngles: VectorAngleType;
+  readonly startCoordinates: ReadonlyArray<CoordinatesType>;
+  readonly trackVectors: TrackVectorType;
+  readonly vectorAngles: VectorAngleType;
 
   constructor(
-    standardStartCoordinates: CoordinatesType[],
+    standardStartCoordinates: ReadonlyArray<CoordinatesType>,
     trackVectors: TrackVectorType,
     vectorAngles: VectorAngleType,
   ) {
-    this.standardStartCoordinates = standardStartCoordinates;
+    this.startCoordinates = standardStartCoordinates;
     this.vectorAngles = vectorAngles;
     this.trackVectors = trackVectors;
   }
@@ -108,6 +109,7 @@ export class SequenceTracker {
   }
 
   private getNextMovementVector(vectors: VectorKey[]) {
+    // todo custom error
     if (vectors.length === 0) throw new Error('vectors should be more than 0');
     const index = this.getRandom(0, vectors.length - 1);
     return vectors[index];
@@ -122,12 +124,10 @@ export class SequenceTracker {
   }
 
   public getStartCoordinates() {
-    return this.standardStartCoordinates[
-      this.getRandom(0, this.standardStartCoordinates.length - 1)
-    ];
+    return this.startCoordinates[this.getRandom(0, this.startCoordinates.length - 1)];
   }
 
   private getRandom(min: number, max: number) {
-    return randomInt(min, max);
+    return randomGenerator(min, max);
   }
 }

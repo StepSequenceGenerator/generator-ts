@@ -1,7 +1,7 @@
 import { VectorKey } from './enums';
 import { VectorAngleType } from './types';
 
-export const vectorAngles: Readonly<VectorAngleType> = {
+export const VECTOR_ANGLES: Readonly<VectorAngleType> = {
   [VectorKey.NORTH]: 0,
   [VectorKey.SOUTH]: 180,
   [VectorKey.WEST]: -90,
