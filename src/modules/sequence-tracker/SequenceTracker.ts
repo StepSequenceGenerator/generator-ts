@@ -1,4 +1,3 @@
-import { randomInt } from 'node:crypto';
 import {
   CoordinatesType,
   TrackVectorType,
@@ -13,6 +12,11 @@ import { VectorKey } from './enums';
 import { createCoordinates } from './utils';
 import { CoordinatesError, SequenceTrackerError } from '../../errors/custom-errors';
 import { randomGenerator } from '../../utils/random-generator';
+
+type CombinedCursorType = XCursorType | YCursorType;
+type CoordinateForCursorType<T extends CombinedCursorType> = T extends XCursorType
+  ? XCoordinateType
+  : YCoordinateType;
 
 export class SequenceTracker {
   readonly startCoordinates: ReadonlyArray<CoordinatesType>;
@@ -69,17 +73,16 @@ export class SequenceTracker {
     distance: number;
   }) {
     const { vectorCursor, currentCoordinates, distance } = data;
-    let adjustedDistance = this.calcDistance(vectorCursor, distance);
 
     const newX = this.calcCoordinate({
       cursor: vectorCursor.x,
       coord: currentCoordinates.x,
-      distance: adjustedDistance,
+      distance,
     });
     const newY = this.calcCoordinate({
       cursor: vectorCursor.y,
       coord: currentCoordinates.y,
-      distance: adjustedDistance,
+      distance,
     });
 
     try {
@@ -92,14 +95,11 @@ export class SequenceTracker {
     }
   }
 
-  private calcDistance(vectorCursor: VectorCursorType, distance: number) {
-    return vectorCursor.x !== 0 && vectorCursor.y !== 0 ? Math.sqrt(distance ** 2 * 2) : distance;
-  }
-
-  private calcCoordinate<
-    TR extends XCursorType | YCursorType,
-    TD extends XCoordinateType | YCoordinateType,
-  >(data: { cursor: TR; coord: TD; distance: number }) {
+  private calcCoordinate<T extends CombinedCursorType>(data: {
+    cursor: T;
+    coord: CoordinateForCursorType<T>;
+    distance: number;
+  }): number {
     const { cursor, coord, distance } = data;
     return distance * cursor + coord;
   }
@@ -109,8 +109,11 @@ export class SequenceTracker {
   }
 
   private getNextMovementVector(vectors: VectorKey[]) {
-    // todo custom error
-    if (vectors.length === 0) throw new Error('vectors should be more than 0');
+    if (vectors.length === 0)
+      throw new SequenceTrackerError(
+        'vectors.length should be more than 0',
+        'NO_VECTOR_FOR_CHOICE',
+      );
     const index = this.getRandom(0, vectors.length - 1);
     return vectors[index];
   }
