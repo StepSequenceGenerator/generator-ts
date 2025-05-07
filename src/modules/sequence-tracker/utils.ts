@@ -1,5 +1,8 @@
+import * as Utils from './utils';
 import {
+  AxisType,
   CoordinatesType,
+  CursorValueType,
   VectorCursorType,
   XCoordinateType,
   XCursorType,
@@ -9,15 +12,17 @@ import {
 import { CoordinatesError, VectorCursorError } from '../../errors/custom-errors';
 
 function createCoordinates(x: number, y: number) {
-  const xC = createCoord<XCoordinateType>('x', x);
-  const yC = createCoord<YCoordinateType>('y', y);
+  const xC = Utils.createCoord<XCoordinateType>('x', x);
+  const yC = Utils.createCoord<YCoordinateType>('y', y);
   return { x: xC, y: yC } as unknown as CoordinatesType;
 }
 
-function createCoord<T>(coordName: string, coord: number): T {
-  if (coord < 1 || coord > 59) {
+function createCoord<T>(axis: AxisType, coord: number): T {
+  let max = axis === 'x' ? 59 : 39;
+
+  if (coord < 1 || coord > max) {
     throw new CoordinatesError(
-      `${coordName.toUpperCase()} coordinate must be between 1 and 39. Got: ${coord}`,
+      `${axis.toUpperCase()} coordinate must be between 1 and ${max}. Got: ${coord}`,
       'OUTSIDE_BOUNDS',
     );
   } else {
@@ -25,13 +30,13 @@ function createCoord<T>(coordName: string, coord: number): T {
   }
 }
 
-function createVectorCursor(x: number, y: number): VectorCursorType {
-  const xC = createCursor<XCursorType>(x);
-  const yC = createCursor<YCursorType>(y);
+function createVectorCursor(x: CursorValueType, y: CursorValueType): VectorCursorType {
+  const xC = Utils.createCursor<XCursorType>(x);
+  const yC = Utils.createCursor<YCursorType>(y);
   return { x: xC, y: yC } as unknown as VectorCursorType;
 }
 
-function createCursor<T>(n: number): T {
+function createCursor<T>(n: CursorValueType): T {
   if ([1, 0, -1].includes(n)) {
     return n as T;
   }
@@ -42,4 +47,4 @@ function createCursor<T>(n: number): T {
   );
 }
 
-export { createCoordinates, createVectorCursor };
+export { createCoordinates, createVectorCursor, createCoord, createCursor };
