@@ -2,7 +2,7 @@ class CustomError extends Error {
   constructor(
     message: string,
     public readonly code?: unknown,
-    public readonly details?: unknown
+    public readonly details?: unknown,
   ) {
     super(message);
     this.name = this.constructor.name;
@@ -17,4 +17,31 @@ class MovementParserError extends CustomError {
   }
 }
 
-export { CustomError, MovementParserError };
+class CoordinatesError extends CustomError {
+  constructor(message: string, code: string, details?: unknown) {
+    super(message, code, details);
+    this.name = 'CoordinatesError';
+  }
+}
+
+class VectorCursorError extends CustomError {
+  constructor(message: string, code: string, details?: unknown) {
+    super(message, code, details);
+    this.name = 'VectorCursorError';
+  }
+}
+
+class SequenceTrackerError extends CustomError {
+  constructor(message: string, code: string, details?: unknown) {
+    super(message, code, details);
+    this.name = 'SequenceTrackerError';
+  }
+}
+
+export {
+  CustomError,
+  MovementParserError,
+  CoordinatesError,
+  VectorCursorError,
+  SequenceTrackerError,
+};

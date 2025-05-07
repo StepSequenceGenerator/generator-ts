@@ -413,9 +413,8 @@ describe('MovementFactory', () => {
     });
   });
 
-  // eslint-disable-line no-explicit-any
   function getFuncResult(funcName: string, ...args: any) {
-    // @ts-expect-error-ignore
+    // @ts-expect-error-any
     return MovementFactory[`${funcName}`](...args);
   }
 });
