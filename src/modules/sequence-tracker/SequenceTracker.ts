@@ -1,15 +1,18 @@
+import { createCoordinates } from './utils';
 import {
-  CoordinatesType,
-  TrackVectorType,
   VectorAngleType,
   VectorCursorType,
-  XCoordinateType,
+  VectorTrackType,
   XCursorType,
-  YCoordinateType,
   YCursorType,
-} from './types';
-import { VectorKey } from './enums';
-import { createCoordinates } from './utils';
+} from '../../shared/types/vector-type';
+import {
+  CoordinatesType,
+  XCoordinateType,
+  YCoordinateType,
+} from '../../shared/types/coordinates-type';
+import { VectorKey } from '../../shared/enums/vector-key-enum';
+
 import { CoordinatesError, SequenceTrackerError } from '../../errors/custom-errors';
 import { randomGenerator } from '../../utils/random-generator';
 
@@ -20,12 +23,12 @@ type CoordinateForCursorType<T extends CombinedCursorType> = T extends XCursorTy
 
 export class SequenceTracker {
   readonly startCoordinates: ReadonlyArray<CoordinatesType>;
-  readonly trackVectors: TrackVectorType;
+  readonly trackVectors: VectorTrackType;
   readonly vectorAngles: VectorAngleType;
 
   constructor(
     standardStartCoordinates: ReadonlyArray<CoordinatesType>,
-    trackVectors: TrackVectorType,
+    trackVectors: VectorTrackType,
     vectorAngles: VectorAngleType,
   ) {
     this.startCoordinates = standardStartCoordinates;
@@ -56,7 +59,7 @@ export class SequenceTracker {
       availableVectorKeys = this.filterVectorKeys(triedVectorKeys, availableVectorKeys);
     }
 
-    console.debug('getNextPosition; Новые координаты не найдены');
+    console.debug('getNextPosition: Новые координаты не найдены');
     throw new SequenceTrackerError(
       'Unable to find next coordinates within bounds.',
       'NO_VALID_COORDINATES',

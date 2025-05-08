@@ -1,17 +1,18 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { SequenceTracker } from './SequenceTracker';
-import { START_COORDINATES } from './start-coordinates';
-import { VECTOR_ANGLES } from './vector-angles';
-import { TRACK_VECTORS } from './track-vectors';
+import { START_COORDINATES } from '../../shared/constants/start-coordinates';
+import { VECTOR_ANGLES } from '../../shared/constants/vector-angles';
+import { VECTORS_TRACK } from '../../shared/constants/vectors-track';
 import { createCoordinates } from './utils';
-import { VectorKey } from './enums';
-import { CoordinatesType, VectorCursorType, XCoordinateType, XCursorType } from './types';
+import { VectorKey } from '../../shared/enums/vector-key-enum';
+import { VectorCursorType, XCursorType } from '../../shared/types/vector-type';
+import { CoordinatesType, XCoordinateType } from '../../shared/types/coordinates-type';
 
 describe('SequenceTracker', () => {
   let sequenceTracker: SequenceTracker;
 
   beforeEach(() => {
-    sequenceTracker = new SequenceTracker(START_COORDINATES, TRACK_VECTORS, VECTOR_ANGLES);
+    sequenceTracker = new SequenceTracker(START_COORDINATES, VECTORS_TRACK, VECTOR_ANGLES);
   });
 
   describe('implementation', () => {

@@ -1,8 +1,8 @@
-import { VectorKey } from './enums';
-import { TrackVectorType } from './types';
-import { createVectorCursor } from './utils';
+import { VectorKey } from '../enums/vector-key-enum';
+import { VectorTrackType } from '../types/vector-type';
+import { createVectorCursor } from '../../modules/sequence-tracker/utils';
 
-export const TRACK_VECTORS: Readonly<TrackVectorType> = {
+export const VECTORS_TRACK: Readonly<VectorTrackType> = {
   [VectorKey.NORTH]: createVectorCursor(0, 1),
   [VectorKey.SOUTH]: createVectorCursor(0, -1),
   [VectorKey.WEST]: createVectorCursor(-1, 0),

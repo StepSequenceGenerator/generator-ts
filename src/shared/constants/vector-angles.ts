@@ -1,5 +1,5 @@
-import { VectorKey } from './enums';
-import { VectorAngleType } from './types';
+import { VectorKey } from '../enums/vector-key-enum';
+import { VectorAngleType } from '../types/vector-type';
 
 export const VECTOR_ANGLES: Readonly<VectorAngleType> = {
   [VectorKey.NORTH]: 0,
