@@ -1,4 +1,4 @@
-enum VectorKey {
+export enum VectorKey {
   NORTH = 'north',
   SOUTH = 'south',
   WEST = 'west',
@@ -8,5 +8,3 @@ enum VectorKey {
   SOUTH_WEST = 'south_west',
   SOUTH_EAST = 'south_east',
 }
-
-export { VectorKey };

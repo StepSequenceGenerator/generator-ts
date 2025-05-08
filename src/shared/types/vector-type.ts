@@ -1,4 +1,4 @@
-import { VectorKey } from '../../modules/sequence-tracker/tracker-enums';
+import { VectorKey } from '../enums/vector-key-enum';
 
 type AxisType = 'x' | 'y';
 

@@ -1,5 +1,5 @@
-import { VectorKey } from '../tracker-enums';
-import { VectorAngleType } from '../../../shared/types/vector-type';
+import { VectorKey } from '../enums/vector-key-enum';
+import { VectorAngleType } from '../types/vector-type';
 
 export const VECTOR_ANGLES: Readonly<VectorAngleType> = {
   [VectorKey.NORTH]: 0,

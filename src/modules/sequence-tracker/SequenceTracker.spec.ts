@@ -1,10 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { SequenceTracker } from './SequenceTracker';
-import { START_COORDINATES } from './constants/start-coordinates';
-import { VECTOR_ANGLES } from './constants/vector-angles';
-import { VECTORS_TRACK } from './constants/vectors-track';
+import { START_COORDINATES } from '../../shared/constants/start-coordinates';
+import { VECTOR_ANGLES } from '../../shared/constants/vector-angles';
+import { VECTORS_TRACK } from '../../shared/constants/vectors-track';
 import { createCoordinates } from './utils';
-import { VectorKey } from './tracker-enums';
+import { VectorKey } from '../../shared/enums/vector-key-enum';
 import { VectorCursorType, XCursorType } from '../../shared/types/vector-type';
 import { CoordinatesType, XCoordinateType } from '../../shared/types/coordinates-type';
 

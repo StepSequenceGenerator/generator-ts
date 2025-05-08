@@ -1,5 +1,5 @@
-import { CoordinatesType } from '../../../shared/types/coordinates-type';
-import { createCoordinates } from '../utils';
+import { CoordinatesType } from '../types/coordinates-type';
+import { createCoordinates } from '../../modules/sequence-tracker/utils';
 
 /**
  * @param x - длинный борт,

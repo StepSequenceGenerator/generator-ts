@@ -11,7 +11,7 @@ import {
   XCoordinateType,
   YCoordinateType,
 } from '../../shared/types/coordinates-type';
-import { VectorKey } from './tracker-enums';
+import { VectorKey } from '../../shared/enums/vector-key-enum';
 
 import { CoordinatesError, SequenceTrackerError } from '../../errors/custom-errors';
 import { randomGenerator } from '../../utils/random-generator';
