@@ -1,11 +1,5 @@
-import { VectorKey } from './enums';
+import { VectorKey } from '../../modules/sequence-tracker/tracker-enums';
 
-type XCoordinateType = number & { __brand: 'XCoordinate' };
-type YCoordinateType = number & { __brand: 'YCoordinate' };
-type CoordinatesType = {
-  x: XCoordinateType;
-  y: YCoordinateType;
-};
 type AxisType = 'x' | 'y';
 
 type CursorValueType = 1 | 0 | -1;
@@ -16,16 +10,13 @@ type VectorCursorType = {
   y: YCursorType;
 };
 
-type TrackVectorType = Record<VectorKey, VectorCursorType>;
+type VectorTrackType = Record<VectorKey, VectorCursorType>;
 
 type VectorAngleType = Record<VectorKey, number>;
 
 export type {
-  CoordinatesType,
-  XCoordinateType,
-  YCoordinateType,
   AxisType,
-  TrackVectorType,
+  VectorTrackType,
   VectorAngleType,
   VectorCursorType,
   XCursorType,

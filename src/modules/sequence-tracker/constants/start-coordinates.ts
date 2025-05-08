@@ -1,5 +1,5 @@
-import { CoordinatesType } from './types';
-import { createCoordinates } from './utils';
+import { CoordinatesType } from '../../../shared/types/coordinates-type';
+import { createCoordinates } from '../utils';
 
 /**
  * @param x - длинный борт,

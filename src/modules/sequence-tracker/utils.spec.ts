@@ -1,8 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
-import { createCoordinates, createCursor, createVectorCursor } from './utils';
 import * as Utils from './utils';
-import { each } from 'lodash';
-import { CursorValueType } from './types';
+import { createCoordinates, createCursor, createVectorCursor } from './utils';
+import { CursorValueType } from '../../shared/types/vector-type';
 
 describe('Utils of SequenceTracker', () => {
   describe('Coordinates', () => {

@@ -1,14 +1,18 @@
 import * as Utils from './utils';
 import {
   AxisType,
-  CoordinatesType,
   CursorValueType,
   VectorCursorType,
-  XCoordinateType,
   XCursorType,
-  YCoordinateType,
   YCursorType,
-} from './types';
+} from '../../shared/types/vector-type';
+
+import {
+  CoordinatesType,
+  XCoordinateType,
+  YCoordinateType,
+} from '../../shared/types/coordinates-type';
+
 import { CoordinatesError, VectorCursorError } from '../../errors/custom-errors';
 
 function createCoordinates(x: number, y: number) {
@@ -40,7 +44,7 @@ function createCursor<T>(n: CursorValueType): T {
   if ([1, 0, -1].includes(n)) {
     return n as T;
   }
-  console.debug('createCursor; Не допустимое значение для cursor');
+  console.debug('createCursor: Не допустимое значение для cursor');
   throw new VectorCursorError(
     `Не допустимое значение для cursor. Должно быть (1, 0, -1), получил ${n}`,
     'WRONG_CURSOR_VALUE',
