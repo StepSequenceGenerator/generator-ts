@@ -22,14 +22,15 @@ export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
   protected readonly tracker: StepTracker;
   protected readonly filterStrategy: BaseCompositeMovementFilters;
 
-  protected constructor(
-    library: MovementLibrary,
-    context: StepContext<IMovementExtended>,
-    counter: C,
-    randomGenerator: RouletteGenerator,
-    tracker: StepTracker,
-    filterStrategy: BaseCompositeMovementFilters,
-  ) {
+  protected constructor(data: {
+    library: MovementLibrary;
+    context: StepContext<IMovementExtended>;
+    counter: C;
+    randomGenerator: RouletteGenerator;
+    tracker: StepTracker;
+    filterStrategy: BaseCompositeMovementFilters;
+  }) {
+    const { library, context, counter, randomGenerator, tracker, filterStrategy } = data;
     this.stepSequence = [];
     this.library = library;
     this.context = context;

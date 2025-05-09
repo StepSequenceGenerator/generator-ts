@@ -12,16 +12,25 @@ import { ThreeTurnsBlockGenerator } from './ThreeTurnsBlockGenerator';
 export class DefaultStepSequenceGenerator extends AbstractSequenceGenerator<StepCounter> {
   threeTurnsBlockGenerator: ThreeTurnsBlockGenerator;
 
-  constructor(
-    library: MovementLibrary,
-    context: StepContext<IMovementExtended>,
-    counter: StepCounter,
-    randomGenerator: RouletteGenerator,
-    tracker: StepTracker,
-    filterStrategy: BaseCompositeMovementFilters,
-    threeTurnsBlockGenerator: ThreeTurnsBlockGenerator,
-  ) {
-    super(library, context, counter, randomGenerator, tracker, filterStrategy);
+  constructor(data: {
+    library: MovementLibrary;
+    context: StepContext<IMovementExtended>;
+    counter: StepCounter;
+    randomGenerator: RouletteGenerator;
+    tracker: StepTracker;
+    filterStrategy: BaseCompositeMovementFilters;
+    threeTurnsBlockGenerator: ThreeTurnsBlockGenerator;
+  }) {
+    const {
+      library,
+      context,
+      counter,
+      randomGenerator,
+      tracker,
+      filterStrategy,
+      threeTurnsBlockGenerator,
+    } = data;
+    super({ library, context, counter, randomGenerator, tracker, filterStrategy });
     this.threeTurnsBlockGenerator = threeTurnsBlockGenerator;
   }
 

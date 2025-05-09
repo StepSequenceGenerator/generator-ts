@@ -52,7 +52,7 @@ export interface IGeneratorExtendedFilterStrategy
 }
 
 export class GeneratorFilterStrategyFactory {
-  public create(strategies: AbstractMovementFilterStrategy[]): BaseCompositeMovementFilters {
+  static create(strategies: AbstractMovementFilterStrategy[]): BaseCompositeMovementFilters {
     return new BaseCompositeMovementFilters(strategies);
   }
 }

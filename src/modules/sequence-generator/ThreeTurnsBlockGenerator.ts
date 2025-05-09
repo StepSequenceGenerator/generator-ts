@@ -10,15 +10,15 @@ import { ThreeDifficultTurnsBlockCounter } from './ThreeDifficultTurnsBlockCount
 const THREE_TURNS_BLOCK_LENGTH = 3;
 
 export class ThreeTurnsBlockGenerator extends AbstractSequenceGenerator<ThreeDifficultTurnsBlockCounter> {
-  constructor(
-    library: MovementLibrary,
-    context: StepContext<IMovementExtended>,
-    counter: ThreeDifficultTurnsBlockCounter,
-    randomGenerator: RouletteGenerator,
-    tracker: StepTracker,
-    filterStrategy: BaseCompositeMovementFilters,
-  ) {
-    super(library, context, counter, randomGenerator, tracker, filterStrategy);
+  constructor(data: {
+    library: MovementLibrary;
+    context: StepContext<IMovementExtended>;
+    counter: ThreeDifficultTurnsBlockCounter;
+    randomGenerator: RouletteGenerator;
+    tracker: StepTracker;
+    filterStrategy: BaseCompositeMovementFilters;
+  }) {
+    super(data);
   }
 
   generate(movement: IMovementExtended): IMovementExtended[] {
