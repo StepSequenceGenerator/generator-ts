@@ -1,4 +1,3 @@
-import { Movement } from '../movement/Movement.js';
 import {
   Edge,
   Leg,
@@ -6,20 +5,30 @@ import {
   RotationDirection,
   TransitionDirection,
 } from '../../shared/enums/movement-enums.js';
+import { CoordinatesType } from '../../shared/types/coordinates-type';
+import { IMovementExtended } from '../../shared/types/movement-extended.interface';
 
-class StepContext {
-  private _currentStep: Movement | null = null;
+class StepContext<T extends IMovementExtended> {
+  private _currentStep: T | null = null;
 
   resetCurrentStep() {
     this._currentStep = null;
   }
 
-  set currentStep(step: Movement) {
+  set currentStep(step: T) {
     this._currentStep = step;
   }
 
-  get currentStep(): Movement | null {
+  get currentStep(): T | null {
     return this._currentStep;
+  }
+
+  get endCoordinate(): CoordinatesType | null {
+    return this._currentStep === null ? null : this._currentStep.coordinates.end;
+  }
+
+  get vector() {
+    return this._currentStep === null ? null : this._currentStep.coordinates.vector;
   }
 
   get currentLeg() {

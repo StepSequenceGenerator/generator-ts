@@ -13,6 +13,15 @@ import { DifficultLevelAmountStep } from '../../shared/enums/difficult-level-amo
 import { RouletteGenerator } from '../roulette/RouletteGenerator.js';
 import { ChanceRatioMapType } from '../../shared/types/chance-ratio-map-type.js';
 import { TurnAbsoluteName } from '../../shared/enums/turn-absolute-name-enum.js';
+import { SequenceTracker } from '../sequence-tracker/SequenceTracker';
+import { START_COORDINATES } from '../../shared/constants/start-coordinates';
+import { VECTORS_TRACK } from '../../shared/constants/vectors-track';
+import { VECTOR_ANGLES } from '../../shared/constants/vector-angles';
+import {
+  IMovementCoordinates,
+  IMovementExtended,
+} from '../../shared/types/movement-extended.interface';
+import { MovementExtendedFactory } from '../movement/MovementExtendedFactory';
 
 const chanceRatioMap: ChanceRatioMapType = new Map<ExtendedMovementCharacter, number>([
   [ExtendedMovementCharacter.STEP, 8],
@@ -26,14 +35,15 @@ const chanceRatioMap: ChanceRatioMapType = new Map<ExtendedMovementCharacter, nu
 
 class StepSequenceGenerator {
   private readonly library: MovementLibrary;
-  private readonly context: StepContext;
+  private readonly context: StepContext<IMovementExtended>;
   private readonly counter: StepCounter;
   private readonly randomGenerator: RouletteGenerator;
   private stepSequence: Movement[] = [];
+  private tracker = new SequenceTracker(START_COORDINATES, VECTORS_TRACK, VECTOR_ANGLES);
 
   constructor(
     library: MovementLibrary,
-    context: StepContext,
+    context: StepContext<IMovementExtended>,
     counter: StepCounter,
     randomGenerator: RouletteGenerator,
   ) {
@@ -53,10 +63,36 @@ class StepSequenceGenerator {
         this.generateThreeTurnsBlock();
       } else {
         currentLibrary = this.filterLibraryForNextStep();
-        this.generateStep(currentLibrary.movements);
+        const newMovement = this.generateMovement(currentLibrary.movements);
+        const newCoordinates: IMovementCoordinates = this.getCoordinates(newMovement);
+        const movementExtended = MovementExtendedFactory.createMovementExtended({
+          movement: newMovement,
+          coordinates: newCoordinates,
+        });
+        this.context.currentStep = movementExtended;
+        this.addStepToSequence(movementExtended);
+        this.counter.update(movementExtended);
       }
     }
     return this.stepSequence;
+  }
+
+  private getCoordinates(newMovement: Movement): IMovementCoordinates {
+    const currentCoordinates = this.context.endCoordinate || this.tracker.getStartCoordinates();
+    const vector = this.context.vector;
+    const coordinates = this.tracker.getNextPosition(
+      vector,
+      currentCoordinates,
+      newMovement.distance,
+    );
+
+    return {
+      coordinates: {
+        vector: coordinates.vector,
+        start: currentCoordinates,
+        end: coordinates.coordinates,
+      },
+    };
   }
 
   private resetGenerator() {
@@ -73,13 +109,14 @@ class StepSequenceGenerator {
     for (let i = 0; i < 3; i++) {
       const currentLibrary = this.filterForThreeTurnsBlock(this.filterLibraryForNextStep());
 
-      this.generateStep(currentLibrary.movements);
+      this.generateMovement(currentLibrary.movements);
       this.counter.updateThreeTurnsBlockOrigin(
         this.context.currentStep?.absoluteName || TurnAbsoluteName.UNKNOWN,
       );
     }
     this.counter.increaseThreeTurnsBlockAmount();
   }
+
   private filterForThreeTurnsBlock(movementLibrary: MovementLibrary) {
     const unusedTurns = this.counter.unusedDifficultTurns;
     return movementLibrary
@@ -87,11 +124,9 @@ class StepSequenceGenerator {
       .filterBy((movement: Movement) => unusedTurns.includes(movement.absoluteName));
   }
 
-  private generateStep(movements: Movement[]) {
+  private generateMovement(movements: Movement[]) {
     const movementIndex = this.randomGenerator.generateNumber(movements, chanceRatioMap);
-    this.context.currentStep = movements[movementIndex];
-    this.addStepToSequence(this.context.currentStep);
-    this.counter.update(this.context.currentStep);
+    return movements[movementIndex];
   }
 
   private filterLibraryForNextStep() {
