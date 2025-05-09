@@ -2,11 +2,9 @@ import { MovementLibrary } from '../movement/MovementLibrary.js';
 import { randomInt } from 'node:crypto';
 import { Movement } from '../movement/Movement.js';
 import { StepContext } from './StepContext.js';
-import { ExtendedMovementCharacter } from '../../shared/enums/movement-enums.js';
 import { StepCounter } from './StepCounter.js';
 import { DifficultLevelAmountStep } from '../../shared/enums/difficult-level-amount-step-enum.js';
 import { RouletteGenerator } from '../roulette/RouletteGenerator.js';
-import { ChanceRatioMapType } from '../../shared/types/chance-ratio-map-type.js';
 import { TurnAbsoluteName } from '../../shared/enums/turn-absolute-name-enum.js';
 import { StepTracker } from '../sequence-tracker/StepTracker';
 import {
@@ -16,22 +14,14 @@ import {
 import { MovementExtendedFactory } from '../movement/MovementExtendedFactory';
 import { IGeneratorExtendedFilterStrategy } from '../filter-strategy/BaseCompositeMovementFilters';
 
-const chanceRatioMap: ChanceRatioMapType = new Map<ExtendedMovementCharacter, number>([
-  [ExtendedMovementCharacter.STEP, 8],
-  [ExtendedMovementCharacter.TURN, 9],
-  [ExtendedMovementCharacter.SEQUENCE, 9],
-  [ExtendedMovementCharacter.HOP, 8],
-  [ExtendedMovementCharacter.GLIDE, 8],
-  [ExtendedMovementCharacter.UNKNOWN, 8],
-  [ExtendedMovementCharacter.DIFFICULT, 50],
-]);
+import { CHANCE_RATIO_MAP } from '../../shared/constants/chance-ratio-map.const.js';
 
 class StepSequenceGenerator {
+  private stepSequence: IMovementExtended[] = [];
   private readonly library: MovementLibrary;
   private readonly context: StepContext<IMovementExtended>;
   private readonly counter: StepCounter;
   private readonly randomGenerator: RouletteGenerator;
-  private stepSequence: IMovementExtended[] = [];
   private tracker: StepTracker;
   private filterStrategy: IGeneratorExtendedFilterStrategy;
 
@@ -95,7 +85,7 @@ class StepSequenceGenerator {
 
   private resetGenerator() {
     this.stepSequence = [];
-    this.counter.resetCounter();
+    this.counter.reset();
     this.context.resetCurrentStep();
   }
 
@@ -116,7 +106,7 @@ class StepSequenceGenerator {
   }
 
   private generateMovement(movements: Movement[]) {
-    const movementIndex = this.randomGenerator.generateNumber(movements, chanceRatioMap);
+    const movementIndex = this.randomGenerator.generateNumber(movements, CHANCE_RATIO_MAP);
     return movements[movementIndex];
   }
 
