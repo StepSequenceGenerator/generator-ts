@@ -2,26 +2,19 @@ import { MovementLibrary } from '../movement/MovementLibrary.js';
 import { randomInt } from 'node:crypto';
 import { Movement } from '../movement/Movement.js';
 import { StepContext } from './StepContext.js';
-import {
-  Edge,
-  ExtendedMovementCharacter,
-  Leg,
-  TransitionDirection,
-} from '../../shared/enums/movement-enums.js';
+import { ExtendedMovementCharacter } from '../../shared/enums/movement-enums.js';
 import { StepCounter } from './StepCounter.js';
 import { DifficultLevelAmountStep } from '../../shared/enums/difficult-level-amount-step-enum.js';
 import { RouletteGenerator } from '../roulette/RouletteGenerator.js';
 import { ChanceRatioMapType } from '../../shared/types/chance-ratio-map-type.js';
 import { TurnAbsoluteName } from '../../shared/enums/turn-absolute-name-enum.js';
-import { SequenceTracker } from '../sequence-tracker/SequenceTracker';
-import { START_COORDINATES } from '../../shared/constants/start-coordinates';
-import { VECTORS_TRACK } from '../../shared/constants/vectors-track';
-import { VECTOR_ANGLES } from '../../shared/constants/vector-angles';
+import { StepTracker } from '../sequence-tracker/StepTracker';
 import {
   IMovementCoordinates,
   IMovementExtended,
 } from '../../shared/types/movement-extended.interface';
 import { MovementExtendedFactory } from '../movement/MovementExtendedFactory';
+import { IGeneratorExtendedFilterStrategy } from '../filter-strategy/BaseCompositeMovementFilters';
 
 const chanceRatioMap: ChanceRatioMapType = new Map<ExtendedMovementCharacter, number>([
   [ExtendedMovementCharacter.STEP, 8],
@@ -39,19 +32,24 @@ class StepSequenceGenerator {
   private readonly counter: StepCounter;
   private readonly randomGenerator: RouletteGenerator;
   private stepSequence: IMovementExtended[] = [];
-  private tracker = new SequenceTracker(START_COORDINATES, VECTORS_TRACK, VECTOR_ANGLES);
+  private tracker: StepTracker;
+  private filterStrategy: IGeneratorExtendedFilterStrategy;
 
   constructor(
     library: MovementLibrary,
     context: StepContext<IMovementExtended>,
     counter: StepCounter,
     randomGenerator: RouletteGenerator,
+    tracker: StepTracker,
+    filterStrategy: IGeneratorExtendedFilterStrategy,
   ) {
     this.library = library;
     this.context = context;
     this.counter = counter;
     this.randomGenerator = randomGenerator;
     this.stepSequence = [];
+    this.tracker = tracker;
+    this.filterStrategy = filterStrategy;
   }
 
   public generate(stepAmountBySequenceLevel: DifficultLevelAmountStep) {
@@ -62,7 +60,7 @@ class StepSequenceGenerator {
       if (this.isTimeToInsertThreeTurnsBlock()) {
         this.generateThreeTurnsBlock();
       } else {
-        currentLibrary = this.filterLibraryForNextStep();
+        currentLibrary = this.filterStrategy.default.filter(this.library, this.context);
         const newMovement = this.generateMovement(currentLibrary.movements);
         const newCoordinates: IMovementCoordinates = this.getCoordinates(newMovement);
         const movementExtended = MovementExtendedFactory.createMovementExtended({
@@ -107,7 +105,7 @@ class StepSequenceGenerator {
 
   private generateThreeTurnsBlock() {
     for (let i = 0; i < 3; i++) {
-      const currentLibrary = this.filterForThreeTurnsBlock(this.filterLibraryForNextStep());
+      const currentLibrary = this.filterStrategy.difficultTurns.filter(this.library, this.context);
 
       this.generateMovement(currentLibrary.movements);
       this.counter.updateThreeTurnsBlockOrigin(
@@ -117,29 +115,9 @@ class StepSequenceGenerator {
     this.counter.increaseThreeTurnsBlockAmount();
   }
 
-  private filterForThreeTurnsBlock(movementLibrary: MovementLibrary) {
-    const unusedTurns = this.counter.unusedDifficultTurns;
-    return movementLibrary
-      .filterDifficultTurns()
-      .filterBy((movement: Movement) => unusedTurns.includes(movement.absoluteName));
-  }
-
   private generateMovement(movements: Movement[]) {
     const movementIndex = this.randomGenerator.generateNumber(movements, chanceRatioMap);
     return movements[movementIndex];
-  }
-
-  private filterLibraryForNextStep() {
-    return this.library
-      .filterByEdge(this.withDefault(this.context.currentEdge, Edge.TWO_EDGES))
-      .filterByLeg(this.withDefault(this.context.currentLeg, Leg.BOTH))
-      .filterByTransitionDirection(
-        this.withDefault(this.context.currentDirection, TransitionDirection.NONE),
-      );
-  }
-
-  private withDefault<T>(value: T | null | undefined, defaultValue: T): T {
-    return value !== null && value !== undefined ? value : defaultValue;
   }
 
   private getRandomIndex(max: number) {

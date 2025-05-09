@@ -16,10 +16,7 @@ class MovementLibrary {
 
   filterByLeg(leg: Leg): MovementLibrary {
     return this.filterBy(
-      (movement) =>
-        leg === Leg.BOTH ||
-        movement.startLeg === leg ||
-        movement.startLeg === Leg.BOTH
+      (movement) => leg === Leg.BOTH || movement.startLeg === leg || movement.startLeg === Leg.BOTH,
     );
   }
 
@@ -38,7 +35,7 @@ class MovementLibrary {
       (movement) =>
         direction === TransitionDirection.NONE ||
         movement.transitionDirection === direction ||
-        movement.transitionDirection === TransitionDirection.NONE
+        movement.transitionDirection === TransitionDirection.NONE,
     );
   }
 
@@ -47,14 +44,13 @@ class MovementLibrary {
       (movement) =>
         direction === RotationDirection.NONE ||
         movement.rotationDirection === direction ||
-        movement.rotationDirection === RotationDirection.NONE
+        movement.rotationDirection === RotationDirection.NONE,
     );
   }
 
   filterDifficultTurns() {
     return this.filterBy(
-      (movement) =>
-        movement.isDifficult && movement.type === MovementCharacter.TURN
+      (movement) => movement.isDifficult && movement.type === MovementCharacter.TURN,
     );
   }
 

@@ -21,7 +21,7 @@ type CoordinateForCursorType<T extends CombinedCursorType> = T extends XCursorTy
   ? XCoordinateType
   : YCoordinateType;
 
-export class SequenceTracker {
+export class StepTracker {
   readonly startCoordinates: ReadonlyArray<CoordinatesType>;
   readonly trackVectors: VectorTrackType;
   readonly vectorAngles: VectorAngleType;

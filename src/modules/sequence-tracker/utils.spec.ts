@@ -3,7 +3,7 @@ import * as Utils from './utils';
 import { createCoordinates, createCursor, createVectorCursor } from './utils';
 import { CursorValueType } from '../../shared/types/vector-type';
 
-describe('Utils of SequenceTracker', () => {
+describe('Utils of StepTracker', () => {
   describe('Coordinates', () => {
     describe('createCoord', () => {
       it('должен выбрасывать ошибку при аргументе х > 59', () => {
