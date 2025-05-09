@@ -12,7 +12,7 @@ import { StepTracker } from '../sequence-tracker/StepTracker.js';
 import { START_COORDINATES } from '../../shared/constants/start-coordinates';
 import { VECTORS_TRACK } from '../../shared/constants/vectors-track';
 import { VECTOR_ANGLES } from '../../shared/constants/vector-angles';
-import { GeneratorFilterStrategiesFactory } from '../filter-strategy/BaseCompositeMovementFilters';
+import { GeneratorFilterStrategiesFactoryDelete } from '../filter-strategy/BaseCompositeMovementFilters';
 
 const mockMovementsFormated = mockMovements.map((movement) => new Movement(movement as Movement));
 
@@ -23,7 +23,7 @@ describe('StepSequenceGenerator', () => {
   const equalizer = new MovementEqualizingWeightCalculator();
   const randomGenerator = new RouletteGenerator(equalizer);
   const tracker = new StepTracker(START_COORDINATES, VECTORS_TRACK, VECTOR_ANGLES);
-  const filterStrategies = new GeneratorFilterStrategiesFactory();
+  const filterStrategies = new GeneratorFilterStrategiesFactoryDelete();
   let generator: StepSequenceGenerator;
   beforeEach(() => {
     generator = new StepSequenceGenerator(

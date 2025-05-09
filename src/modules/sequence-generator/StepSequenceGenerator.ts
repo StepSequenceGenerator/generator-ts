@@ -51,7 +51,7 @@ class StepSequenceGenerator {
         this.generateThreeTurnsBlock();
       } else {
         currentLibrary = this.filterStrategy.default.filter(this.library, this.context);
-        const newMovement = this.generateMovement(currentLibrary.movements);
+        const newMovement = this.chooseMovement(currentLibrary.movements);
         const newCoordinates: IMovementCoordinates = this.getCoordinates(newMovement);
         const movementExtended = MovementExtendedFactory.createMovementExtended({
           movement: newMovement,
@@ -97,7 +97,7 @@ class StepSequenceGenerator {
     for (let i = 0; i < 3; i++) {
       const currentLibrary = this.filterStrategy.difficultTurns.filter(this.library, this.context);
 
-      this.generateMovement(currentLibrary.movements);
+      this.chooseMovement(currentLibrary.movements);
       this.counter.updateThreeTurnsBlockOrigin(
         this.context.currentStep?.absoluteName || TurnAbsoluteName.UNKNOWN,
       );
@@ -105,7 +105,7 @@ class StepSequenceGenerator {
     this.counter.increaseThreeTurnsBlockAmount();
   }
 
-  private generateMovement(movements: Movement[]) {
+  private chooseMovement(movements: Movement[]) {
     const movementIndex = this.randomGenerator.generateNumber(movements, CHANCE_RATIO_MAP);
     return movements[movementIndex];
   }

@@ -33,6 +33,23 @@ export class ThreeDifficultTurnsBlockCounter implements IStepCounter {
     return values.includes(2) ? 1 : 2;
   }
 
+  public increaseAmount(): void {
+    this.blockAmount += 1;
+  }
+
+  public reset() {
+    this.resetAmount();
+    this.resetTurns();
+  }
+
+  public resetAmount() {
+    this.blockAmount = 0;
+  }
+
+  public resetTurns() {
+    this.turns = this.initTurns();
+  }
+
   get amount(): number {
     return this.blockAmount;
   }
@@ -40,6 +57,4 @@ export class ThreeDifficultTurnsBlockCounter implements IStepCounter {
   set amount(amount: number) {
     this.blockAmount = amount;
   }
-
-  reset() {}
 }

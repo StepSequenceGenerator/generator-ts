@@ -7,6 +7,7 @@ import { StepContext } from '../sequence-generator/StepContext.js';
 import { DefaultMovementFilterStrategy } from './DefaultMovementFilterStrategy.js';
 import { DifficultTurnsFilterStrategy } from './DifficultTurnsFilterStrategy.js';
 import { IMovementExtended } from '../../shared/types/movement-extended.interface';
+import { AbstractMovementFilterStrategy } from './abstract/AbstractMovementFilterStrategy';
 
 export class BaseCompositeMovementFilters extends AbstractCompositeFilterStrategy<
   MovementLibrary,
@@ -32,7 +33,12 @@ export const DifficultTurnsFilterComposite = new BaseCompositeMovementFilters([
 ]);
 
 export interface IGeneratorFilterStrategy<T> {
-  strategies: { [keys: string]: T };
+  strategies: {
+    default: T;
+    [keys: string]: T;
+  };
+
+  get default(): BaseCompositeMovementFilters;
 }
 
 export interface IGeneratorExtendedFilterStrategy
@@ -42,12 +48,16 @@ export interface IGeneratorExtendedFilterStrategy
     difficultTurns: typeof DifficultTurnsFilterComposite;
   };
 
-  get default(): BaseCompositeMovementFilters;
-
   get difficultTurns(): BaseCompositeMovementFilters;
 }
 
-export class GeneratorFilterStrategiesFactory implements IGeneratorExtendedFilterStrategy {
+export class GeneratorFilterStrategyFactory {
+  public create(strategies: AbstractMovementFilterStrategy[]): BaseCompositeMovementFilters {
+    return new BaseCompositeMovementFilters(strategies);
+  }
+}
+
+export class GeneratorFilterStrategiesFactoryDelete implements IGeneratorExtendedFilterStrategy {
   public strategies: {
     default: typeof DefaultMovementFilterComposite;
     difficultTurns: typeof DifficultTurnsFilterComposite;
@@ -55,7 +65,7 @@ export class GeneratorFilterStrategiesFactory implements IGeneratorExtendedFilte
 
   constructor() {
     this.strategies = {
-      default: new BaseCompositeMovementFilters([difficultTurnsStrategy, defaultStrategy]),
+      default: new BaseCompositeMovementFilters([defaultStrategy]),
       difficultTurns: new BaseCompositeMovementFilters([difficultTurnsStrategy, defaultStrategy]),
     };
   }

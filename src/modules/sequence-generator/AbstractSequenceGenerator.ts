@@ -6,30 +6,28 @@ import { MovementLibrary } from '../movement/MovementLibrary';
 import { StepContext } from './StepContext';
 import { RouletteGenerator } from '../roulette/RouletteGenerator';
 import { StepTracker } from '../sequence-tracker/StepTracker';
-import {
-  BaseCompositeMovementFilters,
-  IGeneratorFilterStrategy,
-} from '../filter-strategy/BaseCompositeMovementFilters';
+import { BaseCompositeMovementFilters } from '../filter-strategy/BaseCompositeMovementFilters';
 import { IStepCounter } from '../../shared/types/abstract-step-counter.interface';
 import { Movement } from '../movement/Movement';
 import { CHANCE_RATIO_MAP } from '../../shared/constants/chance-ratio-map.const';
+import { MovementExtendedFactory } from '../movement/MovementExtendedFactory';
 
-export abstract class AbstractSequenceGenerator {
-  private stepSequence: IMovementExtended[];
-  private readonly library: MovementLibrary;
-  private readonly context: StepContext<IMovementExtended>;
-  private readonly counter: IStepCounter;
-  private readonly randomGenerator: RouletteGenerator;
-  private readonly tracker: StepTracker;
-  private readonly filterStrategy: IGeneratorFilterStrategy<BaseCompositeMovementFilters>;
+export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
+  protected stepSequence: IMovementExtended[];
+  protected readonly library: MovementLibrary;
+  protected readonly context: StepContext<IMovementExtended>;
+  protected readonly counter: C;
+  protected readonly randomGenerator: RouletteGenerator;
+  protected readonly tracker: StepTracker;
+  protected readonly filterStrategy: BaseCompositeMovementFilters;
 
-  constructor(
+  protected constructor(
     library: MovementLibrary,
     context: StepContext<IMovementExtended>,
-    counter: IStepCounter,
+    counter: C,
     randomGenerator: RouletteGenerator,
     tracker: StepTracker,
-    filterStrategy: IGeneratorFilterStrategy<BaseCompositeMovementFilters>,
+    filterStrategy: BaseCompositeMovementFilters,
   ) {
     this.stepSequence = [];
     this.library = library;
@@ -40,18 +38,50 @@ export abstract class AbstractSequenceGenerator {
     this.filterStrategy = filterStrategy;
   }
 
-  abstract generate(amount: number): IMovementExtended[];
+  abstract generate(args: unknown): IMovementExtended[];
 
-  protected abstract update(args: unknown[]): void;
+  protected generateMovement(): IMovementExtended {
+    const currentLibrary = this.getCurrentLibrary();
+    const newMovement = this.chooseMovement(currentLibrary.movements);
+    const newCoordinates: IMovementCoordinates = this.getCoordinates(newMovement);
+    return MovementExtendedFactory.createMovementExtended({
+      movement: newMovement,
+      coordinates: newCoordinates,
+    });
+  }
 
-  protected abstract reset(): void;
-
-  private generateMovement(movements: Movement[]) {
+  protected chooseMovement(movements: Movement[]) {
     const movementIndex = this.randomGenerator.generateNumber(movements, CHANCE_RATIO_MAP);
     return movements[movementIndex];
   }
 
-  private getCoordinates(newMovement: Movement): IMovementCoordinates {
+  protected getCurrentLibrary(): MovementLibrary {
+    return this.filterStrategy.filter(this.library, this.context);
+  }
+
+  protected reset(): void {
+    this.stepSequence = [];
+    this.counter.reset();
+    this.context.resetCurrentStep();
+  }
+
+  protected update(movementExtended: IMovementExtended): void {
+    this.contextUpdate(movementExtended);
+    this.counterUpdate(movementExtended);
+    this.stepSequenceUpdate(movementExtended);
+  }
+
+  protected contextUpdate(movementExtended: IMovementExtended): void {
+    this.context.currentStep = movementExtended;
+  }
+
+  protected abstract counterUpdate(arg: unknown): void;
+
+  protected stepSequenceUpdate(movement: IMovementExtended): void {
+    this.stepSequence.push(movement);
+  }
+
+  protected getCoordinates(newMovement: Movement): IMovementCoordinates {
     const currentCoordinates = this.context.endCoordinate || this.tracker.getStartCoordinates();
     const vector = this.context.vector;
     const coordinates = this.tracker.getNextPosition(
