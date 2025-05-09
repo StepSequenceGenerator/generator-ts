@@ -38,7 +38,7 @@ class StepSequenceGenerator {
   private readonly context: StepContext<IMovementExtended>;
   private readonly counter: StepCounter;
   private readonly randomGenerator: RouletteGenerator;
-  private stepSequence: Movement[] = [];
+  private stepSequence: IMovementExtended[] = [];
   private tracker = new SequenceTracker(START_COORDINATES, VECTORS_TRACK, VECTOR_ANGLES);
 
   constructor(
@@ -150,7 +150,7 @@ class StepSequenceGenerator {
     return randomInt(0, max);
   }
 
-  private addStepToSequence(movement: Movement) {
+  private addStepToSequence(movement: IMovementExtended) {
     this.stepSequence.push(movement);
   }
 }

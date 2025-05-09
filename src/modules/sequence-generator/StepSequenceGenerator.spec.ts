@@ -14,25 +14,19 @@ import {
 import { StepCounter } from './StepCounter.js';
 import { RouletteGenerator } from '../roulette/RouletteGenerator.js';
 import { MovementEqualizingWeightCalculator } from '../roulette/MovementEqualizingWeightCalculator.js';
+import { IMovementExtended } from '../../shared/types/movement-extended.interface';
 
-const mockMovementsFormated = mockMovements.map(
-  (movement) => new Movement(movement as Movement)
-);
+const mockMovementsFormated = mockMovements.map((movement) => new Movement(movement as Movement));
 
 describe('StepSequenceGenerator', () => {
   const library: MovementLibrary = new MovementLibrary(mockMovementsFormated);
-  const context: StepContext = new StepContext();
+  const context: StepContext<IMovementExtended> = new StepContext<IMovementExtended>();
   const counter = new StepCounter();
   const equalizer = new MovementEqualizingWeightCalculator();
   const randomGenerator = new RouletteGenerator(equalizer);
   let generator: StepSequenceGenerator;
   beforeEach(() => {
-    generator = new StepSequenceGenerator(
-      library,
-      context,
-      counter,
-      randomGenerator
-    );
+    generator = new StepSequenceGenerator(library, context, counter, randomGenerator);
   });
 
   describe('implementation', () => {
@@ -42,78 +36,31 @@ describe('StepSequenceGenerator', () => {
     });
   });
 
-  // describe('generate', () => {
-  //   it('должен вернуть последовательность шагов определенной длины', () => {
-  //     const input = DifficultLevelAmountStep.LEVEL_1;
-  //     generator.generate(input);
-  //     const result = generator['counter'].difficultTurnsOriginAmount;
-  //     expect(result).toEqual(input);
-  //   });
-  //
-  //   it('должен вернуть массив Movement', () => {
-  //     const list = generator.generate(DifficultLevelAmountStep.LEVEL_3);
-  //     const result = list.every((item) => item instanceof Movement);
-  //     expect(result).toBe(true);
-  //   });
-  //
-  //   it('должен добавлять элементы в свойство stepSequence', () => {
-  //     const expected = DifficultLevelAmountStep.LEVEL_3;
-  //     generator.generate(expected);
-  //     const result = generator['stepSequence'].length;
-  //     expect(result).toBe(expected);
-  //   });
-  //
-  //   const methodList = [
-  //     'filterLibraryForNextStep',
-  //     'getRandomIndex',
-  //     'addStepToSequence',
-  //   ];
-  //   it.each(methodList)('должен вызывать метод %s', (methodName) => {
-  //     const generatorAny = generator as unknown as any;
-  //     const spyFn = vi.spyOn(generatorAny, methodName);
-  //     generatorAny.generate(DifficultLevelAmountStep.LEVEL_1);
-  //     expect(spyFn).toHaveBeenCalled();
-  //   });
-  // });
-
   describe('filterLibraryForNextStep', () => {
     describe('filter by Edge', () => {
       const edgeList = [Edge.OUTER, Edge.INNER];
-      it.each(edgeList)(
-        'должен вернуть массив с Edge.%s и Edge.TWO_EDGES',
-        (current) => {
-          generator['context'].currentStep = { endEdge: current } as Movement;
-          const result = generator['filterLibraryForNextStep']().movements;
-          result.forEach((item) => {
-            expect(
-              item.startEdge === current || item.startEdge === Edge.TWO_EDGES
-            ).toBe(true);
-          });
-        }
-      );
+      it.each(edgeList)('должен вернуть массив с Edge.%s и Edge.TWO_EDGES', (current) => {
+        generator['context'].currentStep = { endEdge: current } as IMovementExtended;
+        const result = generator['filterLibraryForNextStep']().movements;
+        result.forEach((item) => {
+          expect(item.startEdge === current || item.startEdge === Edge.TWO_EDGES).toBe(true);
+        });
+      });
     });
 
     describe('filter by Leg', () => {
       const legList = [Leg.RIGHT, Leg.LEFT];
-      it.each(legList)(
-        'должен вернуть массив с Leg.%s и Leg.BOTH',
-        (current) => {
-          generator['context'].currentStep = { endLeg: current } as Movement;
-          const result = generator['filterLibraryForNextStep']().movements;
-          result.forEach((item) => {
-            expect(
-              item.startLeg === current || item.startLeg === Leg.BOTH
-            ).toBe(true);
-          });
-        }
-      );
+      it.each(legList)('должен вернуть массив с Leg.%s и Leg.BOTH', (current) => {
+        generator['context'].currentStep = { endLeg: current } as IMovementExtended;
+        const result = generator['filterLibraryForNextStep']().movements;
+        result.forEach((item) => {
+          expect(item.startLeg === current || item.startLeg === Leg.BOTH).toBe(true);
+        });
+      });
     });
 
     describe('filter by TransitionDirection', () => {
-      const transitionDirectionList = [
-        TransitionDirection.FORWARD,
-        TransitionDirection.BACKWARD,
-      ];
+      const transitionDirectionList = [TransitionDirection.FORWARD, TransitionDirection.BACKWARD];
       it.each(transitionDirectionList)(
         'должен вернуть массив с TransitionDirection.%s и TransitionDirection.NONE',
         (current) => {
@@ -121,15 +68,15 @@ describe('StepSequenceGenerator', () => {
             transitionDirection: current,
             rotationDirection: RotationDirection.NONE,
             rotationDegree: RotationDegree.DEGREES_0,
-          } as Movement;
+          } as IMovementExtended;
           const result = generator['filterLibraryForNextStep']().movements;
           result.forEach((item) => {
             expect(
               item.transitionDirection === current ||
-                item.transitionDirection === TransitionDirection.NONE
+                item.transitionDirection === TransitionDirection.NONE,
             ).toBe(true);
           });
-        }
+        },
       );
     });
   });
@@ -146,7 +93,7 @@ describe('StepSequenceGenerator', () => {
     it('должен увеличить длину stepSequence на 1', () => {
       generator['stepSequence'] = [];
       expect(generator['stepSequence'].length).toBe(0);
-      generator['addStepToSequence']({} as Movement);
+      generator['addStepToSequence']({} as IMovementExtended);
       expect(generator['stepSequence'].length).toBe(1);
     });
   });

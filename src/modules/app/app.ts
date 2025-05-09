@@ -8,6 +8,7 @@ import { RouletteGenerator } from '../roulette/RouletteGenerator.js';
 import { StepContext } from '../sequence-generator/StepContext.js';
 import { MovementWeightCalculator } from '../roulette/MovementWeightCalculator.js';
 import { DifficultLevelAmountStep } from '../../shared/enums/difficult-level-amount-step-enum.js';
+import { IMovementExtended } from '../../shared/types/movement-extended.interface';
 
 type AppConstructorParamsType<T extends Record<string, string>> = {
   config: Configuration;
@@ -24,7 +25,9 @@ export class App<T extends Record<string, string>> {
     this.config = config;
   }
 
-  public generateSequence(stepAmountBySequenceLevel: DifficultLevelAmountStep): Movement[] {
+  public generateSequence(
+    stepAmountBySequenceLevel: DifficultLevelAmountStep,
+  ): IMovementExtended[] {
     if (this.sequenceGenerator) {
       return this.sequenceGenerator.generate(stepAmountBySequenceLevel);
     } else {
