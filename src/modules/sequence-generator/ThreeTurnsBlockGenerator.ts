@@ -4,10 +4,7 @@ import { StepContext } from './StepContext';
 import { IMovementExtended } from '../../shared/types/movement-extended.interface';
 import { RouletteGenerator } from '../roulette/RouletteGenerator';
 import { StepTracker } from '../sequence-tracker/StepTracker';
-import {
-  BaseCompositeMovementFilters,
-  IGeneratorFilterStrategy,
-} from '../filter-strategy/BaseCompositeMovementFilters';
+import { BaseCompositeMovementFilters } from '../filter-strategy/BaseCompositeMovementFilters';
 import { ThreeDifficultTurnsBlockCounter } from './ThreeDifficultTurnsBlockCounter';
 
 const THREE_TURNS_BLOCK_LENGTH = 3;
@@ -19,7 +16,7 @@ export class ThreeTurnsBlockGenerator extends AbstractSequenceGenerator<ThreeDif
     counter: ThreeDifficultTurnsBlockCounter,
     randomGenerator: RouletteGenerator,
     tracker: StepTracker,
-    filterStrategy: IGeneratorFilterStrategy<BaseCompositeMovementFilters>,
+    filterStrategy: BaseCompositeMovementFilters,
   ) {
     super(library, context, counter, randomGenerator, tracker, filterStrategy);
   }
@@ -36,7 +33,7 @@ export class ThreeTurnsBlockGenerator extends AbstractSequenceGenerator<ThreeDif
     return this.stepSequence;
   }
 
-  counterUpdate(movementExtended: IMovementExtended): void {
-    this.counter.update(movementExtended);
+  public get blockAmount() {
+    return this.counter.amount;
   }
 }

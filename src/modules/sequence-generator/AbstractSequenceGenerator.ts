@@ -11,6 +11,7 @@ import { IStepCounter } from '../../shared/types/abstract-step-counter.interface
 import { Movement } from '../movement/Movement';
 import { CHANCE_RATIO_MAP } from '../../shared/constants/chance-ratio-map.const';
 import { MovementExtendedFactory } from '../movement/MovementExtendedFactory';
+import { randomGenerator } from '../../utils/random-generator';
 
 export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
   protected stepSequence: IMovementExtended[];
@@ -59,7 +60,7 @@ export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
     return this.filterStrategy.filter(this.library, this.context);
   }
 
-  protected reset(): void {
+  public reset(): void {
     this.stepSequence = [];
     this.counter.reset();
     this.context.resetCurrentStep();
@@ -75,7 +76,9 @@ export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
     this.context.currentStep = movementExtended;
   }
 
-  protected abstract counterUpdate(arg: unknown): void;
+  protected counterUpdate(movementExtended: IMovementExtended): void {
+    this.counter.update(movementExtended);
+  }
 
   protected stepSequenceUpdate(movement: IMovementExtended): void {
     this.stepSequence.push(movement);
@@ -97,5 +100,10 @@ export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
         end: coordinates.coordinates,
       },
     };
+  }
+
+  protected getRandomIndex(max: number) {
+    const min = 0;
+    return randomGenerator(min, max);
   }
 }
