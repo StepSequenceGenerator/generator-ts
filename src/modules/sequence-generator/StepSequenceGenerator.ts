@@ -13,10 +13,7 @@ import { DifficultLevelAmountStep } from '../../shared/enums/difficult-level-amo
 import { RouletteGenerator } from '../roulette/RouletteGenerator.js';
 import { ChanceRatioMapType } from '../../shared/types/chance-ratio-map-type.js';
 import { TurnAbsoluteName } from '../../shared/enums/turn-absolute-name-enum.js';
-import { SequenceTracker } from '../sequence-tracker/SequenceTracker';
-import { START_COORDINATES } from '../../shared/constants/start-coordinates';
-import { VECTORS_TRACK } from '../../shared/constants/vectors-track';
-import { VECTOR_ANGLES } from '../../shared/constants/vector-angles';
+import { StepTracker } from '../sequence-tracker/StepTracker';
 import {
   IMovementCoordinates,
   IMovementExtended,
@@ -39,19 +36,21 @@ class StepSequenceGenerator {
   private readonly counter: StepCounter;
   private readonly randomGenerator: RouletteGenerator;
   private stepSequence: IMovementExtended[] = [];
-  private tracker = new SequenceTracker(START_COORDINATES, VECTORS_TRACK, VECTOR_ANGLES);
+  private tracker: StepTracker;
 
   constructor(
     library: MovementLibrary,
     context: StepContext<IMovementExtended>,
     counter: StepCounter,
     randomGenerator: RouletteGenerator,
+    tracker: StepTracker,
   ) {
     this.library = library;
     this.context = context;
     this.counter = counter;
     this.randomGenerator = randomGenerator;
     this.stepSequence = [];
+    this.tracker = tracker;
   }
 
   public generate(stepAmountBySequenceLevel: DifficultLevelAmountStep) {

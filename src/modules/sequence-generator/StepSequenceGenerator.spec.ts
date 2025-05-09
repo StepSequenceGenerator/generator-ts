@@ -15,6 +15,10 @@ import { StepCounter } from './StepCounter.js';
 import { RouletteGenerator } from '../roulette/RouletteGenerator.js';
 import { MovementEqualizingWeightCalculator } from '../roulette/MovementEqualizingWeightCalculator.js';
 import { IMovementExtended } from '../../shared/types/movement-extended.interface';
+import { StepTracker } from '../sequence-tracker/StepTracker.js';
+import { START_COORDINATES } from '../../shared/constants/start-coordinates';
+import { VECTORS_TRACK } from '../../shared/constants/vectors-track';
+import { VECTOR_ANGLES } from '../../shared/constants/vector-angles';
 
 const mockMovementsFormated = mockMovements.map((movement) => new Movement(movement as Movement));
 
@@ -24,9 +28,10 @@ describe('StepSequenceGenerator', () => {
   const counter = new StepCounter();
   const equalizer = new MovementEqualizingWeightCalculator();
   const randomGenerator = new RouletteGenerator(equalizer);
+  const tracker = new StepTracker(START_COORDINATES, VECTORS_TRACK, VECTOR_ANGLES);
   let generator: StepSequenceGenerator;
   beforeEach(() => {
-    generator = new StepSequenceGenerator(library, context, counter, randomGenerator);
+    generator = new StepSequenceGenerator(library, context, counter, randomGenerator, tracker);
   });
 
   describe('implementation', () => {

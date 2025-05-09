@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { SequenceTracker } from './SequenceTracker';
+import { StepTracker } from './StepTracker';
 import { START_COORDINATES } from '../../shared/constants/start-coordinates';
 import { VECTOR_ANGLES } from '../../shared/constants/vector-angles';
 import { VECTORS_TRACK } from '../../shared/constants/vectors-track';
@@ -9,10 +9,10 @@ import { VectorCursorType, XCursorType } from '../../shared/types/vector-type';
 import { CoordinatesType, XCoordinateType } from '../../shared/types/coordinates-type';
 
 describe('SequenceTracker', () => {
-  let sequenceTracker: SequenceTracker;
+  let sequenceTracker: StepTracker;
 
   beforeEach(() => {
-    sequenceTracker = new SequenceTracker(START_COORDINATES, VECTORS_TRACK, VECTOR_ANGLES);
+    sequenceTracker = new StepTracker(START_COORDINATES, VECTORS_TRACK, VECTOR_ANGLES);
   });
 
   describe('implementation', () => {
