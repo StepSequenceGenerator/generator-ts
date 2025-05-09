@@ -1,3 +1,3 @@
-export interface IFilterStrategy<L, Args extends any[]> {
+export interface IFilterStrategy<L, Args extends unknown[]> {
   filter(...args: Args): L;
 }

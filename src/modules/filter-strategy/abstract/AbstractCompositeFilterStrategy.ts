@@ -1,6 +1,6 @@
 import { IFilterStrategy } from './InterfaceFilterStrategy.js';
 
-export class AbstractCompositeFilterStrategy<L, Args extends any[]>
+export class AbstractCompositeFilterStrategy<L, Args extends unknown[]>
   implements IFilterStrategy<L, Args>
 {
   protected strategies: IFilterStrategy<L, Args>[] = [];
@@ -11,9 +11,8 @@ export class AbstractCompositeFilterStrategy<L, Args extends any[]>
 
   public filter(...args: Args): L {
     return this.strategies.reduce(
-      (currentLibrary: L, strategy: IFilterStrategy<L, Args>) =>
-        strategy.filter(...args),
-      {} as L
+      (currentLibrary: L, strategy: IFilterStrategy<L, Args>) => strategy.filter(...args),
+      {} as L,
     );
   }
 }
