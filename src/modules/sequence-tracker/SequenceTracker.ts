@@ -37,7 +37,7 @@ export class SequenceTracker {
   }
 
   public getNextPosition(
-    currentVector: VectorKey,
+    currentVector: VectorKey | null,
     currentCoordinates: CoordinatesType,
     distance: number,
   ) {
@@ -54,7 +54,11 @@ export class SequenceTracker {
         distance,
       });
 
-      if (newCoordinates) return newCoordinates;
+      if (newCoordinates)
+        return {
+          vector: vectorKey,
+          coordinates: newCoordinates,
+        };
 
       availableVectorKeys = this.filterVectorKeys(triedVectorKeys, availableVectorKeys);
     }
@@ -121,12 +125,13 @@ export class SequenceTracker {
     return vectors[index];
   }
 
-  private getAllowedVectorKeys(currentVector: VectorKey, maxTurnAngle: number = 90) {
-    const currentAngle = this.vectorAngles[currentVector];
-    return (Object.keys(this.vectorAngles) as VectorKey[]).filter((key) => {
-      const diff = Math.abs(currentAngle - this.vectorAngles[key]);
-      return diff <= maxTurnAngle;
-    });
+  private getAllowedVectorKeys(currentVector: VectorKey | null, maxTurnAngle: number = 90) {
+    return currentVector === null
+      ? (Object.keys(this.vectorAngles) as VectorKey[])
+      : (Object.keys(this.vectorAngles) as VectorKey[]).filter((key) => {
+          const diff = Math.abs(this.vectorAngles[currentVector] - this.vectorAngles[key]);
+          return diff <= maxTurnAngle;
+        });
   }
 
   public getStartCoordinates() {

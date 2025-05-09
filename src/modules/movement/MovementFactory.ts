@@ -260,7 +260,7 @@ class MovementFactory {
   }
 
   private static formatToNumber(value: unknown): number | null {
-    return Number.isNaN(Number(value)) ? null : Number(value);
+    return Number.isNaN(Number(value)) || value === null ? null : Number(value);
   }
 }
 
