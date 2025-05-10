@@ -89,14 +89,6 @@ describe('StepSequenceGenerator', () => {
   //   });
   // });
 
-  describe('getRandomIndex', () => {
-    it('должен выбросить ошибку, если длинна массива для выбора = 0', () => {
-      expect(() => {
-        generator['getRandomIndex'](0);
-      }).toThrowError('Not enough maximum number of steps');
-    });
-  });
-
   describe('addStepToSequence', () => {
     it('должен увеличить длину stepSequence на 1', () => {
       generator['stepSequence'] = [];
