@@ -121,7 +121,7 @@ export class StepTracker {
         'vectors.length should be more than 0',
         'NO_VECTOR_FOR_CHOICE',
       );
-    const index = this.getRandom(0, vectors.length - 1);
+    const index = this.getRandom(0, vectors.length);
     return vectors[index];
   }
 

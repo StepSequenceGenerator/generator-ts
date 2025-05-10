@@ -96,8 +96,6 @@ export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
       newMovement.distance,
     );
 
-    console.debug(coordinates);
-
     return {
       coordinates: {
         vector: coordinates.vector,
