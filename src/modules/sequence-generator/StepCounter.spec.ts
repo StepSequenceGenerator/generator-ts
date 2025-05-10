@@ -25,7 +25,7 @@ describe('StepCounter', () => {
 
   //  note turns methods
   describe('turns methods', () => {
-    describe('resetCounter должен всем свойствам в counter выставить 0', () => {
+    describe('reset должен всем свойствам в counter выставить 0', () => {
       beforeEach(() => {
         counter['turns'] = {
           difficultAll: 6,
@@ -56,7 +56,7 @@ describe('StepCounter', () => {
             [TurnAbsoluteName.LOOP, 1],
           ]),
         };
-        counter.resetCounter();
+        counter.reset();
       });
 
       it('lastStep должен быть null', () => {

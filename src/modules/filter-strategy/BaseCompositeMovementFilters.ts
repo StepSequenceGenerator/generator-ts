@@ -7,6 +7,7 @@ import { StepContext } from '../sequence-generator/StepContext.js';
 import { DefaultMovementFilterStrategy } from './DefaultMovementFilterStrategy.js';
 import { DifficultTurnsFilterStrategy } from './DifficultTurnsFilterStrategy.js';
 import { IMovementExtended } from '../../shared/types/movement-extended.interface';
+import { AbstractMovementFilterStrategy } from './abstract/AbstractMovementFilterStrategy';
 
 export class BaseCompositeMovementFilters extends AbstractCompositeFilterStrategy<
   MovementLibrary,
@@ -32,7 +33,12 @@ export const DifficultTurnsFilterComposite = new BaseCompositeMovementFilters([
 ]);
 
 export interface IGeneratorFilterStrategy<T> {
-  strategies: { [keys: string]: T };
+  strategies: {
+    default: T;
+    [keys: string]: T;
+  };
+
+  get default(): BaseCompositeMovementFilters;
 }
 
 export interface IGeneratorExtendedFilterStrategy
@@ -42,29 +48,11 @@ export interface IGeneratorExtendedFilterStrategy
     difficultTurns: typeof DifficultTurnsFilterComposite;
   };
 
-  get default(): BaseCompositeMovementFilters;
-
   get difficultTurns(): BaseCompositeMovementFilters;
 }
 
-export class GeneratorFilterStrategiesFactory implements IGeneratorExtendedFilterStrategy {
-  public strategies: {
-    default: typeof DefaultMovementFilterComposite;
-    difficultTurns: typeof DifficultTurnsFilterComposite;
-  };
-
-  constructor() {
-    this.strategies = {
-      default: new BaseCompositeMovementFilters([difficultTurnsStrategy, defaultStrategy]),
-      difficultTurns: new BaseCompositeMovementFilters([difficultTurnsStrategy, defaultStrategy]),
-    };
-  }
-
-  get default() {
-    return this.strategies.default;
-  }
-
-  get difficultTurns() {
-    return this.strategies.difficultTurns;
+export class GeneratorFilterStrategyFactory {
+  static create(strategies: AbstractMovementFilterStrategy[]): BaseCompositeMovementFilters {
+    return new BaseCompositeMovementFilters(strategies);
   }
 }

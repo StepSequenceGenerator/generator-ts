@@ -1,19 +1,10 @@
-import { StepSequenceGenerator } from '../sequence-generator/StepSequenceGenerator.js';
 import { AbstractExcelFormatter } from '../source-formatter/AbstractExcelFormatter.js';
 import { Movement } from '../movement/Movement.js';
 import { Configuration } from '../config/Configuration.js';
-import { MovementLibrary } from '../movement/MovementLibrary.js';
-import { StepCounter } from '../sequence-generator/StepCounter.js';
-import { RouletteGenerator } from '../roulette/RouletteGenerator.js';
-import { StepContext } from '../sequence-generator/StepContext.js';
-import { MovementWeightCalculator } from '../roulette/MovementWeightCalculator.js';
 import { DifficultLevelAmountStep } from '../../shared/enums/difficult-level-amount-step-enum.js';
 import { IMovementExtended } from '../../shared/types/movement-extended.interface';
-import { StepTracker } from '../sequence-tracker/StepTracker.js';
-import { START_COORDINATES } from '../../shared/constants/start-coordinates.js';
-import { VECTORS_TRACK } from '../../shared/constants/vectors-track.js';
-import { VECTOR_ANGLES } from '../../shared/constants/vector-angles';
-import { GeneratorFilterStrategiesFactory } from '../filter-strategy/BaseCompositeMovementFilters';
+import { SequenceGeneratorFactory } from '../sequence-generator/SequenceGeneratorFactory';
+import { DefaultStepSequenceGenerator } from '../sequence-generator/DefaultStepSequenceGenerator';
 
 type AppConstructorParamsType<T extends Record<string, string>> = {
   config: Configuration;
@@ -21,7 +12,7 @@ type AppConstructorParamsType<T extends Record<string, string>> = {
 };
 
 export class App<T extends Record<string, string>> {
-  private sequenceGenerator: StepSequenceGenerator | null = null;
+  private sequenceGenerator: DefaultStepSequenceGenerator | null = null;
   private sourceFormatter: AbstractExcelFormatter<T, Movement[]>;
   private config: Configuration;
 
@@ -45,22 +36,8 @@ export class App<T extends Record<string, string>> {
     this.sequenceGenerator = this.createSequenceGenerator(data);
   }
 
-  private createSequenceGenerator(data: Movement[]): StepSequenceGenerator {
-    const movementLibrary = new MovementLibrary(data);
-    const stepContext = new StepContext();
-    const stepCounter = new StepCounter();
-    const weightCalc = new MovementWeightCalculator();
-    const rouletteGenerator = new RouletteGenerator(weightCalc);
-    const filterStrategies = new GeneratorFilterStrategiesFactory();
-    const tracker = new StepTracker(START_COORDINATES, VECTORS_TRACK, VECTOR_ANGLES);
-    return new StepSequenceGenerator(
-      movementLibrary,
-      stepContext,
-      stepCounter,
-      rouletteGenerator,
-      tracker,
-      filterStrategies,
-    );
+  private createSequenceGenerator(data: Movement[]): DefaultStepSequenceGenerator {
+    return SequenceGeneratorFactory.createDefaultGenerator(data);
   }
 
   private loadExcelSource(dirPath: string, srcFileName: string): Movement[] {

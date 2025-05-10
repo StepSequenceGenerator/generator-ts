@@ -10,6 +10,13 @@ class CustomError extends Error {
   }
 }
 
+class UtilsError extends CustomError {
+  constructor(message: string, code: string, details?: unknown) {
+    super(message, code, details);
+    this.name = 'UtilsError';
+  }
+}
+
 class MovementParserError extends CustomError {
   constructor(message: string, code: string, details?: unknown) {
     super(message, code, details);
@@ -44,4 +51,5 @@ export {
   CoordinatesError,
   VectorCursorError,
   SequenceTrackerError,
+  UtilsError,
 };

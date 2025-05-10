@@ -5,6 +5,7 @@ import {
   RotationDirection,
   RotationDirectionString,
 } from '../../shared/enums/movement-enums.js';
+import { IStepCounter } from '../../shared/types/abstract-step-counter.interface';
 
 type TurnsType = {
   difficultAll: number;
@@ -18,7 +19,7 @@ type ThreeTurnsBlockType = {
 
 type RotationsType = Map<RotationDirectionString, number>;
 
-export class StepCounter {
+export class StepCounter implements IStepCounter {
   private lastStep: Movement | null;
   private turns: TurnsType;
   private rotations: RotationsType;
@@ -58,6 +59,7 @@ export class StepCounter {
     this.threeTurnsBlock.blockAmount++;
   }
 
+  // todo delete
   public updateThreeTurnsBlockOrigin(turnName: TurnAbsoluteName) {
     const { turns } = this.threeTurnsBlock;
     const currentCount = turns.get(turnName);
@@ -76,11 +78,13 @@ export class StepCounter {
       .map(([name]) => name);
   }
 
+  // todo delete
   private getOneTypeTurnMaxAmount() {
     const values = Array.from(this.threeTurnsBlock.turns.values());
     return values.includes(2) ? 1 : 2;
   }
 
+  // todo delete
   public get threeTurnsBlockAmount() {
     return this.threeTurnsBlock.blockAmount;
   }
@@ -160,7 +164,7 @@ export class StepCounter {
     this.lastStep = movement;
   }
 
-  public resetCounter() {
+  public reset() {
     this.lastStep = null;
     this.turns = this.initTurns();
     this.rotations = this.initRotations();
@@ -177,6 +181,7 @@ export class StepCounter {
     };
   }
 
+  // todo delete
   private initThreeTurnsBlock(): ThreeTurnsBlockType {
     const keys = Object.values(TurnAbsoluteName).filter(
       (name) => ![TurnAbsoluteName.CHOCTAW, TurnAbsoluteName.UNKNOWN].includes(name),
