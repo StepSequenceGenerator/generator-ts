@@ -4,7 +4,7 @@ import { DifficultLevelAmountStep } from './shared/enums/difficult-level-amount-
 export default twizzle;
 export { DifficultLevelAmountStep };
 
-if (process.env.NODE_ENV !== 'development') {
+if (process.env.NODE_ENV === 'development') {
   const tw = twizzle();
   tw.init();
   const seq = tw.generateSequence(DifficultLevelAmountStep.LEVEL_4);
