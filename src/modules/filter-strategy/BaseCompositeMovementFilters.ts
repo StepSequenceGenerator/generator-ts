@@ -56,25 +56,3 @@ export class GeneratorFilterStrategyFactory {
     return new BaseCompositeMovementFilters(strategies);
   }
 }
-
-export class GeneratorFilterStrategiesFactoryDelete implements IGeneratorExtendedFilterStrategy {
-  public strategies: {
-    default: typeof DefaultMovementFilterComposite;
-    difficultTurns: typeof DifficultTurnsFilterComposite;
-  };
-
-  constructor() {
-    this.strategies = {
-      default: new BaseCompositeMovementFilters([defaultStrategy]),
-      difficultTurns: new BaseCompositeMovementFilters([difficultTurnsStrategy, defaultStrategy]),
-    };
-  }
-
-  get default() {
-    return this.strategies.default;
-  }
-
-  get difficultTurns() {
-    return this.strategies.difficultTurns;
-  }
-}
