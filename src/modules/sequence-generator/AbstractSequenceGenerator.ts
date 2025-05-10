@@ -46,6 +46,7 @@ export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
     const currentLibrary = this.getCurrentLibrary();
     const newMovement = this.chooseMovement(currentLibrary.movements);
     const newCoordinates: IMovementCoordinates = this.getCoordinates(newMovement);
+
     return MovementExtendedFactory.createMovementExtended({
       movement: newMovement,
       coordinates: newCoordinates,
@@ -88,11 +89,14 @@ export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
   protected getCoordinates(newMovement: Movement): IMovementCoordinates {
     const currentCoordinates = this.context.endCoordinate || this.tracker.getStartCoordinates();
     const vector = this.context.vector;
+
     const coordinates = this.tracker.getNextPosition(
       vector,
       currentCoordinates,
       newMovement.distance,
     );
+
+    console.debug(coordinates);
 
     return {
       coordinates: {
