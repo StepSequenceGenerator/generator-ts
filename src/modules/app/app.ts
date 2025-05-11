@@ -5,6 +5,7 @@ import { DifficultLevelAmountStep } from '../../shared/enums/difficult-level-amo
 import { IMovementExtended } from '../../shared/types/movement-extended.interface';
 import { SequenceGeneratorFactory } from '../sequence-generator/SequenceGeneratorFactory';
 import { DefaultStepSequenceGenerator } from '../sequence-generator/DefaultStepSequenceGenerator';
+import { DistanceFactorType } from '../../shared/types/distance-factor.type';
 
 type AppConstructorParamsType<T extends Record<string, string>> = {
   config: Configuration;
@@ -23,9 +24,10 @@ export class App<T extends Record<string, string>> {
 
   public generateSequence(
     stepAmountBySequenceLevel: DifficultLevelAmountStep,
+    distanceFactor: DistanceFactorType,
   ): IMovementExtended[] {
     if (this.sequenceGenerator) {
-      return this.sequenceGenerator.generate(stepAmountBySequenceLevel);
+      return this.sequenceGenerator.generate(stepAmountBySequenceLevel, distanceFactor);
     } else {
       throw new Error('Необходимо инициализировать приложение');
     }
