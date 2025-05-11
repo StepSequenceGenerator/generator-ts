@@ -12,6 +12,7 @@ import { Movement } from '../movement/Movement';
 import { CHANCE_RATIO_MAP } from '../../shared/constants/chance-ratio-map.const';
 import { MovementExtendedFactory } from '../movement/MovementExtendedFactory';
 import { randomGenerator } from '../../utils/random-generator';
+import { DistanceFactorType } from '../../shared/types/distance-factor.type';
 
 export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
   protected stepSequence: IMovementExtended[];
@@ -40,12 +41,12 @@ export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
     this.filterStrategy = filterStrategy;
   }
 
-  abstract generate(args: unknown): IMovementExtended[];
+  abstract generate(...args: unknown[]): IMovementExtended[];
 
-  protected generateMovement(): IMovementExtended {
+  protected generateMovement(distanceFactor: DistanceFactorType): IMovementExtended {
     const currentLibrary = this.getCurrentLibrary();
     const newMovement = this.chooseMovement(currentLibrary.movements);
-    const newCoordinates: IMovementCoordinates = this.getCoordinates(newMovement);
+    const newCoordinates: IMovementCoordinates = this.getCoordinates(newMovement, distanceFactor);
 
     return MovementExtendedFactory.createMovementExtended({
       movement: newMovement,
@@ -86,14 +87,17 @@ export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
     this.stepSequence.push(movement);
   }
 
-  protected getCoordinates(newMovement: Movement): IMovementCoordinates {
+  protected getCoordinates(
+    newMovement: Movement,
+    distanceFactor: DistanceFactorType,
+  ): IMovementCoordinates {
     const currentCoordinates = this.context.endCoordinate || this.tracker.getStartCoordinates();
     const vector = this.context.vector;
 
     const coordinates = this.tracker.getNextPosition(
       vector,
       currentCoordinates,
-      newMovement.distance,
+      newMovement.distance * distanceFactor,
     );
 
     return {

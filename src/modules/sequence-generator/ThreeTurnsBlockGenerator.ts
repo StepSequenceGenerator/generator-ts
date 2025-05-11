@@ -6,6 +6,7 @@ import { RouletteGenerator } from '../roulette/RouletteGenerator';
 import { StepTracker } from '../sequence-tracker/StepTracker';
 import { BaseCompositeMovementFilters } from '../filter-strategy/BaseCompositeMovementFilters';
 import { ThreeDifficultTurnsBlockCounter } from './ThreeDifficultTurnsBlockCounter';
+import { DistanceFactorType } from '../../shared/types/distance-factor.type';
 
 const THREE_TURNS_BLOCK_LENGTH = 3;
 
@@ -21,12 +22,12 @@ export class ThreeTurnsBlockGenerator extends AbstractSequenceGenerator<ThreeDif
     super(data);
   }
 
-  generate(movement: IMovementExtended): IMovementExtended[] {
+  generate(movement: IMovementExtended, distanceFactor: DistanceFactorType): IMovementExtended[] {
     this.context.currentStep = movement;
     this.counter.resetTurns();
 
     for (let i = 0; i < THREE_TURNS_BLOCK_LENGTH; i++) {
-      const newMovement = this.generateMovement();
+      const newMovement = this.generateMovement(distanceFactor);
       this.update(newMovement);
     }
     this.counter.increaseAmount();
