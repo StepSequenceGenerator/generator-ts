@@ -5,7 +5,7 @@ import { DifficultLevelAmountStep } from './shared/enums/difficult-level-amount-
 import type { DistanceFactorType } from './shared/types/distance-factor.type';
 
 export type { DistanceFactorType };
-export { utils };
+export { utils, DifficultLevelAmountStep };
 export default twizzle;
 
 if (process.env.NODE_ENV === 'development') {
