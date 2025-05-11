@@ -1,7 +1,9 @@
-import { createDistanceFactor } from '../shared/types/distance-factor.type';
-import { DifficultLevelAmountStep } from '../shared/enums/difficult-level-amount-step-enum';
+import { createDistanceFactor } from './create-distance-factor';
 
+/**
+ * Утилиты для работы с данными движения и генерации.
+ * @namespace
+ */
 export const utils = {
   createDistanceFactor,
-  DifficultLevelAmountStep,
 };

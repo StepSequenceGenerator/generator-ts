@@ -1,14 +1,18 @@
 import { twizzle } from './twizzle.js';
-import { utils } from './utils/exporting-utils';
 
-export default twizzle;
+import { utils } from './utils/exporting-utils';
+import { DifficultLevelAmountStep } from './shared/enums/difficult-level-amount-step-enum';
+import type { DistanceFactorType } from './shared/types/distance-factor.type';
+
+export type { DistanceFactorType };
 export { utils };
+export default twizzle;
 
 if (process.env.NODE_ENV === 'development') {
   const tw = twizzle();
   tw.init();
   const distanceFactor = utils.createDistanceFactor(3);
-  const seq = tw.generateSequence(utils.DifficultLevelAmountStep.LEVEL_4, distanceFactor);
+  const seq = tw.generateSequence(DifficultLevelAmountStep.LEVEL_4, distanceFactor);
   console.log(
     seq.map((item) => {
       return `distance: ${item.distance * distanceFactor} \n ${item.id}:  ${item.name} | ${item.startLeg} - ${item.endLeg} | x: ${item.coordinates.end.x} y: ${item.coordinates.end.x}`;
