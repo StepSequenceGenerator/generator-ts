@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { Movement } from './Movement.js';
-import { MovementCharacter } from '../../shared/enums/movement-enums.js';
+import { Leg, MovementCharacter } from '../../shared/enums/movement-enums.js';
 import { TurnAbsoluteName } from '../../shared/enums/turn-absolute-name-enum.js';
 
 describe('Movement', () => {
@@ -10,8 +10,8 @@ describe('Movement', () => {
     transitionDirection: 2,
     rotationDirection: 1,
     rotationDegree: 0,
-    startLeg: 1,
-    endLeg: 0,
+    startLeg: Leg.LEFT,
+    endLeg: Leg.LEFT,
     isChangeLeg: true,
     startEdge: 0,
     endEdge: 1,

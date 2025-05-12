@@ -9,11 +9,11 @@ import { createCoordinates } from '../../modules/sequence-tracker/utils';
 
 export const START_COORDINATES: ReadonlyArray<CoordinatesType> = [
   createCoordinates(5, 5),
-  createCoordinates(5, 35),
+  createCoordinates(5, 25),
   createCoordinates(55, 5),
-  createCoordinates(55, 35),
+  createCoordinates(55, 25),
   createCoordinates(30, 5),
-  createCoordinates(30, 35),
-  createCoordinates(20, 20),
-  createCoordinates(40, 20),
+  createCoordinates(30, 25),
+  createCoordinates(20, 15),
+  createCoordinates(40, 15),
 ];
