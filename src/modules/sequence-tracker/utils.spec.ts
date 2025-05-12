@@ -14,11 +14,11 @@ describe('Utils of StepTracker', () => {
         );
       });
 
-      it('должен выбрасывать ошибку при аргументе y > 39', () => {
+      it('должен выбрасывать ошибку при аргументе y > 29', () => {
         const inputNumber = 40;
         const inputName = 'y';
         expect(() => Utils.createCoord(inputName, inputNumber)).toThrowError(
-          `${inputName.toUpperCase()} coordinate must be between 1 and 39. Got: ${inputNumber}`,
+          `${inputName.toUpperCase()} coordinate must be between 1 and 29. Got: ${inputNumber}`,
         );
       });
 

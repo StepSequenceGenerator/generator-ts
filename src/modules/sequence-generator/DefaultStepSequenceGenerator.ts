@@ -51,7 +51,8 @@ export class DefaultStepSequenceGenerator extends AbstractSequenceGenerator<Step
 
     try {
       while (this.counter.difficultTurnsOriginAmount < stepAmountBySequenceLevel) {
-        if (this.isTimeToInsertThreeTurnsBlock()) {
+        // if (this.isTimeToInsertThreeTurnsBlock()) {
+        if (false) {
           const movements = this.threeTurnsBlockGenerator.generate(
             this.context.currentStep || this.generateMovement(distanceFactor),
             distanceFactor,

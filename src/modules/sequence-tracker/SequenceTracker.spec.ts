@@ -82,9 +82,9 @@ describe('SequenceTracker', () => {
   describe('getNewCoordinates', () => {
     it('должен вернуть координаты', () => {
       const mock_vectorCursor = { x: 1, y: 1 } as VectorCursorType;
-      const mock_currentCoordinates = { x: 29, y: 29 } as CoordinatesType;
+      const mock_currentCoordinates = { x: 29, y: 27 } as CoordinatesType;
       const mock_distance = 2;
-      const expected = { x: 31, y: 31 };
+      const expected = { x: 31, y: 29 };
       const result = sequenceTracker['getNewCoordinates']({
         vectorCursor: mock_vectorCursor,
         currentCoordinates: mock_currentCoordinates,
@@ -93,9 +93,10 @@ describe('SequenceTracker', () => {
       expect(result).toEqual(expected);
     });
 
+    // todo разобраться с этим тестом
     const mockCurrentCoordinatesList = [
-      { x: 59, y: 29 },
-      { x: 29, y: 39 },
+      { x: 59, y: 28 },
+      { x: 29, y: 29 },
     ] as CoordinatesType[];
     it.each(mockCurrentCoordinatesList)('должен вернуть null при %s', () => {
       const mock_vectorCursor = { x: 1, y: 1 } as VectorCursorType;
