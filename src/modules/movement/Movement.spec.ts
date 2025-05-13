@@ -1,20 +1,25 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { Movement } from './Movement.js';
-import { MovementCharacter } from '../../shared/enums/movement-enums.js';
+import {
+  Edge,
+  Leg,
+  MovementCharacter,
+  TransitionDirection,
+} from '../../shared/enums/movement-enums.js';
 import { TurnAbsoluteName } from '../../shared/enums/turn-absolute-name-enum.js';
 
 describe('Movement', () => {
   const movementData = {
     id: 'testId',
     name: 'тест',
-    transitionDirection: 2,
+    transitionDirection: TransitionDirection.FORWARD,
     rotationDirection: 1,
     rotationDegree: 0,
-    startLeg: 1,
-    endLeg: 0,
+    startLeg: Leg.LEFT,
+    endLeg: Leg.LEFT,
     isChangeLeg: true,
-    startEdge: 0,
-    endEdge: 1,
+    startEdge: Edge.OUTER,
+    endEdge: Edge.OUTER,
     isChangeEdge: true,
     isSpeedIncrease: true,
     isDifficult: true,

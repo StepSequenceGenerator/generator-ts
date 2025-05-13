@@ -22,7 +22,7 @@ function createCoordinates(x: number, y: number) {
 }
 
 function createCoord<T>(axis: AxisType, coord: number): T {
-  let max = axis === 'x' ? 59 : 39;
+  let max = axis === 'x' ? 59 : 29;
 
   if (coord < 1 || coord > max) {
     throw new CoordinatesError(
