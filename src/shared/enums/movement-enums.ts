@@ -1,7 +1,7 @@
 enum Edge {
-  INNER = 0,
-  OUTER = 1,
-  TWO_EDGES = 2,
+  INNER = 'inner',
+  OUTER = 'outer',
+  TWO_EDGES = 'twoEdges',
 }
 
 enum Leg {
@@ -33,9 +33,9 @@ enum RotationDirectionString {
 }
 
 enum TransitionDirection {
-  NONE = 0,
-  FORWARD = 1,
-  BACKWARD = 2,
+  NONE = 'none',
+  FORWARD = 'forward',
+  BACKWARD = 'backward',
 }
 
 enum MovementCharacter {
