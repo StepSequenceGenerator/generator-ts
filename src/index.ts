@@ -12,7 +12,7 @@ if (process.env.NODE_ENV === 'development') {
   const tw = twizzle();
   tw.init();
   const distanceFactor = utils.createDistanceFactor(3);
-  const seq = tw.generateSequence(DifficultLevelAmountStep.LEVEL_4, distanceFactor);
+  const seq = tw.generateSequence(DifficultLevelAmountStep.LEVEL_3, distanceFactor);
   console.log(
     seq.map((item) => {
       return `distance: ${item.distance * distanceFactor} \n ${item.id}:  ${item.name} | ${item.startLeg} - ${item.endLeg} | x: ${item.coordinates.end.x} y: ${item.coordinates.end.x}`;
