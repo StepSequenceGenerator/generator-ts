@@ -8,7 +8,6 @@ import { DefaultMovementFilterStrategy } from './DefaultMovementFilterStrategy.j
 import { DifficultTurnsFilterStrategy } from './DifficultTurnsFilterStrategy.js';
 import { IMovementExtended } from '../../shared/types/movement-extended.interface';
 import { AbstractMovementFilterStrategy } from './abstract/AbstractMovementFilterStrategy';
-import { log } from 'node:util';
 
 export class BaseCompositeMovementFilters extends AbstractCompositeFilterStrategy<
   MovementLibrary,
