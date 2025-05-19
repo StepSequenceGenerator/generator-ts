@@ -1,6 +1,6 @@
 import { MovementLibrary } from '../movement/MovementLibrary';
 import { StepContext } from './StepContext';
-import { StepCounter } from './StepCounter';
+import { StepCounter } from '../step-counter/StepCounter';
 import { MovementWeightCalculator } from '../roulette/MovementWeightCalculator';
 import { RouletteGenerator } from '../roulette/RouletteGenerator';
 import { StepTracker } from '../sequence-tracker/StepTracker';
@@ -14,7 +14,7 @@ import { ThreeTurnsBlockGenerator } from './ThreeTurnsBlockGenerator';
 import { DifficultTurnsFilterStrategy } from '../filter-strategy/DifficultTurnsFilterStrategy';
 import { GeneratorFilterStrategyFactory } from '../filter-strategy/BaseCompositeMovementFilters';
 import { DefaultMovementFilterStrategy } from '../filter-strategy/DefaultMovementFilterStrategy';
-import { ThreeDifficultTurnsBlockCounter } from './ThreeDifficultTurnsBlockCounter';
+import { ThreeDifficultTurnsBlockCounter } from '../step-counter/ThreeDifficultTurnsBlockCounter';
 
 export class SequenceGeneratorFactory {
   private static generator = new Map<GeneratorType, unknown>([

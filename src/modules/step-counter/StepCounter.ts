@@ -1,10 +1,10 @@
-import { Movement } from '../movement/Movement.js';
-import { TurnAbsoluteName } from '../../shared/enums/turn-absolute-name-enum.js';
+import { Movement } from '../movement/Movement';
+import { TurnAbsoluteName } from '../../shared/enums/turn-absolute-name-enum';
 import {
   RotationDegree,
   RotationDirection,
   RotationDirectionString,
-} from '../../shared/enums/movement-enums.js';
+} from '../../shared/enums/movement-enums';
 import { IStepCounter } from '../../shared/types/abstract-step-counter.interface';
 
 type TurnsType = {

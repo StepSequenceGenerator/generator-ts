@@ -5,7 +5,7 @@ import { IMovementExtended } from '../../shared/types/extended-movement/movement
 import { RouletteGenerator } from '../roulette/RouletteGenerator';
 import { StepTracker } from '../sequence-tracker/StepTracker';
 import { BaseCompositeMovementFilters } from '../filter-strategy/BaseCompositeMovementFilters';
-import { ThreeDifficultTurnsBlockCounter } from './ThreeDifficultTurnsBlockCounter';
+import { ThreeDifficultTurnsBlockCounter } from '../step-counter/ThreeDifficultTurnsBlockCounter';
 import { DistanceFactorType } from '../../shared/types/distance-factor.type';
 
 const THREE_TURNS_BLOCK_LENGTH = 3;
