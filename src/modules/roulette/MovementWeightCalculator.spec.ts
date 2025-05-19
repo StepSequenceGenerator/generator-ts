@@ -1,12 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { MovementWeightCalculator } from './MovementWeightCalculator.js';
 import { WeightCalculatorBase } from './WeightCalculatorBase.js';
-import { ChanceRatioMapType } from '../../shared/types/chance-ratio-map-type.js';
+import { ChanceRatioMapType } from '../../shared/types/chance-ratio-map.type';
 import type { Movement } from '../movement/Movement.js';
-import {
-  ExtendedMovementCharacter,
-  MovementCharacter,
-} from '../../shared/enums/movement-enums.js';
+import { ExtendedMovementCharacter, MovementCharacter } from '../../shared/enums/movement-enums.js';
 
 const mockMovements: Movement[] = [
   { type: MovementCharacter.UNKNOWN, isDifficult: false } as Movement,
@@ -25,10 +22,7 @@ const mockGroupMovementCounted = new Map([
   [ExtendedMovementCharacter.STEP, 1],
 ]);
 
-const mockChanceRatioMap: ChanceRatioMapType = new Map<
-  ExtendedMovementCharacter,
-  number
->([
+const mockChanceRatioMap: ChanceRatioMapType = new Map<ExtendedMovementCharacter, number>([
   [ExtendedMovementCharacter.STEP, 8],
   [ExtendedMovementCharacter.TURN, 9],
   [ExtendedMovementCharacter.SEQUENCE, 9],
@@ -59,11 +53,7 @@ describe('MovementWeightCalculator', () => {
           calcAny = calc as unknown as any;
         });
 
-        const methodNameList = [
-          'groupAndCountMovements',
-          'recalculateChanceRatio',
-          'calcWeight',
-        ];
+        const methodNameList = ['groupAndCountMovements', 'recalculateChanceRatio', 'calcWeight'];
 
         it.each(methodNameList)('метод %s', (methodName) => {
           const spyFn = vi.spyOn(calcAny, methodName);
@@ -120,7 +110,7 @@ describe('MovementWeightCalculator', () => {
         ]);
         const result = calc['getActualChanceRatioMap'](
           Array.from(mockGroupMovementCounted.keys()),
-          mockChanceRatioMap
+          mockChanceRatioMap,
         );
         expect(result).toStrictEqual(expected);
       });
@@ -155,10 +145,7 @@ describe('MovementWeightCalculator', () => {
           [ExtendedMovementCharacter.DIFFICULT, 50],
           [ExtendedMovementCharacter.STEP, 16],
         ]);
-        const result = calc['redistributeChanceRatio'](
-          mockPercentageSeparate,
-          mockMap
-        );
+        const result = calc['redistributeChanceRatio'](mockPercentageSeparate, mockMap);
         expect(result).toStrictEqual(expected);
       });
     });
@@ -184,10 +171,7 @@ describe('MovementWeightCalculator', () => {
           [ExtendedMovementCharacter.DIFFICULT, 1.75],
           [ExtendedMovementCharacter.STEP, 1.12],
         ]);
-        const result = calc['calcWeight'](
-          mockGroupMovementCounted,
-          mockRecalculatedMap
-        );
+        const result = calc['calcWeight'](mockGroupMovementCounted, mockRecalculatedMap);
 
         expect(result).toStrictEqual(expected);
       });

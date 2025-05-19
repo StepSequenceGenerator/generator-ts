@@ -1,4 +1,4 @@
-import { ChanceRatioMapType } from '../types/chance-ratio-map-type';
+import { ChanceRatioMapType } from '../types/chance-ratio-map.type';
 import { ExtendedMovementCharacter } from '../enums/movement-enums';
 
 export const CHANCE_RATIO_MAP: ChanceRatioMapType = new Map<ExtendedMovementCharacter, number>([

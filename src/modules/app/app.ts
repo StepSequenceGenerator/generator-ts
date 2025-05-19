@@ -1,7 +1,7 @@
 import { AbstractExcelFormatter } from '../source-formatter/AbstractExcelFormatter.js';
 import { Movement } from '../movement/Movement.js';
 import { Configuration } from '../config/Configuration.js';
-import { DifficultLevelAmountStep } from '../../shared/enums/difficult-level-amount-step-enum.js';
+import { DifficultLevelAmountStep } from '../../shared/enums/difficult-level-amount-step.enum';
 import { IMovementExtended } from '../../shared/types/extended-movement/movement-extended.interface';
 import { SequenceGeneratorFactory } from '../sequence-generator/SequenceGeneratorFactory';
 import { DefaultStepSequenceGenerator } from '../sequence-generator/DefaultStepSequenceGenerator';

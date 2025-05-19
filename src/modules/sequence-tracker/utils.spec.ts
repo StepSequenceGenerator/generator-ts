@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import * as Utils from './utils';
 import { createCoordinates, createCursor, createVectorCursor } from './utils';
-import { CursorValueType } from '../../shared/types/vector-type';
+import { CursorValueType } from '../../shared/types/vector.type';
 
 describe('Utils of StepTracker', () => {
   describe('Coordinates', () => {

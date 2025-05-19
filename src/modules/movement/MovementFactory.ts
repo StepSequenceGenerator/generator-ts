@@ -9,8 +9,8 @@ import {
   RotationDirection,
   TransitionDirection,
 } from '../../shared/enums/movement-enums.js';
-import { MapValueTypeBase } from '../../shared/types/map-value-type-base.js';
-import { TurnAbsoluteName } from '../../shared/enums/turn-absolute-name-enum.js';
+import { MapValueTypeBaseType } from '../../shared/types/map-value-type-base.type';
+import { TurnAbsoluteName } from '../../shared/enums/turn-absolute-name.enum';
 
 const { isEqual } = lodash;
 
@@ -30,7 +30,7 @@ export type ParseTypeArgsType = {
 
 class MovementFactory {
   static createFromExcelData<T extends Record<string, string>>(
-    data: Map<string, MapValueTypeBase>,
+    data: Map<string, MapValueTypeBaseType>,
     columnName: T,
   ): Movement {
     const movementData: IMovement = {

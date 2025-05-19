@@ -1,5 +1,5 @@
 import { Movement } from '../movement/Movement';
-import { TurnAbsoluteName } from '../../shared/enums/turn-absolute-name-enum';
+import { TurnAbsoluteName } from '../../shared/enums/turn-absolute-name.enum';
 import {
   RotationDegree,
   RotationDirection,

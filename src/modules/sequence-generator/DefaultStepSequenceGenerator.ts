@@ -6,7 +6,7 @@ import { RouletteGenerator } from '../roulette/RouletteGenerator';
 import { StepTracker } from '../sequence-tracker/StepTracker';
 import { BaseCompositeMovementFilters } from '../filter-strategy/BaseCompositeMovementFilters';
 import { StepCounter } from '../step-counter/StepCounter';
-import { DifficultLevelAmountStep } from '../../shared/enums/difficult-level-amount-step-enum';
+import { DifficultLevelAmountStep } from '../../shared/enums/difficult-level-amount-step.enum';
 import { ThreeTurnsBlockGenerator } from './ThreeTurnsBlockGenerator';
 import { DistanceFactorType } from '../../shared/types/distance-factor.type';
 import { SequenceTrackerError } from '../../errors/custom-errors';

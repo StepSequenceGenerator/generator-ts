@@ -5,13 +5,13 @@ import {
   VectorTrackType,
   XCursorType,
   YCursorType,
-} from '../../shared/types/vector-type';
+} from '../../shared/types/vector.type';
 import {
   DescartesCoordinatesType,
   XCoordinateType,
   YCoordinateType,
 } from '../../shared/types/descartes-coordinates.type';
-import { VectorKey } from '../../shared/enums/vector-key-enum';
+import { VectorKey } from '../../shared/enums/vector-key.enum';
 
 import { CoordinatesError, SequenceTrackerError } from '../../errors/custom-errors';
 import { randomGenerator } from '../../utils/random-generator';

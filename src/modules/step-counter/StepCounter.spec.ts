@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { StepCounter } from './StepCounter';
-import { TurnAbsoluteName } from '../../shared/enums/turn-absolute-name-enum';
+import { TurnAbsoluteName } from '../../shared/enums/turn-absolute-name.enum';
 import { Movement } from '../movement/Movement';
 import {
   MovementCharacter,

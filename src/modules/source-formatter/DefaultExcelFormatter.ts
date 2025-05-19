@@ -2,9 +2,9 @@ import {
   AbstractExcelFormatter,
   AbstractExcelFormatterArgsType,
 } from './AbstractExcelFormatter.js';
-import { ColumnName } from '../../shared/enums/column-name-enum.js';
+import { ColumnName } from '../../shared/enums/column-name.enum';
 import { Movement } from '../movement/Movement.js';
-import { MapValueTypeBase } from '../../shared/types/map-value-type-base.js';
+import { MapValueTypeBaseType } from '../../shared/types/map-value-type-base.type';
 import { MovementFactory } from '../movement/MovementFactory.js';
 
 export class DefaultExcelFormatter extends AbstractExcelFormatter<typeof ColumnName, Movement[]> {
@@ -19,7 +19,7 @@ export class DefaultExcelFormatter extends AbstractExcelFormatter<typeof ColumnN
   }
 
   private prepareDataForMovementLibrary(
-    data: Map<string, MapValueTypeBase>[],
+    data: Map<string, MapValueTypeBaseType>[],
     columnName: typeof ColumnName,
   ): Movement[] {
     const movements: Movement[] = [];

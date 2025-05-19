@@ -1,4 +1,4 @@
-import { VectorKey } from '../enums/vector-key-enum';
+import { VectorKey } from '../enums/vector-key.enum';
 
 type AxisType = 'x' | 'y';
 
