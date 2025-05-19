@@ -1,7 +1,7 @@
 import { Movement } from './Movement';
-import { IThreeTurnsBlockInfo } from '../../shared/types/three-turns-block.interface';
-import { IMovementExtended } from '../../shared/types/movement-extended.interface';
-import { IMovementCoordinates } from '../../shared/types/movement-coordinates.interface';
+import { IThreeTurnsBlockInfo } from '../../shared/types/extended-movement/three-turns-block.interface';
+import { IMovementExtended } from '../../shared/types/extended-movement/movement-extended.interface';
+import { IMovementCoordinates } from '../../shared/types/extended-movement/movement-coordinates.interface';
 
 class MovementExtendedFactory {
   static createMovementExtended(data: {

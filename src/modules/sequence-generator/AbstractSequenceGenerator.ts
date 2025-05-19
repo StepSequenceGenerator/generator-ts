@@ -1,6 +1,6 @@
 import { Movement } from '../movement/Movement';
 import { MovementLibrary } from '../movement/MovementLibrary';
-import { IMovementExtended } from '../../shared/types/movement-extended.interface';
+import { IMovementExtended } from '../../shared/types/extended-movement/movement-extended.interface';
 import { MovementExtendedFactory } from '../movement/MovementExtendedFactory';
 import { StepContext } from './StepContext';
 import { RouletteGenerator } from '../roulette/RouletteGenerator';
@@ -12,7 +12,7 @@ import { CHANCE_RATIO_MAP } from '../../shared/constants/chance-ratio-map.const'
 
 import { DistanceFactorType } from '../../shared/types/distance-factor.type';
 import { IStepCounter } from '../../shared/types/abstract-step-counter.interface';
-import { ICoordinates } from '../../shared/types/movement-coordinates.interface';
+import { ICoordinates } from '../../shared/types/extended-movement/movement-coordinates.interface';
 
 export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
   protected stepSequence: IMovementExtended[];

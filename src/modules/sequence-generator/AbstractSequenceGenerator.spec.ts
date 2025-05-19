@@ -3,7 +3,7 @@ import { Movement } from '../movement/Movement';
 import { AbstractSequenceGenerator } from './AbstractSequenceGenerator';
 import { StepCounter } from './StepCounter';
 import { SequenceGeneratorFactory } from './SequenceGeneratorFactory';
-import { IMovementExtended } from '../../shared/types/movement-extended.interface';
+import { IMovementExtended } from '../../shared/types/extended-movement/movement-extended.interface';
 
 const mockMovements = [{}] as Movement[];
 

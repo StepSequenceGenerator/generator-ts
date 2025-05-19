@@ -6,7 +6,7 @@ import {
   TransitionDirection,
 } from '../../shared/enums/movement-enums.js';
 import { DescartesCoordinatesType } from '../../shared/types/descartes-coordinates.type';
-import { IMovementExtended } from '../../shared/types/movement-extended.interface';
+import { IMovementExtended } from '../../shared/types/extended-movement/movement-extended.interface';
 
 class StepContext<T extends IMovementExtended> {
   private _currentStep: T | null = null;

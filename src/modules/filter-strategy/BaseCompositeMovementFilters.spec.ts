@@ -12,7 +12,7 @@ import { MovementLibrary } from '../movement/MovementLibrary';
 import { DefaultMovementFilterStrategy } from './DefaultMovementFilterStrategy';
 import { DifficultTurnsFilterStrategy } from './DifficultTurnsFilterStrategy';
 import { StepContext } from '../sequence-generator/StepContext';
-import { IMovementExtended } from '../../shared/types/movement-extended.interface';
+import { IMovementExtended } from '../../shared/types/extended-movement/movement-extended.interface';
 
 const currentMovement = {
   isDifficult: true,

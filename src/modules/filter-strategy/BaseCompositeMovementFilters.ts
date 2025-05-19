@@ -6,7 +6,7 @@ import { StepContext } from '../sequence-generator/StepContext.js';
 
 import { DefaultMovementFilterStrategy } from './DefaultMovementFilterStrategy.js';
 import { DifficultTurnsFilterStrategy } from './DifficultTurnsFilterStrategy.js';
-import { IMovementExtended } from '../../shared/types/movement-extended.interface';
+import { IMovementExtended } from '../../shared/types/extended-movement/movement-extended.interface';
 import { AbstractMovementFilterStrategy } from './abstract/AbstractMovementFilterStrategy';
 
 export class BaseCompositeMovementFilters extends AbstractCompositeFilterStrategy<
