@@ -24,11 +24,15 @@ class StepContext<T extends IMovementExtended> {
   }
 
   get endCoordinate(): DescartesCoordinatesType | null {
-    return this._currentStep === null ? null : this._currentStep.coordinates.end;
+    return this._currentStep === null || this._currentStep.coordinates === null
+      ? null
+      : this._currentStep.coordinates.end;
   }
 
   get vector() {
-    return this._currentStep === null ? null : this._currentStep.coordinates.vector;
+    return this._currentStep === null || this._currentStep.coordinates === null
+      ? null
+      : this._currentStep.coordinates.vector;
   }
 
   get currentLeg() {

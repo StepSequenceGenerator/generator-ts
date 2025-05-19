@@ -34,12 +34,11 @@ describe('AbstractSequenceGenerator', () => {
       expect(spyGetNextPosition).toHaveBeenCalled();
     });
 
-    it('должен возвращать объект с типом IMovementCoordinates', () => {
+    it('должен возвращать объект с типом ICoordinates', () => {
       const result = generatorAny.getCoordinates({} as Movement);
-      expect(result).toHaveProperty('coordinates');
-      expect(result['coordinates']).toHaveProperty('vector');
-      expect(result['coordinates']).toHaveProperty('start');
-      expect(result['coordinates']).toHaveProperty('end');
+      expect(result).toHaveProperty('vector');
+      expect(result).toHaveProperty('start');
+      expect(result).toHaveProperty('end');
     });
   });
 
