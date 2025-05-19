@@ -3,7 +3,7 @@ import { Movement } from '../movement/Movement';
 import { AbstractSequenceGenerator } from './AbstractSequenceGenerator';
 import { StepCounter } from './StepCounter';
 import { SequenceGeneratorFactory } from './SequenceGeneratorFactory';
-import { IMovementExtended } from '../../shared/types/movement-extended.interface';
+import { IMovementExtended } from '../../shared/types/extended-movement/movement-extended.interface';
 
 const mockMovements = [{}] as Movement[];
 
@@ -34,12 +34,11 @@ describe('AbstractSequenceGenerator', () => {
       expect(spyGetNextPosition).toHaveBeenCalled();
     });
 
-    it('должен возвращать объект с типом IMovementCoordinates', () => {
+    it('должен возвращать объект с типом ICoordinates', () => {
       const result = generatorAny.getCoordinates({} as Movement);
-      expect(result).toHaveProperty('coordinates');
-      expect(result['coordinates']).toHaveProperty('vector');
-      expect(result['coordinates']).toHaveProperty('start');
-      expect(result['coordinates']).toHaveProperty('end');
+      expect(result).toHaveProperty('vector');
+      expect(result).toHaveProperty('start');
+      expect(result).toHaveProperty('end');
     });
   });
 

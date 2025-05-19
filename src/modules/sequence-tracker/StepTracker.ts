@@ -7,10 +7,10 @@ import {
   YCursorType,
 } from '../../shared/types/vector-type';
 import {
-  CoordinatesType,
+  DescartesCoordinatesType,
   XCoordinateType,
   YCoordinateType,
-} from '../../shared/types/coordinates-type';
+} from '../../shared/types/descartes-coordinates.type';
 import { VectorKey } from '../../shared/enums/vector-key-enum';
 
 import { CoordinatesError, SequenceTrackerError } from '../../errors/custom-errors';
@@ -22,12 +22,12 @@ type CoordinateForCursorType<T extends CombinedCursorType> = T extends XCursorTy
   : YCoordinateType;
 
 export class StepTracker {
-  readonly startCoordinates: ReadonlyArray<CoordinatesType>;
+  readonly startCoordinates: ReadonlyArray<DescartesCoordinatesType>;
   readonly trackVectors: VectorTrackType;
   readonly vectorAngles: VectorAngleType;
 
   constructor(
-    standardStartCoordinates: ReadonlyArray<CoordinatesType>,
+    standardStartCoordinates: ReadonlyArray<DescartesCoordinatesType>,
     trackVectors: VectorTrackType,
     vectorAngles: VectorAngleType,
   ) {
@@ -38,7 +38,7 @@ export class StepTracker {
 
   public getNextPosition(
     currentVector: VectorKey | null,
-    currentCoordinates: CoordinatesType,
+    currentCoordinates: DescartesCoordinatesType,
     distance: number,
   ) {
     const triedVectorKeys = new Set<VectorKey>();
@@ -76,7 +76,7 @@ export class StepTracker {
 
   private getNewCoordinates(data: {
     vectorCursor: VectorCursorType;
-    currentCoordinates: CoordinatesType;
+    currentCoordinates: DescartesCoordinatesType;
     distance: number;
   }) {
     const { vectorCursor, currentCoordinates, distance } = data;

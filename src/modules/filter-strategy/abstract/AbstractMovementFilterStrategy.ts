@@ -1,7 +1,7 @@
 import { IFilterStrategy } from './InterfaceFilterStrategy.js';
 import { MovementLibrary } from '../../movement/MovementLibrary.js';
 import { StepContext } from '../../sequence-generator/StepContext.js';
-import { IMovementExtended } from '../../../shared/types/movement-extended.interface';
+import { IMovementExtended } from '../../../shared/types/extended-movement/movement-extended.interface';
 
 export abstract class AbstractMovementFilterStrategy
   implements IFilterStrategy<MovementLibrary, [MovementLibrary, StepContext<IMovementExtended>]>

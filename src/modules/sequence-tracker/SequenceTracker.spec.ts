@@ -6,7 +6,10 @@ import { VECTORS_TRACK } from '../../shared/constants/vectors-track';
 import { createCoordinates } from './utils';
 import { VectorKey } from '../../shared/enums/vector-key-enum';
 import { VectorCursorType, XCursorType } from '../../shared/types/vector-type';
-import { CoordinatesType, XCoordinateType } from '../../shared/types/coordinates-type';
+import {
+  DescartesCoordinatesType,
+  XCoordinateType,
+} from '../../shared/types/descartes-coordinates.type';
 
 describe('SequenceTracker', () => {
   let sequenceTracker: StepTracker;
@@ -82,7 +85,7 @@ describe('SequenceTracker', () => {
   describe('getNewCoordinates', () => {
     it('должен вернуть координаты', () => {
       const mock_vectorCursor = { x: 1, y: 1 } as VectorCursorType;
-      const mock_currentCoordinates = { x: 29, y: 27 } as CoordinatesType;
+      const mock_currentCoordinates = { x: 29, y: 27 } as DescartesCoordinatesType;
       const mock_distance = 2;
       const expected = { x: 31, y: 29 };
       const result = sequenceTracker['getNewCoordinates']({
@@ -97,10 +100,10 @@ describe('SequenceTracker', () => {
     const mockCurrentCoordinatesList = [
       { x: 59, y: 28 },
       { x: 29, y: 29 },
-    ] as CoordinatesType[];
+    ] as DescartesCoordinatesType[];
     it.each(mockCurrentCoordinatesList)('должен вернуть null при %s', () => {
       const mock_vectorCursor = { x: 1, y: 1 } as VectorCursorType;
-      const mock_currentCoordinates = { x: 59, y: 39 } as CoordinatesType;
+      const mock_currentCoordinates = { x: 59, y: 39 } as DescartesCoordinatesType;
       const mock_distance = 2;
       const expected = null;
       const result = sequenceTracker['getNewCoordinates']({
@@ -129,7 +132,7 @@ describe('SequenceTracker', () => {
         const sequenceTrackerAny = sequenceTracker as unknown as any;
         vi.spyOn(sequenceTrackerAny, 'getAllowedVectorKeys').mockReturnValue([]);
         const mockCurrentVector = VectorKey.NORTH;
-        const mockCurrentCoordinates = { x: 1, y: 1 } as CoordinatesType;
+        const mockCurrentCoordinates = { x: 1, y: 1 } as DescartesCoordinatesType;
         const distance = 1;
         expect(() =>
           sequenceTracker.getNextPosition(mockCurrentVector, mockCurrentCoordinates, distance),

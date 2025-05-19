@@ -5,8 +5,8 @@ import {
   RotationDirection,
   TransitionDirection,
 } from '../../shared/enums/movement-enums.js';
-import { CoordinatesType } from '../../shared/types/coordinates-type';
-import { IMovementExtended } from '../../shared/types/movement-extended.interface';
+import { DescartesCoordinatesType } from '../../shared/types/descartes-coordinates.type';
+import { IMovementExtended } from '../../shared/types/extended-movement/movement-extended.interface';
 
 class StepContext<T extends IMovementExtended> {
   private _currentStep: T | null = null;
@@ -23,12 +23,16 @@ class StepContext<T extends IMovementExtended> {
     return this._currentStep;
   }
 
-  get endCoordinate(): CoordinatesType | null {
-    return this._currentStep === null ? null : this._currentStep.coordinates.end;
+  get endCoordinate(): DescartesCoordinatesType | null {
+    return this._currentStep === null || this._currentStep.coordinates === null
+      ? null
+      : this._currentStep.coordinates.end;
   }
 
   get vector() {
-    return this._currentStep === null ? null : this._currentStep.coordinates.vector;
+    return this._currentStep === null || this._currentStep.coordinates === null
+      ? null
+      : this._currentStep.coordinates.vector;
   }
 
   get currentLeg() {

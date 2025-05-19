@@ -25,6 +25,7 @@ export class DefaultExcelFormatter extends AbstractExcelFormatter<typeof ColumnN
     const movements: Movement[] = [];
     for (const line of data) {
       const movement = MovementFactory.createFromExcelData<typeof ColumnName>(line, columnName);
+
       movements.push(movement);
     }
     return movements;

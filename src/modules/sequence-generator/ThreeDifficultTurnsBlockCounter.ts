@@ -1,5 +1,5 @@
 import { IStepCounter } from '../../shared/types/abstract-step-counter.interface';
-import { IMovementExtended } from '../../shared/types/movement-extended.interface';
+import { IMovementExtended } from '../../shared/types/extended-movement/movement-extended.interface';
 import { TurnAbsoluteName } from '../../shared/enums/turn-absolute-name-enum';
 
 export class ThreeDifficultTurnsBlockCounter implements IStepCounter {
