@@ -9,11 +9,12 @@ export class DefaultMovementFilterStrategy extends AbstractMovementFilterStrateg
     library: MovementLibrary,
     context: StepContext<IMovementExtended>,
   ): MovementLibrary {
-    return library
+    const result = library
       .filterByEdge(this.withDefault(context.currentEdge, Edge.TWO_EDGES))
       .filterByLeg(this.withDefault(context.currentLeg, Leg.BOTH))
       .filterByTransitionDirection(
         this.withDefault(context.currentDirection, TransitionDirection.NONE),
       );
+    return result;
   }
 }

@@ -21,6 +21,12 @@ export class BaseCompositeMovementFilters extends AbstractCompositeFilterStrateg
   ) {
     super(strategies);
   }
+
+  public filter(library: MovementLibrary, stepContext: StepContext<IMovementExtended>) {
+    return this.strategies.reduce((currentLibrary, strategy) => {
+      return strategy.filter(currentLibrary, stepContext);
+    }, library);
+  }
 }
 
 const defaultStrategy = new DefaultMovementFilterStrategy();

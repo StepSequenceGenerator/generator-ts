@@ -1,51 +1,99 @@
-import { describe, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
+import { BaseCompositeMovementFilters } from './BaseCompositeMovementFilters';
+import {
+  Edge,
+  Leg,
+  MovementCharacter,
+  RotationDegree,
+  TransitionDirection,
+} from '../../shared/enums/movement-enums';
+import { Movement } from '../movement/Movement';
+import { MovementLibrary } from '../movement/MovementLibrary';
+import { DefaultMovementFilterStrategy } from './DefaultMovementFilterStrategy';
+import { DifficultTurnsFilterStrategy } from './DifficultTurnsFilterStrategy';
+import { StepContext } from '../sequence-generator/StepContext';
+import { IMovementExtended } from '../../shared/types/movement-extended.interface';
+
+const currentMovement = {
+  isDifficult: true,
+  type: MovementCharacter.TURN,
+  name: 'currentDifficultTurn',
+  endEdge: Edge.OUTER,
+  endLeg: Leg.RIGHT,
+  transitionDirection: TransitionDirection.BACKWARD,
+  rotationDegree: RotationDegree.DEGREE_180,
+} as IMovementExtended;
+
+const mockMovements = [
+  {
+    isDifficult: true,
+    type: MovementCharacter.TURN,
+    name: 'RESULT',
+    startEdge: Edge.OUTER,
+    startLeg: Leg.RIGHT,
+    transitionDirection: TransitionDirection.FORWARD,
+  } as Movement,
+  {
+    isDifficult: true,
+    type: MovementCharacter.TURN,
+    name: 'difficultTurn2',
+    startEdge: Edge.INNER,
+    startLeg: Leg.RIGHT,
+    transitionDirection: 'forward',
+  } as Movement,
+  {
+    isDifficult: true,
+    type: MovementCharacter.STEP,
+    name: 'difficultTurn2',
+    startEdge: Edge.OUTER,
+    startLeg: Leg.RIGHT,
+    transitionDirection: 'forward',
+  } as Movement,
+  {
+    isDifficult: false,
+    type: MovementCharacter.GLIDE,
+    name: 'glide',
+    startEdge: Edge.INNER,
+    startLeg: Leg.RIGHT,
+    transitionDirection: 'forward',
+  } as Movement,
+];
+
+const mockLibrary = new MovementLibrary(mockMovements);
+const mockStepContext = new StepContext();
 
 describe('BaseCompositeMovementFilters', () => {
-  it('test', () => {});
+  let compositeFilter: BaseCompositeMovementFilters;
+  beforeEach(() => {
+    const defaultFilterStrategy = new DefaultMovementFilterStrategy();
+    const difficultTurnsFilterStrategy = new DifficultTurnsFilterStrategy();
+    compositeFilter = new BaseCompositeMovementFilters([
+      defaultFilterStrategy,
+      difficultTurnsFilterStrategy,
+    ]);
+  });
 
-  // todo перенести в тесты для filterStrategies
-  // describe('filterLibraryForNextStep', () => {
-  //   describe('filter by Edge', () => {
-  //     const edgeList = [Edge.OUTER, Edge.INNER];
-  //     it.each(edgeList)('должен вернуть массив с Edge.%s и Edge.TWO_EDGES', (current) => {
-  //       generator['context'].currentStep = { endEdge: current } as IMovementExtended;
-  //       const result = generator['filterLibraryForNextStep']().movements;
-  //       result.forEach((item) => {
-  //         expect(item.startEdge === current || item.startEdge === Edge.TWO_EDGES).toBe(true);
-  //       });
-  //     });
-  //   });
-  //
-  //   describe('filter by Leg', () => {
-  //     const legList = [Leg.RIGHT, Leg.LEFT];
-  //     it.each(legList)('должен вернуть массив с Leg.%s и Leg.BOTH', (current) => {
-  //       generator['context'].currentStep = { endLeg: current } as IMovementExtended;
-  //       const result = generator['filterLibraryForNextStep']().movements;
-  //       result.forEach((item) => {
-  //         expect(item.startLeg === current || item.startLeg === Leg.BOTH).toBe(true);
-  //       });
-  //     });
-  //   });
-  //
-  //   describe('filter by TransitionDirection', () => {
-  //     const transitionDirectionList = [TransitionDirection.FORWARD, TransitionDirection.BACKWARD];
-  //     it.each(transitionDirectionList)(
-  //       'должен вернуть массив с TransitionDirection.%s и TransitionDirection.NONE',
-  //       (current) => {
-  //         generator['context'].currentStep = {
-  //           transitionDirection: current,
-  //           rotationDirection: RotationDirection.NONE,
-  //           rotationDegree: RotationDegree.DEGREES_0,
-  //         } as IMovementExtended;
-  //         const result = generator['filterLibraryForNextStep']().movements;
-  //         result.forEach((item) => {
-  //           expect(
-  //             item.transitionDirection === current ||
-  //               item.transitionDirection === TransitionDirection.NONE,
-  //           ).toBe(true);
-  //         });
-  //       },
-  //     );
-  //   });
-  // });
+  describe('implementation', () => {
+    it('должен корректно создаваться', () => {
+      expect(compositeFilter).toBeDefined();
+    });
+  });
+
+  describe('filter', () => {
+    it('должен вернуть корректный movement', () => {
+      mockStepContext.currentStep = currentMovement;
+      const expected = new MovementLibrary([
+        {
+          isDifficult: true,
+          type: MovementCharacter.TURN,
+          name: 'RESULT',
+          startEdge: Edge.OUTER,
+          startLeg: Leg.RIGHT,
+          transitionDirection: TransitionDirection.FORWARD,
+        } as Movement,
+      ]);
+      const result = compositeFilter.filter(mockLibrary, mockStepContext);
+      expect(result).toStrictEqual(expected);
+    });
+  });
 });

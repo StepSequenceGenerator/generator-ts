@@ -8,7 +8,7 @@ export abstract class AbstractMovementFilterStrategy
 {
   abstract filter(
     library: MovementLibrary,
-    context: StepContext<IMovementExtended>,
+    context?: StepContext<IMovementExtended>,
   ): MovementLibrary;
 
   protected withDefault<T>(value: T | null | undefined, defaultValue: T): T {
