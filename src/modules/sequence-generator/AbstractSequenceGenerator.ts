@@ -69,9 +69,13 @@ export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
   }
 
   public reset(): void {
-    this.stepSequence = [];
+    this.resetSequence();
     this.counter.reset();
     this.context.resetCurrentStep();
+  }
+
+  protected resetSequence() {
+    this.stepSequence = [];
   }
 
   protected update(movementExtended: IMovementExtended): void {

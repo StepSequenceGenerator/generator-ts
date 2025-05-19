@@ -23,11 +23,17 @@ export class ThreeTurnsBlockGenerator extends AbstractSequenceGenerator<ThreeDif
   }
 
   generate(movement: IMovementExtended, distanceFactor: DistanceFactorType): IMovementExtended[] {
+    const COUNT_CORRECTION = 1;
     this.context.currentStep = movement;
     this.counter.resetTurns();
+    this.resetSequence();
 
     for (let i = 0; i < THREE_TURNS_BLOCK_LENGTH; i++) {
       const newMovement = this.generateMovement(distanceFactor);
+      newMovement.threeTurnsBlockInfo = {
+        blockNumber: this.counter.amount + COUNT_CORRECTION,
+        orderNumber: i + COUNT_CORRECTION,
+      };
       this.update(newMovement);
     }
     this.counter.increaseAmount();

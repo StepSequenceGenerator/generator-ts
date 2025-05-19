@@ -18,7 +18,9 @@ if (process.env.NODE_ENV === 'development') {
       return `
       distance: ${item.distance * distanceFactor}
       ${item.id}:  ${item.name} | ${item.startLeg} - ${item.endLeg} |
-      x: ${item.coordinates?.end.x} y: ${item.coordinates?.end.x}`;
+      x: ${item.coordinates?.end.x} y: ${item.coordinates?.end.x} |
+      turnsBlockNumber: ${item.threeTurnsBlockInfo?.blockNumber}
+      `;
     }),
   );
 }
