@@ -5,7 +5,7 @@ import {
   RotationDirection,
   TransitionDirection,
 } from '../../shared/enums/movement-enums.js';
-import { CoordinatesType } from '../../shared/types/coordinates-type';
+import { DescartesCoordinatesType } from '../../shared/types/descartes-coordinates.type';
 import { IMovementExtended } from '../../shared/types/movement-extended.interface';
 
 class StepContext<T extends IMovementExtended> {
@@ -23,7 +23,7 @@ class StepContext<T extends IMovementExtended> {
     return this._currentStep;
   }
 
-  get endCoordinate(): CoordinatesType | null {
+  get endCoordinate(): DescartesCoordinatesType | null {
     return this._currentStep === null ? null : this._currentStep.coordinates.end;
   }
 

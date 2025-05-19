@@ -1,8 +1,8 @@
 type XCoordinateType = number & { __brand: 'XCoordinate' };
 type YCoordinateType = number & { __brand: 'YCoordinate' };
-type CoordinatesType = {
+type DescartesCoordinatesType = {
   x: XCoordinateType;
   y: YCoordinateType;
 };
 
-export type { XCoordinateType, YCoordinateType, CoordinatesType };
+export type { XCoordinateType, YCoordinateType, DescartesCoordinatesType };

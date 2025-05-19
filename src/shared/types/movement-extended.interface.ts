@@ -1,17 +1,7 @@
 import { IMovement } from '../../modules/movement/Movement';
-import { CoordinatesType } from './coordinates-type';
-import { VectorKey } from '../enums/vector-key-enum';
+import { IMovementCoordinates } from './movement-coordinates.interface';
+import { IThreeTurnsBlockInfo } from './three-turns-block.interface';
 
-interface ICoordinates {
-  vector: VectorKey;
-  start: CoordinatesType;
-  end: CoordinatesType;
-}
+interface IMovementExtended extends IMovement, IMovementCoordinates, IThreeTurnsBlockInfo {}
 
-interface IMovementCoordinates {
-  coordinates: ICoordinates;
-}
-
-interface IMovementExtended extends IMovement, IMovementCoordinates {}
-
-export type { IMovementCoordinates, IMovementExtended, ICoordinates };
+export type { IMovementExtended };

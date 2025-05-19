@@ -1,4 +1,4 @@
-import { CoordinatesType } from '../types/coordinates-type';
+import { DescartesCoordinatesType } from '../types/descartes-coordinates.type';
 import { createCoordinates } from '../../modules/sequence-tracker/utils';
 
 /**
@@ -7,7 +7,7 @@ import { createCoordinates } from '../../modules/sequence-tracker/utils';
  * @description точка отсчета - левая сторона, ближайший угол судейского борта
  * */
 
-export const START_COORDINATES: ReadonlyArray<CoordinatesType> = [
+export const START_COORDINATES: ReadonlyArray<DescartesCoordinatesType> = [
   createCoordinates(5, 5),
   createCoordinates(5, 25),
   createCoordinates(55, 5),

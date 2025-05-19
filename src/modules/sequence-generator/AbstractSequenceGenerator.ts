@@ -1,18 +1,18 @@
-import {
-  IMovementCoordinates,
-  IMovementExtended,
-} from '../../shared/types/movement-extended.interface';
+import { Movement } from '../movement/Movement';
 import { MovementLibrary } from '../movement/MovementLibrary';
+import { IMovementExtended } from '../../shared/types/movement-extended.interface';
+import { MovementExtendedFactory } from '../movement/MovementExtendedFactory';
 import { StepContext } from './StepContext';
 import { RouletteGenerator } from '../roulette/RouletteGenerator';
 import { StepTracker } from '../sequence-tracker/StepTracker';
 import { BaseCompositeMovementFilters } from '../filter-strategy/BaseCompositeMovementFilters';
-import { IStepCounter } from '../../shared/types/abstract-step-counter.interface';
-import { Movement } from '../movement/Movement';
-import { CHANCE_RATIO_MAP } from '../../shared/constants/chance-ratio-map.const';
-import { MovementExtendedFactory } from '../movement/MovementExtendedFactory';
+
 import { randomGenerator } from '../../utils/random-generator';
+import { CHANCE_RATIO_MAP } from '../../shared/constants/chance-ratio-map.const';
+
 import { DistanceFactorType } from '../../shared/types/distance-factor.type';
+import { IStepCounter } from '../../shared/types/abstract-step-counter.interface';
+import { ICoordinates } from '../../shared/types/movement-coordinates.interface';
 
 export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
   protected stepSequence: IMovementExtended[];
@@ -46,11 +46,16 @@ export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
   protected generateMovement(distanceFactor: DistanceFactorType): IMovementExtended {
     const currentLibrary = this.getCurrentLibrary();
     const newMovement = this.chooseMovement(currentLibrary.movements);
-    const newCoordinates: IMovementCoordinates = this.getCoordinates(newMovement, distanceFactor);
+    const extendedMovement = this.extendMovement(newMovement);
+    extendedMovement.coordinates = this.getCoordinates(newMovement, distanceFactor);
+    return extendedMovement;
+  }
 
+  protected extendMovement(movement: Movement): IMovementExtended {
     return MovementExtendedFactory.createMovementExtended({
-      movement: newMovement,
-      coordinates: newCoordinates,
+      movement,
+      coordinates: { coordinates: null },
+      threeTurnsBlockInfo: { threeTurnsBlockInfo: null },
     });
   }
 
@@ -90,7 +95,7 @@ export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
   protected getCoordinates(
     newMovement: Movement,
     distanceFactor: DistanceFactorType,
-  ): IMovementCoordinates {
+  ): ICoordinates {
     const currentCoordinates = this.context.endCoordinate || this.tracker.getStartCoordinates();
     const vector = this.context.vector;
 
@@ -101,11 +106,9 @@ export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
     );
 
     return {
-      coordinates: {
-        vector: coordinates.vector,
-        start: currentCoordinates,
-        end: coordinates.coordinates,
-      },
+      vector: coordinates.vector,
+      start: currentCoordinates,
+      end: coordinates.coordinates,
     };
   }
 

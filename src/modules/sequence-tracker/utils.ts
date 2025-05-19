@@ -8,17 +8,17 @@ import {
 } from '../../shared/types/vector-type';
 
 import {
-  CoordinatesType,
+  DescartesCoordinatesType,
   XCoordinateType,
   YCoordinateType,
-} from '../../shared/types/coordinates-type';
+} from '../../shared/types/descartes-coordinates.type';
 
 import { CoordinatesError, VectorCursorError } from '../../errors/custom-errors';
 
 function createCoordinates(x: number, y: number) {
   const xC = Utils.createCoord<XCoordinateType>('x', x);
   const yC = Utils.createCoord<YCoordinateType>('y', y);
-  return { x: xC, y: yC } as unknown as CoordinatesType;
+  return { x: xC, y: yC } as unknown as DescartesCoordinatesType;
 }
 
 function createCoord<T>(axis: AxisType, coord: number): T {
