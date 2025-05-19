@@ -15,7 +15,10 @@ if (process.env.NODE_ENV === 'development') {
   const seq = tw.generateSequence(DifficultLevelAmountStep.LEVEL_3, distanceFactor);
   console.log(
     seq.map((item) => {
-      return `distance: ${item.distance * distanceFactor} \n ${item.id}:  ${item.name} | ${item.startLeg} - ${item.endLeg} | x: ${item.coordinates.end.x} y: ${item.coordinates.end.x}`;
+      return `
+      distance: ${item.distance * distanceFactor}
+      ${item.id}:  ${item.name} | ${item.startLeg} - ${item.endLeg} |
+      x: ${item.coordinates?.end.x} y: ${item.coordinates?.end.x}`;
     }),
   );
 }
