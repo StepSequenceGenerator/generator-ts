@@ -10,8 +10,8 @@ import {
   TransitionDirection,
 } from '../../shared/enums/movement-enums.js';
 import { convertFromObjectToMap } from '../../utils/converters/from-object-to-map.js';
-import { ColumnName } from '../../shared/enums/column-name-enum.js';
-import { TurnAbsoluteName } from '../../shared/enums/turn-absolute-name-enum.js';
+import { ColumnName } from '../../shared/enums/column-name.enum';
+import { TurnAbsoluteName } from '../../shared/enums/turn-absolute-name.enum';
 
 const RIGHT_LEG = 'правая';
 const LEFT_LEG = 'левая';

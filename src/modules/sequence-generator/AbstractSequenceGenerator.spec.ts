@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Movement } from '../movement/Movement';
 import { AbstractSequenceGenerator } from './AbstractSequenceGenerator';
-import { StepCounter } from './StepCounter';
+import { StepCounter } from '../step-counter/StepCounter';
 import { SequenceGeneratorFactory } from './SequenceGeneratorFactory';
 import { IMovementExtended } from '../../shared/types/extended-movement/movement-extended.interface';
 

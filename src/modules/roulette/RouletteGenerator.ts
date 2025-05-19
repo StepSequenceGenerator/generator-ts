@@ -1,7 +1,6 @@
 import { Movement } from '../movement/Movement.js';
-import { randomInt } from 'node:crypto';
 import { WeightCalculatorBase } from './WeightCalculatorBase.js';
-import { ChanceRatioMapType, WeightMapType } from '../../shared/types/chance-ratio-map-type.js';
+import { ChanceRatioMapType, WeightMapType } from '../../shared/types/chance-ratio-map.type';
 import { ExtendedMovementCharacter } from '../../shared/enums/movement-enums.js';
 import { isExtendedMovementCharacter } from '../../utils/is-extended-movement-character.js';
 import { randomGenerator } from '../../utils/random-generator';

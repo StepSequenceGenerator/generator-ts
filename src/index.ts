@@ -1,7 +1,7 @@
 import { twizzle } from './twizzle.js';
 
 import { utils } from './utils/exporting-utils';
-import { DifficultLevelAmountStep } from './shared/enums/difficult-level-amount-step-enum';
+import { DifficultLevelAmountStep } from './shared/enums/difficult-level-amount-step.enum';
 import type { DistanceFactorType } from './shared/types/distance-factor.type';
 
 export type { DistanceFactorType };

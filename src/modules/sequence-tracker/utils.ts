@@ -5,7 +5,7 @@ import {
   VectorCursorType,
   XCursorType,
   YCursorType,
-} from '../../shared/types/vector-type';
+} from '../../shared/types/vector.type';
 
 import {
   DescartesCoordinatesType,

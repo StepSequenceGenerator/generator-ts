@@ -4,8 +4,8 @@ import { START_COORDINATES } from '../../shared/constants/start-coordinates';
 import { VECTOR_ANGLES } from '../../shared/constants/vector-angles';
 import { VECTORS_TRACK } from '../../shared/constants/vectors-track';
 import { createCoordinates } from './utils';
-import { VectorKey } from '../../shared/enums/vector-key-enum';
-import { VectorCursorType, XCursorType } from '../../shared/types/vector-type';
+import { VectorKey } from '../../shared/enums/vector-key.enum';
+import { VectorCursorType, XCursorType } from '../../shared/types/vector.type';
 import {
   DescartesCoordinatesType,
   XCoordinateType,

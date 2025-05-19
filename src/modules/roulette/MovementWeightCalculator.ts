@@ -1,22 +1,16 @@
 import type { Movement } from '../movement/Movement.js';
 import { WeightCalculatorBase } from './WeightCalculatorBase.js';
-import {
-  ChanceRatioMapType,
-  WeightMapType,
-} from '../../shared/types/chance-ratio-map-type.js';
+import { ChanceRatioMapType, WeightMapType } from '../../shared/types/chance-ratio-map.type';
 import { round2 } from '../../utils/round2.js';
 import { ExtendedMovementCharacter } from '../../shared/enums/movement-enums.js';
 import { transformToExtendedMovementCharacterType } from '../../utils/is-extended-movement-character.js';
 
 export class MovementWeightCalculator extends WeightCalculatorBase {
-  public count(
-    selection: Movement[],
-    chanceRatioMap: ChanceRatioMapType
-  ): WeightMapType {
+  public count(selection: Movement[], chanceRatioMap: ChanceRatioMapType): WeightMapType {
     const groupMovementCounted = this.groupAndCountMovements(selection);
     const recalculatedChanceRatio = this.recalculateChanceRatio(
       Array.from(groupMovementCounted.keys()),
-      chanceRatioMap
+      chanceRatioMap,
     );
 
     return this.calcWeight(groupMovementCounted, recalculatedChanceRatio);
@@ -24,10 +18,12 @@ export class MovementWeightCalculator extends WeightCalculatorBase {
 
   private recalculateChanceRatio(
     movementCharacterInUse: string[],
-    chanceRatioMap: ChanceRatioMapType
+    chanceRatioMap: ChanceRatioMapType,
   ) {
-    const actualChanceRatioMap: ChanceRatioMapType =
-      this.getActualChanceRatioMap(movementCharacterInUse, chanceRatioMap);
+    const actualChanceRatioMap: ChanceRatioMapType = this.getActualChanceRatioMap(
+      movementCharacterInUse,
+      chanceRatioMap,
+    );
 
     const percentSeparated = this.separatePercentByType(actualChanceRatioMap);
 
@@ -36,25 +32,19 @@ export class MovementWeightCalculator extends WeightCalculatorBase {
 
   private redistributeChanceRatio(
     percentSeparated: { unusedPercent: number; usedPercent: number },
-    actualChanceRatioMap: Map<string, number>
+    actualChanceRatioMap: Map<string, number>,
   ): ChanceRatioMapType {
-    const map: ChanceRatioMapType = new Map<
-      ExtendedMovementCharacter,
-      number
-    >();
+    const map: ChanceRatioMapType = new Map<ExtendedMovementCharacter, number>();
     const { unusedPercent, usedPercent } = percentSeparated;
     const maxPercent = Math.max(...actualChanceRatioMap.values());
     // todo усовершенствовать для случаев, когда несколько элементов равны max
-    const redistributionFactor =
-      usedPercent === 0 ? 0 : round2(unusedPercent / usedPercent);
+    const redistributionFactor = usedPercent === 0 ? 0 : round2(unusedPercent / usedPercent);
 
     for (const [key, percent] of actualChanceRatioMap.entries()) {
       const typedKey = transformToExtendedMovementCharacterType(key);
       const shouldAdjust = usedPercent === maxPercent || percent < maxPercent;
 
-      const adjusted = shouldAdjust
-        ? percent + percent * redistributionFactor
-        : percent;
+      const adjusted = shouldAdjust ? percent + percent * redistributionFactor : percent;
       map.set(typedKey, adjusted);
     }
 
@@ -63,7 +53,7 @@ export class MovementWeightCalculator extends WeightCalculatorBase {
 
   private getActualChanceRatioMap(
     charactersInUse: string[],
-    chanceRatioMap: ChanceRatioMapType
+    chanceRatioMap: ChanceRatioMapType,
   ): ChanceRatioMapType {
     const map = new Map<ExtendedMovementCharacter, number>();
     for (const [key, percent] of chanceRatioMap.entries()) {
@@ -91,16 +81,10 @@ export class MovementWeightCalculator extends WeightCalculatorBase {
 
   private calcWeight(
     groupMovementCounted: Map<ExtendedMovementCharacter, number>,
-    recalculatedChanceRatio: ChanceRatioMapType
+    recalculatedChanceRatio: ChanceRatioMapType,
   ): WeightMapType {
-    const totalItems = Array.from(groupMovementCounted.values()).reduce(
-      (acc, cur) => acc + cur,
-      0
-    );
-    const weightMap: WeightMapType = new Map<
-      ExtendedMovementCharacter,
-      number
-    >();
+    const totalItems = Array.from(groupMovementCounted.values()).reduce((acc, cur) => acc + cur, 0);
+    const weightMap: WeightMapType = new Map<ExtendedMovementCharacter, number>();
     for (let [key, currentItemAmount] of groupMovementCounted.entries()) {
       const desirePercent = recalculatedChanceRatio.get(key) ?? 0;
       const desireItemAmount = round2((totalItems / 100) * desirePercent);
