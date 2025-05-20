@@ -4,7 +4,7 @@ import { ChanceRatioMap } from '../../shared/types/movement-chance-ratio-map.typ
 import { randomGenerator } from '../../utils/random-generator';
 
 export abstract class AbstractRouletteGenerator<C, M> implements IRouletteGenerator<C, M> {
-  protected abstract fallbackWeight: number;
+  protected abstract readonly fallbackWeight: number;
   protected weightCalc: AbstractWeightCalculator<C, M>;
 
   protected constructor(weightCalc: AbstractWeightCalculator<C, M>) {
