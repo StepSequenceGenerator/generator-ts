@@ -1,16 +1,14 @@
-import type { Movement } from '../movement/Movement.js';
-import { WeightCalculatorBase } from './WeightCalculatorBase.js';
-import { WeightMapType } from '../../shared/types/chance-ratio-map.type';
-import { ExtendedMovementCharacter } from '../../shared/enums/movement-enums.js';
+import type { Movement } from '../../movement/Movement';
+import { MovementWeightCalculatorBase } from './MovementWeightCalculatorBase';
+import { MovementWeightMapType } from '../../../shared/types/movement-chance-ratio-map.type';
+import { ExtendedMovementCharacter } from '../../../shared/enums/movement-enums';
 
-export class MovementEqualizingWeightCalculator extends WeightCalculatorBase {
-  public count(selection: Movement[]): WeightMapType {
+export class MovementEqualizingWeightCalculator extends MovementWeightCalculatorBase {
+  public count(selection: Movement[]): MovementWeightMapType {
     const characterCounted = this.groupAndCountMovements(selection);
     const maxAmount = this.getMaxGroupSize(characterCounted);
 
-    const weight = this.calcEqualizingWeights(maxAmount, characterCounted);
-
-    return weight;
+    return this.calcWeight(maxAmount, characterCounted);
   }
 
   private getMaxGroupSize(map: Map<string, number>): number {
@@ -19,10 +17,10 @@ export class MovementEqualizingWeightCalculator extends WeightCalculatorBase {
     return Math.max(...values);
   }
 
-  private calcEqualizingWeights(
+  protected calcWeight(
     maxAmount: number,
     map: Map<ExtendedMovementCharacter, number>,
-  ): WeightMapType {
+  ): MovementWeightMapType {
     const equalWeightMap = new Map<ExtendedMovementCharacter, number>();
 
     for (const [key, amount] of map.entries()) {

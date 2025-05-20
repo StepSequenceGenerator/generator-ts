@@ -3,7 +3,7 @@ import { MovementLibrary } from '../movement/MovementLibrary';
 import { IMovementExtended } from '../../shared/types/extended-movement/movement-extended.interface';
 import { MovementExtendedFactory } from '../movement/MovementExtendedFactory';
 import { StepContext } from './StepContext';
-import { RouletteGenerator } from '../roulette/RouletteGenerator';
+import { MovementRouletteGenerator } from '../roulette/MovementRouletteGenerator';
 import { StepTracker } from '../sequence-tracker/StepTracker';
 import { BaseCompositeMovementFilters } from '../filter-strategy/BaseCompositeMovementFilters';
 
@@ -19,7 +19,7 @@ export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
   protected readonly library: MovementLibrary;
   protected readonly context: StepContext<IMovementExtended>;
   protected readonly counter: C;
-  protected readonly randomGenerator: RouletteGenerator;
+  protected readonly randomGenerator: MovementRouletteGenerator;
   protected readonly tracker: StepTracker;
   protected readonly filterStrategy: BaseCompositeMovementFilters;
 
@@ -27,7 +27,7 @@ export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
     library: MovementLibrary;
     context: StepContext<IMovementExtended>;
     counter: C;
-    randomGenerator: RouletteGenerator;
+    randomGenerator: MovementRouletteGenerator;
     tracker: StepTracker;
     filterStrategy: BaseCompositeMovementFilters;
   }) {
