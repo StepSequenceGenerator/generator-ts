@@ -14,6 +14,10 @@ class MovementLibrary {
     this._movements = movements;
   }
 
+  filterByIsChangeLeg(): MovementLibrary {
+    return this.filterBy((movement) => movement.isChangeLeg);
+  }
+
   filterByLeg(leg: Leg): MovementLibrary {
     return this.filterBy(
       (movement) => leg === Leg.BOTH || movement.startLeg === leg || movement.startLeg === Leg.BOTH,
@@ -48,7 +52,7 @@ class MovementLibrary {
     );
   }
 
-  filterDifficultTurns() {
+  filterByDifficultTurns() {
     return this.filterBy(
       (movement) => movement.isDifficult && movement.type === MovementCharacter.TURN,
     );

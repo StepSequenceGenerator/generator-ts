@@ -1,8 +1,8 @@
-import { MovementLibrary } from '../movement/MovementLibrary.js';
-import { StepContext } from '../sequence-generator/StepContext.js';
-import { AbstractMovementFilterStrategy } from './abstract/AbstractMovementFilterStrategy.js';
-import { Edge, Leg, TransitionDirection } from '../../shared/enums/movement-enums.js';
-import { IMovementExtended } from '../../shared/types/extended-movement/movement-extended.interface';
+import { MovementLibrary } from '../../movement/MovementLibrary';
+import { StepContext } from '../../sequence-generator/StepContext';
+import { AbstractMovementFilterStrategy } from '../abstract/AbstractMovementFilterStrategy';
+import { Edge, Leg, TransitionDirection } from '../../../shared/enums/movement-enums';
+import { IMovementExtended } from '../../../shared/types/extended-movement/movement-extended.interface';
 
 export class DefaultMovementFilterStrategy extends AbstractMovementFilterStrategy {
   public filter(

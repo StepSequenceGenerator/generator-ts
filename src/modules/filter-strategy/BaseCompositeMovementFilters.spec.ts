@@ -9,8 +9,8 @@ import {
 } from '../../shared/enums/movement-enums';
 import { Movement } from '../movement/Movement';
 import { MovementLibrary } from '../movement/MovementLibrary';
-import { DefaultMovementFilterStrategy } from './DefaultMovementFilterStrategy';
-import { DifficultTurnsFilterStrategy } from './DifficultTurnsFilterStrategy';
+import { DefaultMovementFilterStrategy } from './strategies/DefaultMovementFilterStrategy';
+import { DifficultTurnsFilterStrategy } from './strategies/DifficultTurnsFilterStrategy';
 import { StepContext } from '../sequence-generator/StepContext';
 import { IMovementExtended } from '../../shared/types/extended-movement/movement-extended.interface';
 

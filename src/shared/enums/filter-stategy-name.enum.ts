@@ -1,0 +1,5 @@
+export enum FilterStrategyName {
+  DEFAULT = 'DEFAULT',
+  THREE_DIFFICULT_TURNS = 'THREE_DIFFICULT_TURNS',
+  IS_CHANGE_LEG = 'IS_CHANGE_LEG',
+}

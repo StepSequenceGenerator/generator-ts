@@ -5,7 +5,6 @@ import { MovementExtendedFactory } from '../movement/MovementExtendedFactory';
 import { StepContext } from './StepContext';
 import { MovementRouletteGenerator } from '../roulette/MovementRouletteGenerator';
 import { StepTracker } from '../sequence-tracker/StepTracker';
-import { BaseCompositeMovementFilters } from '../filter-strategy/BaseCompositeMovementFilters';
 
 import { randomGenerator } from '../../utils/random-generator';
 import { CHANCE_RATIO_MAP } from '../../shared/constants/chance-ratio-map.const';
@@ -13,6 +12,7 @@ import { CHANCE_RATIO_MAP } from '../../shared/constants/chance-ratio-map.const'
 import { DistanceFactorType } from '../../shared/types/distance-factor.type';
 import { IStepCounter } from '../../shared/types/abstract-step-counter.interface';
 import { ICoordinates } from '../../shared/types/extended-movement/movement-coordinates.interface';
+import { MapMovementCompositeFilterType } from '../../shared/types/map-composite-filters.type';
 
 export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
   protected stepSequence: IMovementExtended[];
@@ -21,7 +21,7 @@ export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
   protected readonly counter: C;
   protected readonly randomGenerator: MovementRouletteGenerator;
   protected readonly tracker: StepTracker;
-  protected readonly filterStrategy: BaseCompositeMovementFilters;
+  protected readonly filterStrategy: MapMovementCompositeFilterType;
 
   protected constructor(data: {
     library: MovementLibrary;
@@ -29,7 +29,7 @@ export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
     counter: C;
     randomGenerator: MovementRouletteGenerator;
     tracker: StepTracker;
-    filterStrategy: BaseCompositeMovementFilters;
+    filterStrategy: MapMovementCompositeFilterType;
   }) {
     const { library, context, counter, randomGenerator, tracker, filterStrategy } = data;
     this.stepSequence = [];
@@ -64,6 +64,7 @@ export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
     return movements[movementIndex];
   }
 
+  // todo передавать filterStrategy параметром
   protected getCurrentLibrary(): MovementLibrary {
     return this.filterStrategy.filter(this.library, this.context);
   }

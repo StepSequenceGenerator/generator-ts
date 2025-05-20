@@ -1,7 +1,7 @@
-import { expect, beforeEach, describe, it } from 'vitest';
-import { MovementLibrary } from '../movement/MovementLibrary';
-import { MovementCharacter } from '../../shared/enums/movement-enums';
-import { Movement } from '../movement/Movement';
+import { beforeEach, describe, expect, it } from 'vitest';
+import { MovementLibrary } from '../../movement/MovementLibrary';
+import { MovementCharacter } from '../../../shared/enums/movement-enums';
+import { Movement } from '../../movement/Movement';
 import { DifficultTurnsFilterStrategy } from './DifficultTurnsFilterStrategy';
 
 const mockMovements = [
