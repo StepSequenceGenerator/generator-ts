@@ -1,7 +1,7 @@
-import type { Movement } from '../movement/Movement.js';
+import type { Movement } from '../../movement/Movement';
 import { MovementWeightCalculatorBase } from './MovementWeightCalculatorBase';
-import { MovementWeightMapType } from '../../shared/types/movement-chance-ratio-map.type';
-import { ExtendedMovementCharacter } from '../../shared/enums/movement-enums.js';
+import { MovementWeightMapType } from '../../../shared/types/movement-chance-ratio-map.type';
+import { ExtendedMovementCharacter } from '../../../shared/enums/movement-enums';
 
 export class MovementEqualizingWeightCalculator extends MovementWeightCalculatorBase {
   public count(selection: Movement[]): MovementWeightMapType {

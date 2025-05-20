@@ -1,12 +1,12 @@
-import type { Movement } from '../movement/Movement.js';
+import type { Movement } from '../../movement/Movement';
 
 import {
   MovementChanceRatioMapType,
   MovementWeightMapType,
-} from '../../shared/types/movement-chance-ratio-map.type';
-import { round2 } from '../../utils/round2.js';
-import { ExtendedMovementCharacter } from '../../shared/enums/movement-enums.js';
-import { transformToExtendedMovementCharacterType } from '../../utils/is-extended-movement-character.js';
+} from '../../../shared/types/movement-chance-ratio-map.type';
+import { round2 } from '../../../utils/round2';
+import { ExtendedMovementCharacter } from '../../../shared/enums/movement-enums';
+import { transformToExtendedMovementCharacterType } from '../../../utils/is-extended-movement-character';
 
 import { MovementWeightCalculatorBase } from './MovementWeightCalculatorBase';
 

@@ -1,19 +1,23 @@
+import { AbstractRouletteGenerator } from './AbstractRouletteGenerator';
+
 import { Movement } from '../movement/Movement.js';
-import { MovementWeightCalculatorBase } from './MovementWeightCalculatorBase';
+import { MovementWeightCalculatorBase } from './weight-calculator/MovementWeightCalculatorBase';
 import {
   MovementChanceRatioMapType,
   MovementWeightMapType,
 } from '../../shared/types/movement-chance-ratio-map.type';
-import { ExtendedMovementCharacter } from '../../shared/enums/movement-enums.js';
 import { isExtendedMovementCharacter } from '../../utils/is-extended-movement-character.js';
-import { randomGenerator } from '../../utils/random-generator';
 
-export class RouletteGenerator {
-  private weightCalc: MovementWeightCalculatorBase;
-  private readonly fallbackWeight = 0.1;
+import { ExtendedMovementCharacter } from '../../shared/enums/movement-enums.js';
+
+export class MovementRouletteGenerator extends AbstractRouletteGenerator<
+  Movement,
+  ExtendedMovementCharacter
+> {
+  protected readonly fallbackWeight = 0.1;
 
   constructor(weightCalc: MovementWeightCalculatorBase) {
-    this.weightCalc = weightCalc;
+    super(weightCalc);
   }
 
   public generateNumber(selection: Movement[], chanceRatio: MovementChanceRatioMapType): number {
@@ -56,10 +60,5 @@ export class RouletteGenerator {
       }
     }
     return elementIndex;
-  }
-
-  private getRandomIndex(max: number): number {
-    const min = 0;
-    return randomGenerator(min, max);
   }
 }

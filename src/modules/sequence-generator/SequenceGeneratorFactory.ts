@@ -1,8 +1,8 @@
 import { MovementLibrary } from '../movement/MovementLibrary';
 import { StepContext } from './StepContext';
 import { StepCounter } from '../step-counter/StepCounter';
-import { MovementDefaultWeightCalculator } from '../roulette/MovementDefaultWeightCalculator';
-import { RouletteGenerator } from '../roulette/RouletteGenerator';
+import { MovementDefaultWeightCalculator } from '../roulette/weight-calculator/MovementDefaultWeightCalculator';
+import { MovementRouletteGenerator } from '../roulette/MovementRouletteGenerator';
 import { StepTracker } from '../sequence-tracker/StepTracker';
 import { START_COORDINATES } from '../../shared/constants/start-coordinates';
 import { VECTORS_TRACK } from '../../shared/constants/vectors-track';
@@ -53,7 +53,7 @@ export class SequenceGeneratorFactory {
     return {
       library: new MovementLibrary(data),
       context: new StepContext(),
-      randomGenerator: new RouletteGenerator(weightCalc),
+      randomGenerator: new MovementRouletteGenerator(weightCalc),
       tracker: new StepTracker(START_COORDINATES, VECTORS_TRACK, VECTOR_ANGLES),
     };
   }

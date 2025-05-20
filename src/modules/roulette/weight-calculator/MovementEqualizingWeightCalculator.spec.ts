@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { MovementEqualizingWeightCalculator } from './MovementEqualizingWeightCalculator.js';
-import { ExtendedMovementCharacter, MovementCharacter } from '../../shared/enums/movement-enums.js';
-import type { Movement } from '../movement/Movement.js';
+import { MovementEqualizingWeightCalculator } from './MovementEqualizingWeightCalculator';
+import { ExtendedMovementCharacter, MovementCharacter } from '../../../shared/enums/movement-enums';
+import type { Movement } from '../../movement/Movement';
 
 describe('MovementEqualWeightCalculator', () => {
   // unknown = 3, turn = 1, step = 1, difficult = 1, glide = 1, hop = 1, sequence = 2
