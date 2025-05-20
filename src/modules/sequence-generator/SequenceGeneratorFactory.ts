@@ -12,7 +12,7 @@ import { GeneratorType } from '../../shared/enums/generator-type.enum';
 import { DefaultStepSequenceGenerator } from './DefaultStepSequenceGenerator';
 import { ThreeTurnsBlockGenerator } from './ThreeTurnsBlockGenerator';
 import { DifficultTurnsFilterStrategy } from '../filter-strategy/strategies/DifficultTurnsFilterStrategy';
-import { CompositeMovementFiltersFactory } from '../filter-strategy/BaseCompositeMovementFilters';
+import { CompositeMovementFiltersFactory } from '../filter-strategy/CompositeMovementFiltersFactory';
 import { DefaultMovementFilterStrategy } from '../filter-strategy/strategies/DefaultMovementFilterStrategy';
 import { ThreeDifficultTurnsBlockCounter } from '../step-counter/ThreeDifficultTurnsBlockCounter';
 
@@ -79,4 +79,6 @@ export class SequenceGeneratorFactory {
       filterStrategy: filterComposite,
     };
   }
+
+  protected createMapCompositeFilters() {}
 }

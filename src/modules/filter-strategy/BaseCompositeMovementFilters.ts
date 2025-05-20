@@ -4,7 +4,6 @@ import { IFilterStrategy } from './abstract/InterfaceFilterStrategy.js';
 import { MovementLibrary } from '../movement/MovementLibrary.js';
 import { StepContext } from '../sequence-generator/StepContext.js';
 import { IMovementExtended } from '../../shared/types/extended-movement/movement-extended.interface';
-import { AbstractMovementFilterStrategy } from './abstract/AbstractMovementFilterStrategy';
 
 export class BaseCompositeMovementFilters extends AbstractCompositeFilterStrategy<
   MovementLibrary,
@@ -23,11 +22,5 @@ export class BaseCompositeMovementFilters extends AbstractCompositeFilterStrateg
     return this.strategies.reduce((currentLibrary, strategy) => {
       return strategy.filter(currentLibrary, stepContext);
     }, library);
-  }
-}
-
-export class CompositeMovementFiltersFactory {
-  static create(strategies: AbstractMovementFilterStrategy[]): BaseCompositeMovementFilters {
-    return new BaseCompositeMovementFilters(strategies);
   }
 }

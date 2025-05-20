@@ -1,8 +1,8 @@
-import { AbstractCompositeFilterStrategy } from './abstract/AbstractCompositeFilterStrategy';
-import { MovementLibrary } from '../movement/MovementLibrary';
-import { StepContext } from '../sequence-generator/StepContext';
-import { IMovementExtended } from '../../shared/types/extended-movement/movement-extended.interface';
-import { BaseCompositeMovementFilters } from './BaseCompositeMovementFilters';
+import { AbstractCompositeFilterStrategy } from '../../modules/filter-strategy/abstract/AbstractCompositeFilterStrategy';
+import { MovementLibrary } from '../../modules/movement/MovementLibrary';
+import { StepContext } from '../../modules/sequence-generator/StepContext';
+import { IMovementExtended } from './extended-movement/movement-extended.interface';
+import { BaseCompositeMovementFilters } from '../../modules/filter-strategy/BaseCompositeMovementFilters';
 
 /**
  * Обобщённый тип для Map, хранящего композитные стратегии фильтрации.
