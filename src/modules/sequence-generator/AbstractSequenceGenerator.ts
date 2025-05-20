@@ -64,6 +64,7 @@ export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
     return movements[movementIndex];
   }
 
+  // todo передавать filterStrategy параметром
   protected getCurrentLibrary(): MovementLibrary {
     return this.filterStrategy.filter(this.library, this.context);
   }
