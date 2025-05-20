@@ -3,10 +3,7 @@ import { ExtendedMovementCharacter } from '../../shared/enums/movement-enums.js'
 import { transformToExtendedMovementCharacterType } from '../../utils/is-extended-movement-character.js';
 
 export abstract class WeightCalculatorBase {
-  abstract count(
-    selection: Movement[],
-    ...args: unknown[]
-  ): Map<ExtendedMovementCharacter, number>;
+  abstract count(selection: Movement[], ...args: unknown[]): Map<ExtendedMovementCharacter, number>;
 
   protected groupAndCountMovements(selection: Movement[]) {
     const map = new Map<ExtendedMovementCharacter, number>();

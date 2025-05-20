@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { MovementWeightCalculator } from './MovementWeightCalculator.js';
 import { WeightCalculatorBase } from './WeightCalculatorBase.js';
-import { ChanceRatioMapType } from '../../shared/types/chance-ratio-map.type';
+import { MovementChanceRatioMapType } from '../../shared/types/movement-chance-ratio-map.type';
 import type { Movement } from '../movement/Movement.js';
 import { ExtendedMovementCharacter, MovementCharacter } from '../../shared/enums/movement-enums.js';
 
@@ -22,7 +22,7 @@ const mockGroupMovementCounted = new Map([
   [ExtendedMovementCharacter.STEP, 1],
 ]);
 
-const mockChanceRatioMap: ChanceRatioMapType = new Map<ExtendedMovementCharacter, number>([
+const mockChanceRatioMap: MovementChanceRatioMapType = new Map<ExtendedMovementCharacter, number>([
   [ExtendedMovementCharacter.STEP, 8],
   [ExtendedMovementCharacter.TURN, 9],
   [ExtendedMovementCharacter.SEQUENCE, 9],
