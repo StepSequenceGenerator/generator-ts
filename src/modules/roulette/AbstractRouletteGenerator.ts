@@ -1,8 +1,8 @@
-import { WeightCalculatorBase } from './WeightCalculatorBase';
+import { AbstractWeightCalculator } from './AbstractWeightCalculator';
 
-export abstract class AbstractRouletteGenerator {
-  protected weightCalc: WeightCalculatorBase;
-  constructor(weightCalc: WeightCalculatorBase) {
+export abstract class AbstractRouletteGenerator<C, M> {
+  protected weightCalc: AbstractWeightCalculator<C, M>;
+  constructor(weightCalc: AbstractWeightCalculator<C, M>) {
     this.weightCalc = weightCalc;
   }
 }

@@ -1,5 +1,5 @@
 import type { Movement } from '../movement/Movement.js';
-import { WeightCalculatorBase } from './WeightCalculatorBase.js';
+
 import {
   MovementChanceRatioMapType,
   MovementWeightMapType,
@@ -8,7 +8,9 @@ import { round2 } from '../../utils/round2.js';
 import { ExtendedMovementCharacter } from '../../shared/enums/movement-enums.js';
 import { transformToExtendedMovementCharacterType } from '../../utils/is-extended-movement-character.js';
 
-export class MovementWeightCalculator extends WeightCalculatorBase {
+import { MovementWeightCalculatorBase } from './MovementWeightCalculatorBase';
+
+export class MovementDefaultWeightCalculator extends MovementWeightCalculatorBase {
   public count(
     selection: Movement[],
     chanceRatioMap: MovementChanceRatioMapType,
@@ -85,7 +87,7 @@ export class MovementWeightCalculator extends WeightCalculatorBase {
     return { unusedPercent: unused, usedPercent: used };
   }
 
-  private calcWeight(
+  protected calcWeight(
     groupMovementCounted: Map<ExtendedMovementCharacter, number>,
     recalculatedChanceRatio: MovementChanceRatioMapType,
   ): MovementWeightMapType {

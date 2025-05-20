@@ -89,7 +89,7 @@ describe('MovementEqualWeightCalculator', () => {
   describe('calcEqualizingWeights', () => {
     it('должен вернуть Map с подсчитанными весами', () => {
       const expected = equalWeightMap;
-      const result = calculator['calcEqualizingWeights'](3, mockCharacterCounted);
+      const result = calculator['calcWeight'](3, mockCharacterCounted);
       expect(result).toStrictEqual(expected);
     });
   });

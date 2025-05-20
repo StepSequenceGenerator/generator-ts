@@ -1,5 +1,5 @@
 import { Movement } from '../movement/Movement.js';
-import { WeightCalculatorBase } from './WeightCalculatorBase.js';
+import { MovementWeightCalculatorBase } from './MovementWeightCalculatorBase';
 import {
   MovementChanceRatioMapType,
   MovementWeightMapType,
@@ -9,10 +9,10 @@ import { isExtendedMovementCharacter } from '../../utils/is-extended-movement-ch
 import { randomGenerator } from '../../utils/random-generator';
 
 export class RouletteGenerator {
-  private weightCalc: WeightCalculatorBase;
+  private weightCalc: MovementWeightCalculatorBase;
   private readonly fallbackWeight = 0.1;
 
-  constructor(weightCalc: WeightCalculatorBase) {
+  constructor(weightCalc: MovementWeightCalculatorBase) {
     this.weightCalc = weightCalc;
   }
 
