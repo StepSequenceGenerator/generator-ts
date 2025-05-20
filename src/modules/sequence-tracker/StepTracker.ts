@@ -44,6 +44,7 @@ export class StepTracker {
     const triedVectorKeys = new Set<VectorKey>();
     let availableVectorKeys = this.getAllowedVectorKeys(currentVector);
 
+    console.debug('++++++++++++');
     while (availableVectorKeys.length > 0) {
       const vectorKey = this.getNextMovementVector(availableVectorKeys);
       triedVectorKeys.add(vectorKey);

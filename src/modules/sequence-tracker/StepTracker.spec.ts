@@ -101,9 +101,9 @@ describe('SequenceTracker', () => {
       { x: 59, y: 28 },
       { x: 29, y: 29 },
     ] as DescartesCoordinatesType[];
-    it.each(mockCurrentCoordinatesList)('должен вернуть null при %s', () => {
+    it.each(mockCurrentCoordinatesList)('должен вернуть null при %s', (mock_currentCoordinates) => {
       const mock_vectorCursor = { x: 1, y: 1 } as VectorCursorType;
-      const mock_currentCoordinates = { x: 59, y: 39 } as DescartesCoordinatesType;
+
       const mock_distance = 2;
       const expected = null;
       const result = sequenceTracker['getNewCoordinates']({

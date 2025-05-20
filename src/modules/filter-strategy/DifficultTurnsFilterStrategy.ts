@@ -3,6 +3,6 @@ import { MovementLibrary } from '../movement/MovementLibrary.js';
 
 export class DifficultTurnsFilterStrategy extends AbstractMovementFilterStrategy {
   filter(library: MovementLibrary) {
-    return library.filterDifficultTurns();
+    return library.filterByDifficultTurns();
   }
 }
