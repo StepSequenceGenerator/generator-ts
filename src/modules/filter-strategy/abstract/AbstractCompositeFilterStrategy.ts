@@ -1,6 +1,6 @@
 import { IFilterStrategy } from './InterfaceFilterStrategy.js';
 
-export abstract class AbstractCompositeFilterStrategy<L, Args extends unknown[]>
+abstract class AbstractCompositeFilterStrategy<L, Args extends unknown[]>
   implements IFilterStrategy<L, Args>
 {
   protected strategies: IFilterStrategy<L, Args>[] = [];
@@ -11,3 +11,5 @@ export abstract class AbstractCompositeFilterStrategy<L, Args extends unknown[]>
 
   abstract filter(...args: Args): L;
 }
+
+export { AbstractCompositeFilterStrategy };

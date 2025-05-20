@@ -1,5 +1,5 @@
-import { AbstractMovementFilterStrategy } from './abstract/AbstractMovementFilterStrategy.js';
-import { MovementLibrary } from '../movement/MovementLibrary.js';
+import { AbstractMovementFilterStrategy } from '../abstract/AbstractMovementFilterStrategy';
+import { MovementLibrary } from '../../movement/MovementLibrary';
 
 export class DifficultTurnsFilterStrategy extends AbstractMovementFilterStrategy {
   filter(library: MovementLibrary) {

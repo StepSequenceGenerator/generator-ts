@@ -1,5 +1,5 @@
-import { AbstractMovementFilterStrategy } from './abstract/AbstractMovementFilterStrategy';
-import { MovementLibrary } from '../movement/MovementLibrary';
+import { AbstractMovementFilterStrategy } from '../abstract/AbstractMovementFilterStrategy';
+import { MovementLibrary } from '../../movement/MovementLibrary';
 
 export class IsChangeLegFilterStrategy extends AbstractMovementFilterStrategy {
   filter(library: MovementLibrary) {

@@ -11,9 +11,9 @@ import { Movement } from '../movement/Movement';
 import { GeneratorType } from '../../shared/enums/generator-type.enum';
 import { DefaultStepSequenceGenerator } from './DefaultStepSequenceGenerator';
 import { ThreeTurnsBlockGenerator } from './ThreeTurnsBlockGenerator';
-import { DifficultTurnsFilterStrategy } from '../filter-strategy/DifficultTurnsFilterStrategy';
-import { GeneratorFilterStrategyFactory } from '../filter-strategy/BaseCompositeMovementFilters';
-import { DefaultMovementFilterStrategy } from '../filter-strategy/DefaultMovementFilterStrategy';
+import { DifficultTurnsFilterStrategy } from '../filter-strategy/strategies/DifficultTurnsFilterStrategy';
+import { CompositeMovementFiltersFactory } from '../filter-strategy/BaseCompositeMovementFilters';
+import { DefaultMovementFilterStrategy } from '../filter-strategy/strategies/DefaultMovementFilterStrategy';
 import { ThreeDifficultTurnsBlockCounter } from '../step-counter/ThreeDifficultTurnsBlockCounter';
 
 export class SequenceGeneratorFactory {
@@ -60,7 +60,7 @@ export class SequenceGeneratorFactory {
 
   protected static createDefaultConfig() {
     const defaultFilterStrategy = new DefaultMovementFilterStrategy();
-    const filterComposite = GeneratorFilterStrategyFactory.create([defaultFilterStrategy]);
+    const filterComposite = CompositeMovementFiltersFactory.create([defaultFilterStrategy]);
     return {
       counter: new StepCounter(),
       filterStrategy: filterComposite,
@@ -70,7 +70,7 @@ export class SequenceGeneratorFactory {
   protected static createThreeTurnsBlockConfig() {
     const defaultFilterStrategy = new DefaultMovementFilterStrategy();
     const difficultTurnsFilterStrategy = new DifficultTurnsFilterStrategy();
-    const filterComposite = GeneratorFilterStrategyFactory.create([
+    const filterComposite = CompositeMovementFiltersFactory.create([
       defaultFilterStrategy,
       difficultTurnsFilterStrategy,
     ]);
