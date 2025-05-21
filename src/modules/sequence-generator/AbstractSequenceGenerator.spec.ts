@@ -4,6 +4,7 @@ import { AbstractSequenceGenerator } from './AbstractSequenceGenerator';
 import { StepCounter } from '../step-counter/StepCounter';
 import { SequenceGeneratorFactory } from './SequenceGeneratorFactory';
 import { IMovementExtended } from '../../shared/types/extended-movement/movement-extended.interface';
+import { FilterStrategyName } from '../../shared/enums/filter-stategy-name.enum';
 
 const mockMovements = [{}] as Movement[];
 
@@ -100,8 +101,11 @@ describe('AbstractSequenceGenerator', () => {
 
   describe('getCurrentLibrary', () => {
     it('должен вызвать filterStrategy.filter', () => {
-      const spyFilter = vi.spyOn(generatorAny.filterStrategy, 'filter');
-      generatorAny.getCurrentLibrary();
+      const spyFilter = vi.spyOn(
+        generatorAny.filterStrategy.get(FilterStrategyName.DEFAULT),
+        'filter',
+      );
+      generatorAny.getCurrentLibrary(generatorAny.filterStrategy.get(FilterStrategyName.DEFAULT));
       expect(spyFilter).toHaveBeenCalled();
     });
   });
@@ -123,12 +127,20 @@ describe('AbstractSequenceGenerator', () => {
     const funcNameList = ['getCurrentLibrary', 'chooseMovement', 'getCoordinates'];
     it.each(funcNameList)('должен вызывать %s', (funcName) => {
       const spyFunc = vi.spyOn(generatorAny, funcName);
-      generatorAny.generateMovement();
+      const mockDistanceFactor = 1;
+      generatorAny.generateMovement(
+        mockDistanceFactor,
+        generatorAny.filterStrategy.get(FilterStrategyName.DEFAULT),
+      );
       expect(spyFunc).toHaveBeenCalled();
     });
 
     it('должен вернуть объект со свойство coordinates', () => {
-      const result = generatorAny.generateMovement();
+      const mockDistanceFactor = 1;
+      const result = generatorAny.generateMovement(
+        mockDistanceFactor,
+        generatorAny.filterStrategy.get(FilterStrategyName.DEFAULT),
+      );
       expect(result).toHaveProperty('coordinates');
     });
   });

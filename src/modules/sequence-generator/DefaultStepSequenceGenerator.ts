@@ -4,13 +4,14 @@ import { StepContext } from './StepContext';
 import { IMovementExtended } from '../../shared/types/extended-movement/movement-extended.interface';
 import { MovementRouletteGenerator } from '../roulette/MovementRouletteGenerator';
 import { StepTracker } from '../sequence-tracker/StepTracker';
-import { BaseCompositeMovementFilters } from '../filter-strategy/BaseCompositeMovementFilters';
 import { StepCounter } from '../step-counter/StepCounter';
 import { DifficultLevelAmountStep } from '../../shared/enums/difficult-level-amount-step.enum';
 import { ThreeTurnsBlockGenerator } from './ThreeTurnsBlockGenerator';
 import { DistanceFactorType } from '../../shared/types/distance-factor.type';
 import { SequenceTrackerError } from '../../errors/custom-errors';
 import { ServiceMessageType } from '../../shared/types/service-message.type';
+import { MapMovementCompositeFilterType } from '../../shared/types/map-composite-filters.type';
+import { FilterStrategyName } from '../../shared/enums/filter-stategy-name.enum';
 
 export class DefaultStepSequenceGenerator extends AbstractSequenceGenerator<StepCounter> {
   private threeTurnsBlockGenerator: ThreeTurnsBlockGenerator;
@@ -22,7 +23,7 @@ export class DefaultStepSequenceGenerator extends AbstractSequenceGenerator<Step
     counter: StepCounter;
     randomGenerator: MovementRouletteGenerator;
     tracker: StepTracker;
-    filterStrategy: BaseCompositeMovementFilters;
+    filterStrategy: MapMovementCompositeFilterType;
     threeTurnsBlockGenerator: ThreeTurnsBlockGenerator;
   }) {
     const {
@@ -53,14 +54,21 @@ export class DefaultStepSequenceGenerator extends AbstractSequenceGenerator<Step
       while (this.counter.difficultTurnsOriginAmount < stepAmountBySequenceLevel) {
         if (this.isTimeToInsertThreeTurnsBlock()) {
           const movements = this.threeTurnsBlockGenerator.generate(
-            this.context.currentStep || this.generateMovement(distanceFactor),
+            this.context.currentStep ||
+              this.generateMovement(
+                distanceFactor,
+                this.getFilterStrategy(FilterStrategyName.DEFAULT),
+              ),
             distanceFactor,
           );
           movements.forEach((movement) => {
             this.update(movement);
           });
         } else {
-          const movement = this.generateMovement(distanceFactor);
+          const movement = this.generateMovement(
+            distanceFactor,
+            this.getFilterStrategy(FilterStrategyName.DEFAULT),
+          );
           this.update(movement);
         }
       }
