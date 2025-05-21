@@ -13,6 +13,8 @@ import { DistanceFactorType } from '../../shared/types/distance-factor.type';
 import { IStepCounter } from '../../shared/types/abstract-step-counter.interface';
 import { ICoordinates } from '../../shared/types/extended-movement/movement-coordinates.interface';
 import { MapMovementCompositeFilterType } from '../../shared/types/map-composite-filters.type';
+import { FilterStrategyName } from '../../shared/enums/filter-stategy-name.enum';
+import { BaseCompositeMovementFilters } from '../filter-strategy/BaseCompositeMovementFilters';
 
 export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
   protected stepSequence: IMovementExtended[];
@@ -43,8 +45,11 @@ export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
 
   abstract generate(...args: unknown[]): IMovementExtended[];
 
-  protected generateMovement(distanceFactor: DistanceFactorType): IMovementExtended {
-    const currentLibrary = this.getCurrentLibrary();
+  protected generateMovement(
+    distanceFactor: DistanceFactorType,
+    filterStrategy: BaseCompositeMovementFilters,
+  ): IMovementExtended {
+    const currentLibrary = this.getCurrentLibrary(filterStrategy);
     const newMovement = this.chooseMovement(currentLibrary.movements);
     const extendedMovement = this.extendMovement(newMovement);
     extendedMovement.coordinates = this.getCoordinates(newMovement, distanceFactor);
@@ -64,9 +69,16 @@ export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
     return movements[movementIndex];
   }
 
-  // todo передавать filterStrategy параметром
-  protected getCurrentLibrary(): MovementLibrary {
-    return this.filterStrategy.filter(this.library, this.context);
+  protected getCurrentLibrary(filterStrategy: BaseCompositeMovementFilters): MovementLibrary {
+    return filterStrategy.filter(this.library, this.context);
+  }
+
+  protected getFilterStrategy(
+    filterStrategyName: FilterStrategyName,
+  ): BaseCompositeMovementFilters {
+    const strategy = this.filterStrategy.get(filterStrategyName);
+    if (!strategy) throw new Error(`Filter strategy with name ${filterStrategyName} not found`);
+    return strategy;
   }
 
   public reset(): void {

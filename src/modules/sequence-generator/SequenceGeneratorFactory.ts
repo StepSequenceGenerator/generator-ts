@@ -11,10 +11,9 @@ import { Movement } from '../movement/Movement';
 import { GeneratorType } from '../../shared/enums/generator-type.enum';
 import { DefaultStepSequenceGenerator } from './DefaultStepSequenceGenerator';
 import { ThreeTurnsBlockGenerator } from './ThreeTurnsBlockGenerator';
-import { DifficultTurnsFilterStrategy } from '../filter-strategy/strategies/DifficultTurnsFilterStrategy';
-import { CompositeMovementFiltersFactory } from '../filter-strategy/CompositeMovementFiltersFactory';
-import { DefaultMovementFilterStrategy } from '../filter-strategy/strategies/DefaultMovementFilterStrategy';
 import { ThreeDifficultTurnsBlockCounter } from '../step-counter/ThreeDifficultTurnsBlockCounter';
+import { FilterCompositeMapFactory } from '../filter-strategy/FilterCompositeMapFactory';
+import { FilterStrategyName } from '../../shared/enums/filter-stategy-name.enum';
 
 export class SequenceGeneratorFactory {
   private static generator = new Map<GeneratorType, unknown>([
@@ -59,24 +58,23 @@ export class SequenceGeneratorFactory {
   }
 
   protected static createDefaultConfig() {
-    const defaultFilterStrategy = new DefaultMovementFilterStrategy();
-    const filterComposite = CompositeMovementFiltersFactory.create([defaultFilterStrategy]);
+    const filterStrategy = FilterCompositeMapFactory.createMap([
+      FilterStrategyName.DEFAULT,
+      FilterStrategyName.IS_CHANGE_LEG,
+    ]);
     return {
       counter: new StepCounter(),
-      filterStrategy: filterComposite,
+      filterStrategy: filterStrategy,
     };
   }
 
   protected static createThreeTurnsBlockConfig() {
-    const defaultFilterStrategy = new DefaultMovementFilterStrategy();
-    const difficultTurnsFilterStrategy = new DifficultTurnsFilterStrategy();
-    const filterComposite = CompositeMovementFiltersFactory.create([
-      defaultFilterStrategy,
-      difficultTurnsFilterStrategy,
+    const filterStrategy = FilterCompositeMapFactory.createMap([
+      FilterStrategyName.THREE_DIFFICULT_TURNS,
     ]);
     return {
       counter: new ThreeDifficultTurnsBlockCounter(),
-      filterStrategy: filterComposite,
+      filterStrategy: filterStrategy,
     };
   }
 
