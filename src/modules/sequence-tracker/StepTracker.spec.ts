@@ -44,6 +44,14 @@ describe('SequenceTracker', () => {
       const result = sequenceTracker['getAllowedVectorKeys'](input);
       expect(result).toStrictEqual(expected);
     });
+
+    describe('проверка фильтрации доступных ключей', () => {
+      const mockKeysList = Object.values(VectorKey);
+      it.each(mockKeysList)('при key = %s должен вернуть 5 ключей', (key) => {
+        const result = sequenceTracker['getAllowedVectorKeys'](key);
+        expect(result.length).toEqual(5);
+      });
+    });
   });
 
   describe('getNextMovementVector', () => {

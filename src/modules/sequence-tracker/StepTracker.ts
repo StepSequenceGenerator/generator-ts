@@ -130,7 +130,8 @@ export class StepTracker {
       ? (Object.keys(this.vectorAngles) as VectorKey[])
       : (Object.keys(this.vectorAngles) as VectorKey[]).filter((key) => {
           const diff = Math.abs(this.vectorAngles[currentVector] - this.vectorAngles[key]);
-          return diff <= maxTurnAngle;
+          const absoluteDiff = Math.min(diff, 360 - diff);
+          return absoluteDiff <= maxTurnAngle;
         });
   }
 
