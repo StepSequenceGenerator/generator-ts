@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { MovementDefaultWeightCalculator } from './MovementDefaultWeightCalculator';
-import { MovementWeightCalculatorBase } from './MovementWeightCalculatorBase';
+import { DefaultMovementWeightCalculator } from './DefaultMovementWeightCalculator';
+import { BaseMovementWeightCalculator } from './BaseMovementWeightCalculator';
 import { MovementChanceRatioMapType } from '../../../shared/types/movement-chance-ratio-map.type';
 import type { Movement } from '../../movement/Movement';
 import { ExtendedMovementCharacter, MovementCharacter } from '../../../shared/enums/movement-enums';
@@ -33,15 +33,15 @@ const mockChanceRatioMap: MovementChanceRatioMapType = new Map<ExtendedMovementC
 ]);
 
 describe('MovementWeightCalculator', () => {
-  let calc: MovementDefaultWeightCalculator;
+  let calc: DefaultMovementWeightCalculator;
   beforeEach(() => {
-    calc = new MovementDefaultWeightCalculator();
+    calc = new DefaultMovementWeightCalculator();
   });
 
   describe('implementation', () => {
     it('должен корректно создаваться', () => {
       expect(calc).toBeDefined();
-      expect(calc).toBeInstanceOf(MovementWeightCalculatorBase);
+      expect(calc).toBeInstanceOf(BaseMovementWeightCalculator);
     });
   });
 

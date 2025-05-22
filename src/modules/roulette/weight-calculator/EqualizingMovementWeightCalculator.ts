@@ -1,9 +1,9 @@
 import type { Movement } from '../../movement/Movement';
-import { MovementWeightCalculatorBase } from './MovementWeightCalculatorBase';
+import { BaseMovementWeightCalculator } from './BaseMovementWeightCalculator';
 import { MovementWeightMapType } from '../../../shared/types/movement-chance-ratio-map.type';
 import { ExtendedMovementCharacter } from '../../../shared/enums/movement-enums';
 
-export class MovementEqualizingWeightCalculator extends MovementWeightCalculatorBase {
+export class EqualizingMovementWeightCalculator extends BaseMovementWeightCalculator {
   public count(selection: Movement[]): MovementWeightMapType {
     const characterCounted = this.groupAndCountMovements(selection);
     const maxAmount = this.getMaxGroupSize(characterCounted);

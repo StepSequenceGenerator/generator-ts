@@ -1,7 +1,7 @@
 import { AbstractRouletteGenerator } from './AbstractRouletteGenerator';
 
 import { Movement } from '../movement/Movement.js';
-import { MovementWeightCalculatorBase } from './weight-calculator/MovementWeightCalculatorBase';
+import { BaseMovementWeightCalculator } from './weight-calculator/BaseMovementWeightCalculator';
 import {
   MovementChanceRatioMapType,
   MovementWeightMapType,
@@ -16,7 +16,7 @@ export class MovementRouletteGenerator extends AbstractRouletteGenerator<
 > {
   protected readonly fallbackWeight = 0.1;
 
-  constructor(weightCalc: MovementWeightCalculatorBase) {
+  constructor(weightCalc: BaseMovementWeightCalculator) {
     super(weightCalc);
   }
 

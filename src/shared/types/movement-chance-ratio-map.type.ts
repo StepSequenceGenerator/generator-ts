@@ -1,6 +1,6 @@
 import { ExtendedMovementCharacter } from '../enums/movement-enums.js';
 
-// note общие типы
+// note обобщенные типы
 type ChanceRatioMap<T> = Map<T, number>;
 type WeightMapType<T> = Map<T, number>;
 

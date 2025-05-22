@@ -7,7 +7,7 @@ import {
 } from '../../../shared/types/movement-chance-ratio-map.type';
 import { transformToExtendedMovementCharacterType } from '../../../utils/is-extended-movement-character';
 
-export abstract class MovementWeightCalculatorBase extends AbstractWeightCalculator<
+export abstract class BaseMovementWeightCalculator extends AbstractWeightCalculator<
   Movement,
   ExtendedMovementCharacter
 > {

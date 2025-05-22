@@ -7,7 +7,7 @@ import { MovementRouletteGenerator } from '../roulette/MovementRouletteGenerator
 import { StepTracker } from '../sequence-tracker/StepTracker';
 
 import { randomGenerator } from '../../utils/random-generator';
-import { CHANCE_RATIO_MAP } from '../../shared/constants/chance-ratio-map.const';
+import { MOVEMENTS_CHANCE_RATIO_MAP } from '../../shared/constants/chance-ratio-map.const';
 
 import { DistanceFactorType } from '../../shared/types/distance-factor.type';
 import { IStepCounter } from '../../shared/types/abstract-step-counter.interface';
@@ -65,7 +65,10 @@ export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
   }
 
   protected chooseMovement(movements: Movement[]) {
-    const movementIndex = this.randomGenerator.generateNumber(movements, CHANCE_RATIO_MAP);
+    const movementIndex = this.randomGenerator.generateNumber(
+      movements,
+      MOVEMENTS_CHANCE_RATIO_MAP,
+    );
     return movements[movementIndex];
   }
 

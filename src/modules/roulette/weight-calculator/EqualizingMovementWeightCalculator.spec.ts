@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { MovementEqualizingWeightCalculator } from './MovementEqualizingWeightCalculator';
+import { EqualizingMovementWeightCalculator } from './EqualizingMovementWeightCalculator';
 import { ExtendedMovementCharacter, MovementCharacter } from '../../../shared/enums/movement-enums';
 import type { Movement } from '../../movement/Movement';
 
@@ -39,16 +39,16 @@ describe('MovementEqualWeightCalculator', () => {
     ['hop', Math.round((3 / 1) * 100) / 100],
   ]);
 
-  let calculator: MovementEqualizingWeightCalculator;
+  let calculator: EqualizingMovementWeightCalculator;
 
   beforeEach(() => {
-    calculator = new MovementEqualizingWeightCalculator();
+    calculator = new EqualizingMovementWeightCalculator();
   });
 
   describe('implementation', () => {
     it('implementation', () => {
       expect(calculator).toBeDefined();
-      expect(calculator).toBeInstanceOf(MovementEqualizingWeightCalculator);
+      expect(calculator).toBeInstanceOf(EqualizingMovementWeightCalculator);
     });
   });
 

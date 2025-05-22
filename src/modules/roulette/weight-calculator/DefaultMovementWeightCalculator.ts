@@ -8,9 +8,9 @@ import { round2 } from '../../../utils/round2';
 import { ExtendedMovementCharacter } from '../../../shared/enums/movement-enums';
 import { transformToExtendedMovementCharacterType } from '../../../utils/is-extended-movement-character';
 
-import { MovementWeightCalculatorBase } from './MovementWeightCalculatorBase';
+import { BaseMovementWeightCalculator } from './BaseMovementWeightCalculator';
 
-export class MovementDefaultWeightCalculator extends MovementWeightCalculatorBase {
+export class DefaultMovementWeightCalculator extends BaseMovementWeightCalculator {
   public count(
     selection: Movement[],
     chanceRatioMap: MovementChanceRatioMapType,
