@@ -129,10 +129,18 @@ export class StepTracker {
     return currentVector === null
       ? (Object.keys(this.vectorAngles) as VectorKey[])
       : (Object.keys(this.vectorAngles) as VectorKey[]).filter((key) => {
-          const diff = Math.abs(this.vectorAngles[currentVector] - this.vectorAngles[key]);
-          const absoluteDiff = Math.min(diff, 360 - diff);
-          return absoluteDiff <= maxTurnAngle;
+          const angleDiff = this.calcAngelDiff(
+            this.vectorAngles[currentVector],
+            this.vectorAngles[key],
+          );
+          const absoluteAngelDiff = Math.abs(angleDiff);
+          const normalizeAngleDiff = Math.min(absoluteAngelDiff, 360 - absoluteAngelDiff);
+          return normalizeAngleDiff <= maxTurnAngle;
         });
+  }
+
+  private calcAngelDiff(current: number, target: number): number {
+    return current - target;
   }
 
   public getStartCoordinates() {

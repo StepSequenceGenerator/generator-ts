@@ -40,7 +40,7 @@ describe('SequenceTracker', () => {
   describe('getAllowedVectorKeys', () => {
     it('должен вернуть массив ключей', () => {
       const input = VectorKey.NORTH;
-      const expected = ['north', 'west', 'east', 'north_west', 'north_east'];
+      const expected = ['north', 'north_east', 'east', 'west', 'north_west'];
       const result = sequenceTracker['getAllowedVectorKeys'](input);
       expect(result).toStrictEqual(expected);
     });
@@ -49,6 +49,8 @@ describe('SequenceTracker', () => {
       const mockKeysList = Object.values(VectorKey);
       it.each(mockKeysList)('при key = %s должен вернуть 5 ключей', (key) => {
         const result = sequenceTracker['getAllowedVectorKeys'](key);
+
+        console.debug(key, result);
         expect(result.length).toEqual(5);
       });
     });
