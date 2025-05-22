@@ -1,13 +1,15 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { CompassArc } from './CompassArc';
-import { ArcVector, ArcVectorIndexType, STEP_POINTS } from './arc-vector.enum';
 import { Edge, Leg, TransitionDirection } from '../../shared/enums/movement-enums';
+import { MOVEMENT_POINTS } from '../../shared/constants/step-points';
+import { ArcVector } from '../../shared/enums/arc-vector.enum';
+import { ArcVectorIndexType } from '../../shared/types/arc-vector/arc-vector-index.type';
 
 describe('CompassArc', () => {
   let compass: CompassArc;
 
   beforeEach(() => {
-    compass = new CompassArc({ stepPoints: STEP_POINTS, arcVector: ArcVector });
+    compass = new CompassArc({ stepPoints: MOVEMENT_POINTS, arcVector: ArcVector });
   });
 
   describe('implementation', () => {
@@ -55,7 +57,7 @@ describe('CompassArc', () => {
 
       it.each(mockDataList)('при %s должен вернуть 1', (mockData) => {
         const expected = 1;
-        const result = compass['calcArcVectorIndexUntyped'](mockData);
+        const result = compass['calcStepPoints'](mockData);
         expect(result).toEqual(expected);
       });
     });
@@ -86,7 +88,7 @@ describe('CompassArc', () => {
 
       it.each(mockDataList)('при %s должен вернуть -1', (mockData) => {
         const expected = -1;
-        const result = compass['calcArcVectorIndexUntyped'](mockData);
+        const result = compass['calcStepPoints'](mockData);
         expect(result).toEqual(expected);
       });
     });
