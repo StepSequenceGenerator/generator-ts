@@ -7,7 +7,7 @@ import { MovementRouletteGenerator } from '../roulette/MovementRouletteGenerator
 import { StepTracker } from '../sequence-tracker/StepTracker';
 
 import { randomGenerator } from '../../utils/random-generator';
-import { MOVEMENTS_CHANCE_RATIO_MAP } from '../../shared/constants/chance-ratio-map.const';
+import { MOVEMENTS_CHANCE_RATIO_MAP } from '../../shared/constants/movement_chance-ratio-map.const';
 
 import { DistanceFactorType } from '../../shared/types/distance-factor.type';
 import { IStepCounter } from '../../shared/types/abstract-step-counter.interface';

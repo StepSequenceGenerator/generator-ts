@@ -23,17 +23,17 @@ type CoordinateForCursorType<T extends CombinedCursorType> = T extends XCursorTy
 
 export class StepTracker {
   readonly startCoordinates: ReadonlyArray<DescartesCoordinatesType>;
-  readonly trackVectors: VectorTrackType;
+  readonly vectorsTrack: VectorTrackType;
   readonly vectorAngles: VectorAngleType;
 
   constructor(
     standardStartCoordinates: ReadonlyArray<DescartesCoordinatesType>,
-    trackVectors: VectorTrackType,
+    vectorsTrack: VectorTrackType,
     vectorAngles: VectorAngleType,
   ) {
     this.startCoordinates = standardStartCoordinates;
+    this.vectorsTrack = vectorsTrack;
     this.vectorAngles = vectorAngles;
-    this.trackVectors = trackVectors;
   }
 
   public getNextPosition(
@@ -44,7 +44,6 @@ export class StepTracker {
     const triedVectorKeys = new Set<VectorKey>();
     let availableVectorKeys = this.getAllowedVectorKeys(currentVector);
 
-    console.debug('++++++++++++');
     while (availableVectorKeys.length > 0) {
       const vectorKey = this.getNextMovementVector(availableVectorKeys);
       triedVectorKeys.add(vectorKey);
@@ -113,7 +112,7 @@ export class StepTracker {
   }
 
   getNextTrackVector(vectorKey: VectorKey): VectorCursorType {
-    return this.trackVectors[vectorKey];
+    return this.vectorsTrack[vectorKey];
   }
 
   private getNextMovementVector(vectors: VectorKey[]) {
