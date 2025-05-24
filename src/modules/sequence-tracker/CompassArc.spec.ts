@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { CompassArc } from './CompassArc';
 import { Edge, Leg, TransitionDirection } from '../../shared/enums/movement-enums';
-import { MOVEMENT_POINTS } from '../../shared/constants/movement-points';
+import { MOVEMENT_POINTS } from '../../shared/constants/movement-points.const';
 import { ArcVector } from '../../shared/enums/arc-vector.enum';
 import { ArcVectorIndexType } from '../../shared/types/arc-vector/arc-vector-index.type';
 

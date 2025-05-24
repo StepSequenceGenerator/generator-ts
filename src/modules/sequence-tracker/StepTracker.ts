@@ -15,6 +15,8 @@ import { VectorKey } from '../../shared/enums/vector-key.enum';
 
 import { CoordinatesError, SequenceTrackerError } from '../../errors/custom-errors';
 import { randomGenerator } from '../../utils/random-generator';
+import { VectorKeyChanceRatioMapType } from '../../shared/types/movement-chance-ratio-map.type';
+import { VECTOR_ANGLES } from '../../shared/constants/vector-angles';
 
 type CombinedCursorType = XCursorType | YCursorType;
 type CoordinateForCursorType<T extends CombinedCursorType> = T extends XCursorType
@@ -37,12 +39,13 @@ export class StepTracker {
   }
 
   public getNextPosition(
-    currentVector: VectorKey | null,
+    currentVectorKey: VectorKey | null,
     currentCoordinates: DescartesCoordinatesType,
     distance: number,
   ) {
     const triedVectorKeys = new Set<VectorKey>();
-    let availableVectorKeys = this.getAllowedVectorKeys(currentVector);
+    let availableVectorKeys = this.getAllowedVectorKeys(currentVectorKey);
+    let vectorKeyChanceRatioMap = this.createVectorKeyChanceRatioMap(availableVectorKeys);
 
     while (availableVectorKeys.length > 0) {
       const vectorKey = this.getNextMovementVector(availableVectorKeys);
@@ -68,6 +71,66 @@ export class StepTracker {
       'Unable to find next coordinates within bounds.',
       'NO_VALID_COORDINATES',
     );
+  }
+
+  private createVectorKeyChanceRatioMap(
+    currentVectorKey: VectorKey,
+    vectorKeys: VectorKey[],
+  ): VectorKeyChanceRatioMapType {
+    const currentAcrVectorFactor = 1; // note потом сделать параметром
+
+    const vectorKeysWithNormalizeAngles = this.getVectorKeysWithNormalizeAngles(
+      currentVectorKey,
+      vectorKeys,
+    );
+
+    const sameVectorKeys = this.filterSameVectorKeys(
+      vectorKeysWithNormalizeAngles,
+      currentAcrVectorFactor,
+    );
+    const oppositeVectorKeys = this.filterOppositeVectorKeys(
+      vectorKeysWithNormalizeAngles,
+      currentAcrVectorFactor,
+    );
+
+    return vectorKeysWithNormalizeAngles;
+  }
+
+  private calcVectorKeyChanceRatioMap() {
+    const FULL_PERCENTAGE = 100;
+    const PERCENTAGE_FOR_SAME_VECTORS = 70;
+  }
+
+  private filterSameVectorKeys(
+    vectorKeysWithNormalizeAngles: Map<VectorKey, number>,
+    vectorFactor: number,
+  ) {
+    return new Map<VectorKey, number>(
+      Array.from(vectorKeysWithNormalizeAngles.entries()).filter(
+        ([, angle]) => angle * vectorFactor >= 0,
+      ),
+    );
+  }
+
+  private filterOppositeVectorKeys(
+    vectorKeysWithNormalizeAngles: Map<VectorKey, number>,
+    vectorFactor: number,
+  ) {
+    return new Map<VectorKey, number>(
+      Array.from(vectorKeysWithNormalizeAngles.entries()).filter(
+        ([, angle]) => angle * vectorFactor < 0,
+      ),
+    );
+  }
+
+  private getVectorKeysWithNormalizeAngles(currentVectorKey: VectorKey, vectorKeys: VectorKey[]) {
+    const map = new Map<VectorKey, number>();
+    vectorKeys.forEach((vectorKey) => {
+      const angleDiff = VECTOR_ANGLES[vectorKey] - VECTOR_ANGLES[currentVectorKey];
+      const normalizeAngleDiff = ((angleDiff + 180) % 360) - 180;
+      map.set(vectorKey, normalizeAngleDiff);
+    });
+    return map;
   }
 
   private filterVectorKeys(triedVectorKeys: Set<VectorKey>, vectorKeys: VectorKey[]) {
@@ -129,18 +192,13 @@ export class StepTracker {
     return currentVector === null
       ? (Object.keys(this.vectorAngles) as VectorKey[])
       : (Object.keys(this.vectorAngles) as VectorKey[]).filter((key) => {
-          const angleDiff = this.calcAngelDiff(
-            this.vectorAngles[currentVector],
-            this.vectorAngles[key],
+          const absoluteAngelDiff = Math.abs(
+            this.vectorAngles[currentVector] - this.vectorAngles[key],
           );
-          const absoluteAngelDiff = Math.abs(angleDiff);
           const normalizeAngleDiff = Math.min(absoluteAngelDiff, 360 - absoluteAngelDiff);
+
           return normalizeAngleDiff <= maxTurnAngle;
         });
-  }
-
-  private calcAngelDiff(current: number, target: number): number {
-    return current - target;
   }
 
   public getStartCoordinates() {

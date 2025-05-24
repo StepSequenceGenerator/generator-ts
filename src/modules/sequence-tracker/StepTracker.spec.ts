@@ -150,4 +150,23 @@ describe('SequenceTracker', () => {
       });
     });
   });
+
+  // todo доделать
+  describe('createVectorKeyChanceRatioMap', () => {
+    it('должен вернуть массив [-90, -45, 0, 45, 90]', () => {
+      // north_east [ 'north', 'north_east', 'east', 'south_east', 'north_west' ]
+      const mockCurrentVectorKey = VectorKey.NORTH_EAST;
+      const mockVectorKeys = [
+        'north',
+        'north_east',
+        'east',
+        'south_east',
+        'north_west',
+      ] as VectorKey[];
+      const result = sequenceTracker['createVectorKeyChanceRatioMap'](
+        mockCurrentVectorKey,
+        mockVectorKeys,
+      );
+    });
+  });
 });
