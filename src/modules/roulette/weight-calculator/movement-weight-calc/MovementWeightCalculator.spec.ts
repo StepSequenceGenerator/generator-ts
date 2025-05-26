@@ -51,8 +51,10 @@ describe('MovementWeightCalculator', () => {
   describe('public methods', () => {
     describe('count', () => {
       describe('должен вызывать методы', () => {
+        // eslint-disable-next-line
         let calcAny: any;
         beforeEach(() => {
+          // eslint-disable-next-line
           calcAny = calc as unknown as any;
         });
 
@@ -153,7 +155,7 @@ describe('MovementWeightCalculator', () => {
       });
     });
 
-    describe('calcWeight', () => {
+    describe('calcWeights', () => {
       it('должен вернуть', () => {
         const mockGroupMovementCounted = new Map([
           [ExtendedMovementCharacter.UNKNOWN, 3], // 1.17
