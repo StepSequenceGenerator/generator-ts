@@ -20,10 +20,9 @@ export class CompassArc {
     this.vectors = arcVector;
   }
 
-  public getArcVector(data: ArgsType): ArcVector {
+  public getAcrVectorIndex(data: ArgsType): ArcVectorIndexType {
     const vectorIndex = this.calcStepPoints(data);
-    const arcVectorIndex = this.typifyToArcVectorIndex(vectorIndex);
-    return this.mapAcrVector(arcVectorIndex);
+    return this.typifyToArcVectorIndex(vectorIndex);
   }
 
   private calcStepPoints(data: ArgsType): number {
