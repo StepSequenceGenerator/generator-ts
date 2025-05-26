@@ -1,12 +1,12 @@
-import type { Movement } from '../../movement/Movement';
+import type { Movement } from '../../../movement/Movement';
 
 import {
   MovementChanceRatioMapType,
   MovementWeightMapType,
-} from '../../../shared/types/movement-chance-ratio-map.type';
-import { round2 } from '../../../utils/round2';
-import { ExtendedMovementCharacter } from '../../../shared/enums/movement-enums';
-import { transformToExtendedMovementCharacterType } from '../../../utils/is-extended-movement-character';
+} from '../../../../shared/types/chance-ratio-map.type';
+import { round2 } from '../../../../utils/round2';
+import { ExtendedMovementCharacter } from '../../../../shared/enums/movement-enums';
+import { transformToExtendedMovementCharacterType } from '../../../../utils/is-extended-movement-character';
 
 import { BaseMovementWeightCalculator } from './BaseMovementWeightCalculator';
 
@@ -21,7 +21,7 @@ export class DefaultMovementWeightCalculator extends BaseMovementWeightCalculato
       chanceRatioMap,
     );
 
-    return this.calcWeight(groupMovementCounted, recalculatedChanceRatio);
+    return this.calcWeights(groupMovementCounted, recalculatedChanceRatio);
   }
 
   private recalculateChanceRatio(
@@ -87,7 +87,7 @@ export class DefaultMovementWeightCalculator extends BaseMovementWeightCalculato
     return { unusedPercent: unused, usedPercent: used };
   }
 
-  protected calcWeight(
+  protected calcWeights(
     groupMovementCounted: Map<ExtendedMovementCharacter, number>,
     recalculatedChanceRatio: MovementChanceRatioMapType,
   ): MovementWeightMapType {
@@ -95,8 +95,7 @@ export class DefaultMovementWeightCalculator extends BaseMovementWeightCalculato
     const weightMap: MovementWeightMapType = new Map<ExtendedMovementCharacter, number>();
     for (let [key, currentItemAmount] of groupMovementCounted.entries()) {
       const desirePercent = recalculatedChanceRatio.get(key) ?? 0;
-      const desireItemAmount = round2((totalItems / 100) * desirePercent);
-      const weight = round2(desireItemAmount / currentItemAmount);
+      const weight = this.calcItemWeight({ currentItemAmount, desirePercent, totalItems });
 
       weightMap.set(key, weight);
     }

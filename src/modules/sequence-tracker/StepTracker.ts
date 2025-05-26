@@ -18,7 +18,7 @@ import { randomGenerator } from '../../utils/random-generator';
 
 import { ArcVectorIndexType } from '../../shared/types/arc-vector/arc-vector-index.type';
 import { RB_PERCENTAGE } from '../../shared/constants/rb-percentage/rb-vector-key-percentage';
-import { VectorKeyChanceRatioMapGenerator } from '../chance-ratio-map-generator/ChanceRatioMapGenerator';
+import { VectorKeyChanceRatioMapGenerator } from '../chance-ratio-map-generator/VectorKeyChanceRatioMapGenerator';
 
 type CombinedCursorType = XCursorType | YCursorType;
 type CoordinateForCursorType<T extends CombinedCursorType> = T extends XCursorType

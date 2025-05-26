@@ -1,11 +1,11 @@
-import type { Movement } from '../../movement/Movement';
-import { ExtendedMovementCharacter } from '../../../shared/enums/movement-enums';
-import { AbstractWeightCalculator } from './AbstractWeightCalculator';
+import type { Movement } from '../../../movement/Movement';
+import { ExtendedMovementCharacter } from '../../../../shared/enums/movement-enums';
+import { AbstractWeightCalculator } from '../AbstractWeightCalculator';
 import {
   MovementChanceRatioMapType,
   MovementWeightMapType,
-} from '../../../shared/types/movement-chance-ratio-map.type';
-import { transformToExtendedMovementCharacterType } from '../../../utils/is-extended-movement-character';
+} from '../../../../shared/types/chance-ratio-map.type';
+import { transformToExtendedMovementCharacterType } from '../../../../utils/is-extended-movement-character';
 
 export abstract class BaseMovementWeightCalculator extends AbstractWeightCalculator<
   Movement,
@@ -16,7 +16,7 @@ export abstract class BaseMovementWeightCalculator extends AbstractWeightCalcula
     chanceRatioMap: MovementChanceRatioMapType,
   ): MovementWeightMapType;
 
-  protected abstract calcWeight(...args: unknown[]): MovementWeightMapType;
+  protected abstract calcWeights(...args: unknown[]): MovementWeightMapType;
 
   protected groupAndCountMovements(selection: Movement[]) {
     const map = new Map<ExtendedMovementCharacter, number>();

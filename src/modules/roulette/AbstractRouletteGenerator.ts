@@ -1,6 +1,6 @@
 import { AbstractWeightCalculator } from './weight-calculator/AbstractWeightCalculator';
 import { IRouletteGenerator } from '../../shared/types/roulette-generator.interface';
-import { ChanceRatioMap } from '../../shared/types/movement-chance-ratio-map.type';
+import { ChanceRatioMap } from '../../shared/types/chance-ratio-map.type';
 import { randomGenerator } from '../../utils/random-generator';
 
 export abstract class AbstractRouletteGenerator<C, M> implements IRouletteGenerator<C, M> {

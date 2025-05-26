@@ -1,11 +1,11 @@
 import { AbstractRouletteGenerator } from './AbstractRouletteGenerator';
 
 import { Movement } from '../movement/Movement.js';
-import { BaseMovementWeightCalculator } from './weight-calculator/BaseMovementWeightCalculator';
+import { BaseMovementWeightCalculator } from './weight-calculator/movement-weight-calc/BaseMovementWeightCalculator';
 import {
   MovementChanceRatioMapType,
   MovementWeightMapType,
-} from '../../shared/types/movement-chance-ratio-map.type';
+} from '../../shared/types/chance-ratio-map.type';
 import { isExtendedMovementCharacter } from '../../utils/is-extended-movement-character.js';
 
 import { ExtendedMovementCharacter } from '../../shared/enums/movement-enums.js';

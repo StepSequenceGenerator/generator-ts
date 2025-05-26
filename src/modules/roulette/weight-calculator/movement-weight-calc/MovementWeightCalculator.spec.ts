@@ -1,9 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { DefaultMovementWeightCalculator } from './DefaultMovementWeightCalculator';
 import { BaseMovementWeightCalculator } from './BaseMovementWeightCalculator';
-import { MovementChanceRatioMapType } from '../../../shared/types/movement-chance-ratio-map.type';
-import type { Movement } from '../../movement/Movement';
-import { ExtendedMovementCharacter, MovementCharacter } from '../../../shared/enums/movement-enums';
+import { MovementChanceRatioMapType } from '../../../../shared/types/chance-ratio-map.type';
+import type { Movement } from '../../../movement/Movement';
+import {
+  ExtendedMovementCharacter,
+  MovementCharacter,
+} from '../../../../shared/enums/movement-enums';
 
 const mockMovements: Movement[] = [
   { type: MovementCharacter.UNKNOWN, isDifficult: false } as Movement,
@@ -171,7 +174,7 @@ describe('MovementWeightCalculator', () => {
           [ExtendedMovementCharacter.DIFFICULT, 1.75],
           [ExtendedMovementCharacter.STEP, 1.12],
         ]);
-        const result = calc['calcWeight'](mockGroupMovementCounted, mockRecalculatedMap);
+        const result = calc['calcWeights'](mockGroupMovementCounted, mockRecalculatedMap);
 
         expect(result).toStrictEqual(expected);
       });

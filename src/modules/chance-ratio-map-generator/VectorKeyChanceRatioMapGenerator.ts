@@ -1,26 +1,29 @@
 import { VectorKey } from '../../shared/enums/vector-key.enum';
 import { IChanceRatioMapGenerator } from './chance-ratio-map-generator.interface';
-import { VectorKeyChanceRatioMapType } from '../../shared/types/movement-chance-ratio-map.type';
+import { VectorKeyChanceRatioMapType } from '../../shared/types/chance-ratio-map.type';
 import { VECTOR_ANGLES } from '../../shared/constants/vector-angles';
 import { rbVectorKeyPercentageType } from '../../shared/types/vector-key-percentage.rb.type';
 
-export type GetChanceVarietyChanceRatioMapArgType = {
-  currentVectorKey: VectorKey;
+interface IBaseChanceRatioMapArg {
   currentAcrVectorIndex: number;
   vectorKeys: VectorKey[];
-};
+}
 
-export type GetChanceRatioMapArgType = GetChanceVarietyChanceRatioMapArgType & {
+export interface IGetChanceVarietyChanceRatioMapArg extends IBaseChanceRatioMapArg {
+  currentVectorKey: VectorKey;
+}
+
+export interface IGetChanceRatioMapArg extends IBaseChanceRatioMapArg {
   currentVectorKey: VectorKey | null;
   rbPercentage: rbVectorKeyPercentageType;
-};
+}
 
 export class VectorKeyChanceRatioMapGenerator
   implements IChanceRatioMapGenerator<VectorKey, VectorKeyChanceRatioMapType>
 {
   private _rbPercentage: rbVectorKeyPercentageType | null = null;
 
-  public getChanceRatioMap(data: GetChanceRatioMapArgType): VectorKeyChanceRatioMapType {
+  public getChanceRatioMap(data: IGetChanceRatioMapArg): VectorKeyChanceRatioMapType {
     const { currentAcrVectorIndex, currentVectorKey, vectorKeys, rbPercentage } = data;
     this.rbPercentage = rbPercentage;
 
@@ -33,7 +36,14 @@ export class VectorKeyChanceRatioMapGenerator
     });
   }
 
-  private getVariedChanceRatioMap(data: GetChanceVarietyChanceRatioMapArgType) {
+  private getFlatChanceRatioMap(vectorKeys: VectorKey[]): VectorKeyChanceRatioMapType {
+    const flatChanceRatio = this.rbPercentage.total / vectorKeys.length;
+    const chanceRatioMap: VectorKeyChanceRatioMapType = new Map<VectorKey, number>();
+    vectorKeys.forEach((vectorKey) => chanceRatioMap.set(vectorKey, flatChanceRatio));
+    return chanceRatioMap;
+  }
+
+  private getVariedChanceRatioMap(data: IGetChanceVarietyChanceRatioMapArg) {
     const { currentVectorKey, currentAcrVectorIndex, vectorKeys } = data;
     const vectorKeysWithNormalizeAngles = this.getVectorKeysWithNormalizeAngles(
       currentVectorKey,
@@ -50,13 +60,6 @@ export class VectorKeyChanceRatioMapGenerator
       currentAcrVectorIndex,
       baseChanceRatio,
     );
-  }
-
-  private getFlatChanceRatioMap(vectorKeys: VectorKey[]): VectorKeyChanceRatioMapType {
-    const flatChanceRatio = this.rbPercentage.total / vectorKeys.length;
-    const chanceRatioMap: VectorKeyChanceRatioMapType = new Map<VectorKey, number>();
-    vectorKeys.forEach((vectorKey) => chanceRatioMap.set(vectorKey, flatChanceRatio));
-    return chanceRatioMap;
   }
 
   private getVectorKeysWithNormalizeAngles(currentVectorKey: VectorKey, vectorKeys: VectorKey[]) {

@@ -1,14 +1,14 @@
-import type { Movement } from '../../movement/Movement';
+import type { Movement } from '../../../movement/Movement';
 import { BaseMovementWeightCalculator } from './BaseMovementWeightCalculator';
-import { MovementWeightMapType } from '../../../shared/types/movement-chance-ratio-map.type';
-import { ExtendedMovementCharacter } from '../../../shared/enums/movement-enums';
+import { MovementWeightMapType } from '../../../../shared/types/chance-ratio-map.type';
+import { ExtendedMovementCharacter } from '../../../../shared/enums/movement-enums';
 
 export class EqualizingMovementWeightCalculator extends BaseMovementWeightCalculator {
   public count(selection: Movement[]): MovementWeightMapType {
     const characterCounted = this.groupAndCountMovements(selection);
     const maxAmount = this.getMaxGroupSize(characterCounted);
 
-    return this.calcWeight(maxAmount, characterCounted);
+    return this.calcWeights(maxAmount, characterCounted);
   }
 
   private getMaxGroupSize(map: Map<string, number>): number {
@@ -17,7 +17,7 @@ export class EqualizingMovementWeightCalculator extends BaseMovementWeightCalcul
     return Math.max(...values);
   }
 
-  protected calcWeight(
+  protected calcWeights(
     maxAmount: number,
     map: Map<ExtendedMovementCharacter, number>,
   ): MovementWeightMapType {

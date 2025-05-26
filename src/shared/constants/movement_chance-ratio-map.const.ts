@@ -1,4 +1,4 @@
-import { MovementChanceRatioMapType } from '../types/movement-chance-ratio-map.type';
+import { MovementChanceRatioMapType } from '../types/chance-ratio-map.type';
 import { ExtendedMovementCharacter } from '../enums/movement-enums';
 
 export const MOVEMENTS_CHANCE_RATIO_MAP: MovementChanceRatioMapType = new Map<

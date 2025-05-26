@@ -1,7 +1,7 @@
 import { MovementLibrary } from '../movement/MovementLibrary';
 import { StepContext } from './StepContext';
 import { StepCounter } from '../step-counter/StepCounter';
-import { DefaultMovementWeightCalculator } from '../roulette/weight-calculator/DefaultMovementWeightCalculator';
+import { DefaultMovementWeightCalculator } from '../roulette/weight-calculator/movement-weight-calc/DefaultMovementWeightCalculator';
 import { MovementRouletteGenerator } from '../roulette/MovementRouletteGenerator';
 import { StepTracker } from '../sequence-tracker/StepTracker';
 import { START_COORDINATES } from '../../shared/constants/start-coordinates';
