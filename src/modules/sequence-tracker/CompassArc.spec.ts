@@ -1,32 +1,17 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { CompassArc } from './CompassArc';
 import { Edge, Leg, TransitionDirection } from '../../shared/enums/movement-enums';
-import { MOVEMENT_POINTS } from '../../shared/constants/movement-points.const';
-import { ArcVector } from '../../shared/enums/arc-vector.enum';
-import { ArcVectorIndexType } from '../../shared/types/arc-vector/arc-vector-index.type';
 
 describe('CompassArc', () => {
   let compass: CompassArc;
 
   beforeEach(() => {
-    compass = new CompassArc({ stepPoints: MOVEMENT_POINTS, arcVector: ArcVector });
+    compass = CompassArc;
   });
 
   describe('implementation', () => {
     it('должен корректно создаваться', () => {
       expect(compass).toBeDefined();
-    });
-  });
-
-  describe('mapAcrVector', () => {
-    const mockAndExpectedList = [
-      { value: -1 as ArcVectorIndexType, expected: ArcVector.COUNTER_CLOCKWISE },
-      { value: 0 as ArcVectorIndexType, expected: ArcVector.NONE },
-      { value: 1 as ArcVectorIndexType, expected: ArcVector.CLOCKWISE },
-    ];
-    it.each(mockAndExpectedList)('должен вернуть %s', ({ value, expected }) => {
-      const result = compass['mapAcrVector'](value);
-      expect(result).toEqual(expected);
     });
   });
 
@@ -56,8 +41,10 @@ describe('CompassArc', () => {
       ];
 
       it.each(mockDataList)('при %s должен вернуть 1', (mockData) => {
+        // eslint-disable-next-line
+        const compassAny = compass as unknown as any;
         const expected = 1;
-        const result = compass['calcStepPoints'](mockData);
+        const result = compassAny['calcStepPoints'](mockData);
         expect(result).toEqual(expected);
       });
     });
@@ -87,8 +74,10 @@ describe('CompassArc', () => {
       ];
 
       it.each(mockDataList)('при %s должен вернуть -1', (mockData) => {
+        // eslint-disable-next-line
+        const compassAny = compass as unknown as any;
         const expected = -1;
-        const result = compass['calcStepPoints'](mockData);
+        const result = compassAny['calcStepPoints'](mockData);
         expect(result).toEqual(expected);
       });
     });
@@ -98,14 +87,17 @@ describe('CompassArc', () => {
     const mockDataList = [-1, 0, 1];
 
     it.each(mockDataList)(`при %s должен вернуть тоже число`, (mockData) => {
+      // eslint-disable-next-line
+      const compassAny = compass as unknown as any;
       const expected = mockData;
-      const result = compass['typifyToArcVectorIndex'](mockData);
+      const result = compassAny.typifyToArcVectorIndex(mockData);
       expect(result).toEqual(expected);
     });
 
     it('должен выбросить ошибку', () => {
+      const compassAny = compass as unknown as any;
       const mockData = 5;
-      expect(() => compass['typifyToArcVectorIndex'](mockData)).toThrowError(
+      expect(() => compassAny.typifyToArcVectorIndex(mockData)).toThrowError(
         'Unsupported step direction index',
       );
     });

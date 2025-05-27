@@ -10,28 +10,40 @@ import {
   DescartesCoordinatesType,
   XCoordinateType,
 } from '../../shared/types/descartes-coordinates.type';
+import { VectorKeyChanceRatioMapGenerator } from '../chance-ratio-map-generator/VectorKeyChanceRatioMapGenerator';
+import { VectorKeyWeightCalculator } from '../roulette/weight-calculator/vector-key-weight-calc/VectorKeyWeightCalculator';
+import { VectorKeyRouletteGenerator } from '../roulette/VectorKeyRouletteGenerator';
 
-describe('SequenceTracker', () => {
-  let sequenceTracker: StepTracker;
+describe('StepTracker', () => {
+  let stepTracker: StepTracker;
 
   beforeEach(() => {
-    sequenceTracker = new StepTracker(START_COORDINATES, VECTORS_TRACK, VECTOR_ANGLES);
+    const vectorKeyChanceRatioMapGenerator = new VectorKeyChanceRatioMapGenerator();
+    const vectorKeyWeightCalculator = new VectorKeyWeightCalculator();
+    const vectorKeyRouletteGenerator = new VectorKeyRouletteGenerator(vectorKeyWeightCalculator);
+    stepTracker = new StepTracker({
+      standardStartCoordinates: START_COORDINATES,
+      vectorsTrack: VECTORS_TRACK,
+      vectorAngles: VECTOR_ANGLES,
+      vectorKeyChanceRatioMapGenerator,
+      vectorKeyRouletteGenerator,
+    });
   });
 
   describe('implementation', () => {
     it('должен корректно создаваться', () => {
-      expect(sequenceTracker).toBeDefined();
+      expect(stepTracker).toBeDefined();
     });
   });
 
   describe('getStartCoordinates', () => {
     it('должен вернуть стартовые координаты', () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const sequenceTrackerAny = sequenceTracker as unknown as any;
+      const sequenceTrackerAny = stepTracker as unknown as any;
       vi.spyOn(sequenceTrackerAny, 'getRandom').mockReturnValue(0);
 
       const expected = createCoordinates(5, 5);
-      const result = sequenceTracker.getStartCoordinates();
+      const result = stepTracker.getStartCoordinates();
       expect(result).toBeDefined();
       expect(result).toStrictEqual(expected);
     });
@@ -41,14 +53,14 @@ describe('SequenceTracker', () => {
     it('должен вернуть массив ключей', () => {
       const input = VectorKey.NORTH;
       const expected = ['north', 'north_east', 'east', 'west', 'north_west'];
-      const result = sequenceTracker['getAllowedVectorKeys'](input);
+      const result = stepTracker['getAllowedVectorKeys'](input);
       expect(result).toStrictEqual(expected);
     });
 
     describe('проверка фильтрации доступных ключей', () => {
       const mockKeysList = Object.values(VectorKey);
       it.each(mockKeysList)('при key = %s должен вернуть 5 ключей', (key) => {
-        const result = sequenceTracker['getAllowedVectorKeys'](key);
+        const result = stepTracker['getAllowedVectorKeys'](key);
 
         console.debug(key, result);
         expect(result.length).toEqual(5);
@@ -59,7 +71,7 @@ describe('SequenceTracker', () => {
   describe('getNextMovementVector', () => {
     it('должен вернуть Vector', () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const sequenceTrackerAny = sequenceTracker as unknown as any;
+      const sequenceTrackerAny = stepTracker as unknown as any;
       vi.spyOn(sequenceTrackerAny, 'getRandom').mockReturnValue(1);
 
       const input = [VectorKey.NORTH, VectorKey.EAST, VectorKey.WEST];
@@ -70,7 +82,7 @@ describe('SequenceTracker', () => {
     });
 
     it('должен выбросить ошибку при vectors.length = 0', () => {
-      expect(() => sequenceTracker['getNextMovementVector']([])).toThrowError(
+      expect(() => stepTracker['getNextMovementVector']([])).toThrowError(
         'vectors.length should be more than 0',
       );
     });
@@ -83,7 +95,7 @@ describe('SequenceTracker', () => {
       const mockDistance = 2;
 
       const expected = 35;
-      const result = sequenceTracker['calcCoordinate']({
+      const result = stepTracker['calcCoordinate']({
         cursor: mockCursor,
         coord: mockCoord,
         distance: mockDistance,
@@ -98,7 +110,7 @@ describe('SequenceTracker', () => {
       const mock_currentCoordinates = { x: 29, y: 27 } as DescartesCoordinatesType;
       const mock_distance = 2;
       const expected = { x: 31, y: 29 };
-      const result = sequenceTracker['getNewCoordinates']({
+      const result = stepTracker['getNewCoordinates']({
         vectorCursor: mock_vectorCursor,
         currentCoordinates: mock_currentCoordinates,
         distance: mock_distance,
@@ -116,7 +128,7 @@ describe('SequenceTracker', () => {
 
       const mock_distance = 2;
       const expected = null;
-      const result = sequenceTracker['getNewCoordinates']({
+      const result = stepTracker['getNewCoordinates']({
         vectorCursor: mock_vectorCursor,
         currentCoordinates: mock_currentCoordinates,
         distance: mock_distance,
@@ -132,41 +144,27 @@ describe('SequenceTracker', () => {
 
       const mockAllowed = ['north_west', 'north_east', 'north'] as VectorKey[];
       const expected = ['north_west', 'north_east'];
-      const result = sequenceTracker['filterVectorKeys'](mockTried, mockAllowed);
+      const result = stepTracker['filterVectorKeys'](mockTried, mockAllowed);
       expect(result).toStrictEqual(expected);
     });
 
     describe('getNextPosition', () => {
       it('должен выбросить ошибку, если availableVectorKeys = []', () => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const sequenceTrackerAny = sequenceTracker as unknown as any;
+        const sequenceTrackerAny = stepTracker as unknown as any;
         vi.spyOn(sequenceTrackerAny, 'getAllowedVectorKeys').mockReturnValue([]);
         const mockCurrentVector = VectorKey.NORTH;
         const mockCurrentCoordinates = { x: 1, y: 1 } as DescartesCoordinatesType;
         const distance = 1;
         expect(() =>
-          sequenceTracker.getNextPosition(mockCurrentVector, mockCurrentCoordinates, distance),
+          stepTracker.getNextPosition({
+            currentVectorKey: mockCurrentVector,
+            currentCoordinates: mockCurrentCoordinates,
+            currentAcrVectorIndex: -1,
+            distance,
+          }),
         ).toThrowError('Unable to find next coordinates within bounds.');
       });
-    });
-  });
-
-  // todo доделать
-  describe('createVectorKeyChanceRatioMap', () => {
-    it('должен вернуть массив [-90, -45, 0, 45, 90]', () => {
-      // north_east [ 'north', 'north_east', 'east', 'south_east', 'north_west' ]
-      const mockCurrentVectorKey = VectorKey.NORTH_EAST;
-      const mockVectorKeys = [
-        'north',
-        'north_east',
-        'east',
-        'south_east',
-        'north_west',
-      ] as VectorKey[];
-      const result = sequenceTracker['createVectorKeyChanceRatioMap'](
-        mockCurrentVectorKey,
-        mockVectorKeys,
-      );
     });
   });
 });

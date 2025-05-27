@@ -1,8 +1,8 @@
 import { Edge, Leg, TransitionDirection } from '../../shared/enums/movement-enums';
-import { ArcVector } from '../../shared/enums/arc-vector.enum';
 import { MovementMapPointsType } from '../../shared/types/arc-vector/map-points.type';
 import { createArcVectorIndex } from '../../utils/create-arc-vector-index';
 import { ArcVectorIndexType } from '../../shared/types/arc-vector/arc-vector-index.type';
+import { MOVEMENT_POINTS } from '../../shared/constants/movement-points.const';
 
 type ArgsType = {
   transitionDirection: TransitionDirection;
@@ -11,38 +11,21 @@ type ArgsType = {
 };
 
 export class CompassArc {
-  private readonly points: MovementMapPointsType;
-  private readonly vectors: typeof ArcVector;
+  private static readonly points: MovementMapPointsType = MOVEMENT_POINTS;
 
-  constructor(data: { stepPoints: MovementMapPointsType; arcVector: typeof ArcVector }) {
-    const { stepPoints, arcVector } = data;
-    this.points = stepPoints;
-    this.vectors = arcVector;
-  }
-
-  public getAcrVectorIndex(data: ArgsType): ArcVectorIndexType {
+  // todo test
+  public static getArcVectorIndex(data: ArgsType): ArcVectorIndexType {
     const vectorIndex = this.calcStepPoints(data);
     return this.typifyToArcVectorIndex(vectorIndex);
   }
 
-  private calcStepPoints(data: ArgsType): number {
+  private static calcStepPoints(data: ArgsType): number {
     return Object.values(data)
       .map((item) => this.points.get(item) || 0)
       .reduce((a, b) => a * b);
   }
 
-  private typifyToArcVectorIndex(value: number) {
+  private static typifyToArcVectorIndex(value: number) {
     return createArcVectorIndex(value);
-  }
-
-  private mapAcrVector(index: ArcVectorIndexType): ArcVector {
-    switch (index) {
-      case -1:
-        return this.vectors.COUNTER_CLOCKWISE;
-      case 1:
-        return this.vectors.CLOCKWISE;
-      default:
-        return this.vectors.NONE;
-    }
   }
 }
