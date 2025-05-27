@@ -9,6 +9,7 @@ import { ThreeDifficultTurnsBlockCounter } from '../step-counter/ThreeDifficultT
 import { DistanceFactorType } from '../../shared/types/distance-factor.type';
 import { MapMovementCompositeFilterType } from '../../shared/types/map-composite-filters.type';
 import { FilterStrategyName } from '../../shared/enums/filter-stategy-name.enum';
+import { CompassArc } from '../sequence-tracker/CompassArc';
 
 const THREE_TURNS_BLOCK_LENGTH = 3;
 
@@ -20,6 +21,7 @@ export class ThreeTurnsBlockGenerator extends AbstractSequenceGenerator<ThreeDif
     randomGenerator: MovementRouletteGenerator;
     tracker: StepTracker;
     filterStrategy: MapMovementCompositeFilterType;
+    compassArc: CompassArc;
   }) {
     super(data);
   }

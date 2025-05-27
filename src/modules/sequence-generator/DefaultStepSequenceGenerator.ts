@@ -12,6 +12,7 @@ import { SequenceTrackerError } from '../../errors/custom-errors';
 import { ServiceMessageType } from '../../shared/types/service-message.type';
 import { MapMovementCompositeFilterType } from '../../shared/types/map-composite-filters.type';
 import { FilterStrategyName } from '../../shared/enums/filter-stategy-name.enum';
+import { CompassArc } from '../sequence-tracker/CompassArc';
 
 export class DefaultStepSequenceGenerator extends AbstractSequenceGenerator<StepCounter> {
   private threeTurnsBlockGenerator: ThreeTurnsBlockGenerator;
@@ -25,6 +26,7 @@ export class DefaultStepSequenceGenerator extends AbstractSequenceGenerator<Step
     tracker: StepTracker;
     filterStrategy: MapMovementCompositeFilterType;
     threeTurnsBlockGenerator: ThreeTurnsBlockGenerator;
+    compassArc: CompassArc;
   }) {
     const {
       library,
@@ -34,8 +36,9 @@ export class DefaultStepSequenceGenerator extends AbstractSequenceGenerator<Step
       tracker,
       filterStrategy,
       threeTurnsBlockGenerator,
+      compassArc,
     } = data;
-    super({ library, context, counter, randomGenerator, tracker, filterStrategy });
+    super({ library, context, counter, randomGenerator, tracker, filterStrategy, compassArc });
     this.threeTurnsBlockGenerator = threeTurnsBlockGenerator;
     this.serviceMessage = {
       text: 'Генерация выполнена успешно',

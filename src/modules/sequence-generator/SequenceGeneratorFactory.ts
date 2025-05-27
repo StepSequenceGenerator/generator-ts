@@ -56,12 +56,11 @@ export class SequenceGeneratorFactory {
     const vectorKeyChanceRatioMapGenerator = new VectorKeyChanceRatioMapGenerator();
     const vectorKeyWeightCalculator = new VectorKeyWeightCalculator();
     const vectorKeyRouletteGenerator = new VectorKeyRouletteGenerator(vectorKeyWeightCalculator);
-    const compassArc = new CompassArc();
+
     return {
       library: new MovementLibrary(data),
       context: new StepContext(),
       randomGenerator: new MovementRouletteGenerator(weightCalc),
-      compassArc,
       tracker: new StepTracker({
         standardStartCoordinates: START_COORDINATES,
         vectorsTrack: VECTORS_TRACK,
@@ -69,6 +68,7 @@ export class SequenceGeneratorFactory {
         vectorKeyChanceRatioMapGenerator,
         vectorKeyRouletteGenerator,
       }),
+      compassArc: new CompassArc(),
     };
   }
 

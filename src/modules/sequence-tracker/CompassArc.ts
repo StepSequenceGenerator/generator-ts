@@ -14,7 +14,7 @@ export class CompassArc {
   private readonly points: MovementMapPointsType = MOVEMENT_POINTS;
 
   // todo test
-  getArcVectorIndex(data: ArgsType): ArcVectorIndexType {
+  public getArcVectorIndex(data: ArgsType): ArcVectorIndexType {
     const vectorIndex = this.calcStepPoints(data);
     return this.typifyToArcVectorIndex(vectorIndex);
   }
