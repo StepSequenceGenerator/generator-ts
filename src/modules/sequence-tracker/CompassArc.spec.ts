@@ -6,7 +6,7 @@ describe('CompassArc', () => {
   let compass: CompassArc;
 
   beforeEach(() => {
-    compass = CompassArc;
+    compass = new CompassArc();
   });
 
   describe('implementation', () => {

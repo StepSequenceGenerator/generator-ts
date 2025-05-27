@@ -63,6 +63,14 @@ export class StepTracker {
     this.vectorKeyRouletteGenerator = vectorKeyRouletteGenerator;
   }
 
+  /**
+   * @arg data
+   * @arg {VectorKey | null} data.currentVectorKey ключ вектора движения относительно поля
+   * @arg {ArcVectorIndexType} data.currentAcrVectorIndex индекс дуги: по часовой или против часовой стрелки
+   * @arg {DescartesCoordinatesType} data.currentCoordinates текущий координаты
+   * @arg {number} data.distance расстояние, которое покрывает движение
+   * */
+
   public getNextPosition(data: GetNextPositionArgsType) {
     const { currentVectorKey, currentAcrVectorIndex, currentCoordinates, distance } = data;
     const triedVectorKeys = new Set<VectorKey>();

@@ -17,6 +17,7 @@ import { FilterStrategyName } from '../../shared/enums/filter-stategy-name.enum'
 import { VectorKeyChanceRatioMapGenerator } from '../chance-ratio-map-generator/VectorKeyChanceRatioMapGenerator';
 import { VectorKeyWeightCalculator } from '../roulette/weight-calculator/vector-key-weight-calc/VectorKeyWeightCalculator';
 import { VectorKeyRouletteGenerator } from '../roulette/VectorKeyRouletteGenerator';
+import { CompassArc } from '../sequence-tracker/CompassArc';
 
 export class SequenceGeneratorFactory {
   private static generator = new Map<GeneratorType, unknown>([
@@ -55,10 +56,12 @@ export class SequenceGeneratorFactory {
     const vectorKeyChanceRatioMapGenerator = new VectorKeyChanceRatioMapGenerator();
     const vectorKeyWeightCalculator = new VectorKeyWeightCalculator();
     const vectorKeyRouletteGenerator = new VectorKeyRouletteGenerator(vectorKeyWeightCalculator);
+    const compassArc = new CompassArc();
     return {
       library: new MovementLibrary(data),
       context: new StepContext(),
       randomGenerator: new MovementRouletteGenerator(weightCalc),
+      compassArc,
       tracker: new StepTracker({
         standardStartCoordinates: START_COORDINATES,
         vectorsTrack: VECTORS_TRACK,

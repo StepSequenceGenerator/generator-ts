@@ -15,6 +15,7 @@ import { ICoordinates } from '../../shared/types/extended-movement/movement-coor
 import { MapMovementCompositeFilterType } from '../../shared/types/map-composite-filters.type';
 import { FilterStrategyName } from '../../shared/enums/filter-stategy-name.enum';
 import { BaseCompositeMovementFilters } from '../filter-strategy/BaseCompositeMovementFilters';
+import { CompassArc } from '../sequence-tracker/CompassArc';
 
 export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
   protected stepSequence: IMovementExtended[];
@@ -24,6 +25,7 @@ export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
   protected readonly randomGenerator: MovementRouletteGenerator;
   protected readonly tracker: StepTracker;
   protected readonly filterStrategy: MapMovementCompositeFilterType;
+  protected readonly compassArc: CompassArc;
 
   protected constructor(data: {
     library: MovementLibrary;
@@ -32,8 +34,10 @@ export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
     randomGenerator: MovementRouletteGenerator;
     tracker: StepTracker;
     filterStrategy: MapMovementCompositeFilterType;
+    compassArc: CompassArc;
   }) {
-    const { library, context, counter, randomGenerator, tracker, filterStrategy } = data;
+    const { library, context, counter, randomGenerator, tracker, filterStrategy, compassArc } =
+      data;
     this.stepSequence = [];
     this.library = library;
     this.context = context;
@@ -41,6 +45,7 @@ export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
     this.randomGenerator = randomGenerator;
     this.tracker = tracker;
     this.filterStrategy = filterStrategy;
+    this.compassArc = compassArc;
   }
 
   abstract generate(...args: unknown[]): IMovementExtended[];
@@ -118,12 +123,18 @@ export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
   ): ICoordinates {
     const currentCoordinates = this.context.endCoordinate || this.tracker.getStartCoordinates();
     const vector = this.context.vector;
+    const currentAcrVectorIndex = this.compassArc.getArcVectorIndex({
+      transitionDirection: this.context.currentDirection,
+      leg: this.context.currentLeg,
+      edge: this.context.currentEdge,
+    });
 
-    const coordinates = this.tracker.getNextPosition(
-      vector,
+    const coordinates = this.tracker.getNextPosition({
+      currentVectorKey: vector,
       currentCoordinates,
-      newMovement.distance * distanceFactor,
-    );
+      distance: newMovement.distance * distanceFactor,
+      currentAcrVectorIndex,
+    });
 
     return {
       vector: coordinates.vector,

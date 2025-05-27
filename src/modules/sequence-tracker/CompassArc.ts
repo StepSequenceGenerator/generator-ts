@@ -11,21 +11,21 @@ type ArgsType = {
 };
 
 export class CompassArc {
-  private static readonly points: MovementMapPointsType = MOVEMENT_POINTS;
+  private readonly points: MovementMapPointsType = MOVEMENT_POINTS;
 
   // todo test
-  public static getArcVectorIndex(data: ArgsType): ArcVectorIndexType {
+  getArcVectorIndex(data: ArgsType): ArcVectorIndexType {
     const vectorIndex = this.calcStepPoints(data);
     return this.typifyToArcVectorIndex(vectorIndex);
   }
 
-  private static calcStepPoints(data: ArgsType): number {
+  private calcStepPoints(data: ArgsType): number {
     return Object.values(data)
       .map((item) => this.points.get(item) || 0)
       .reduce((a, b) => a * b);
   }
 
-  private static typifyToArcVectorIndex(value: number) {
+  private typifyToArcVectorIndex(value: number) {
     return createArcVectorIndex(value);
   }
 }
