@@ -14,6 +14,9 @@ import { ThreeTurnsBlockGenerator } from './ThreeTurnsBlockGenerator';
 import { ThreeDifficultTurnsBlockCounter } from '../step-counter/ThreeDifficultTurnsBlockCounter';
 import { FilterCompositeMapFactory } from '../filter-strategy/FilterCompositeMapFactory';
 import { FilterStrategyName } from '../../shared/enums/filter-stategy-name.enum';
+import { VectorKeyChanceRatioMapGenerator } from '../chance-ratio-map-generator/VectorKeyChanceRatioMapGenerator';
+import { VectorKeyWeightCalculator } from '../roulette/weight-calculator/vector-key-weight-calc/VectorKeyWeightCalculator';
+import { VectorKeyRouletteGenerator } from '../roulette/VectorKeyRouletteGenerator';
 
 export class SequenceGeneratorFactory {
   private static generator = new Map<GeneratorType, unknown>([
@@ -49,11 +52,20 @@ export class SequenceGeneratorFactory {
 
   protected static createBaseConfig(data: Movement[]) {
     const weightCalc = new DefaultMovementWeightCalculator();
+    const vectorKeyChanceRatioMapGenerator = new VectorKeyChanceRatioMapGenerator();
+    const vectorKeyWeightCalculator = new VectorKeyWeightCalculator();
+    const vectorKeyRouletteGenerator = new VectorKeyRouletteGenerator(vectorKeyWeightCalculator);
     return {
       library: new MovementLibrary(data),
       context: new StepContext(),
       randomGenerator: new MovementRouletteGenerator(weightCalc),
-      tracker: new StepTracker(START_COORDINATES, VECTORS_TRACK, VECTOR_ANGLES),
+      tracker: new StepTracker({
+        standardStartCoordinates: START_COORDINATES,
+        vectorsTrack: VECTORS_TRACK,
+        vectorAngles: VECTOR_ANGLES,
+        vectorKeyChanceRatioMapGenerator,
+        vectorKeyRouletteGenerator,
+      }),
     };
   }
 

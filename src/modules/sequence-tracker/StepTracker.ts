@@ -19,6 +19,7 @@ import { randomGenerator } from '../../utils/random-generator';
 import { ArcVectorIndexType } from '../../shared/types/arc-vector/arc-vector-index.type';
 import { RB_PERCENTAGE } from '../../shared/constants/rb-percentage/rb-vector-key-percentage';
 import { VectorKeyChanceRatioMapGenerator } from '../chance-ratio-map-generator/VectorKeyChanceRatioMapGenerator';
+import { VectorKeyRouletteGenerator } from '../roulette/VectorKeyRouletteGenerator';
 
 type CombinedCursorType = XCursorType | YCursorType;
 type CoordinateForCursorType<T extends CombinedCursorType> = T extends XCursorType
@@ -32,22 +33,34 @@ type GetNextPositionArgsType = {
   distance: number;
 };
 
+type ConstructorArgsType = {
+  standardStartCoordinates: ReadonlyArray<DescartesCoordinatesType>;
+  vectorsTrack: VectorTrackType;
+  vectorAngles: VectorAngleType;
+  vectorKeyChanceRatioMapGenerator: VectorKeyChanceRatioMapGenerator;
+  vectorKeyRouletteGenerator: VectorKeyRouletteGenerator;
+};
+
 export class StepTracker {
   readonly startCoordinates: ReadonlyArray<DescartesCoordinatesType>;
   readonly vectorsTrack: VectorTrackType;
   readonly vectorAngles: VectorAngleType;
   readonly vectorKeyChanceRatioMapGenerator: VectorKeyChanceRatioMapGenerator;
+  readonly vectorKeyRouletteGenerator: VectorKeyRouletteGenerator;
 
-  constructor(
-    standardStartCoordinates: ReadonlyArray<DescartesCoordinatesType>,
-    vectorsTrack: VectorTrackType,
-    vectorAngles: VectorAngleType,
-    vectorKeyChanceRatioMapGenerator: VectorKeyChanceRatioMapGenerator,
-  ) {
+  constructor(data: ConstructorArgsType) {
+    const {
+      standardStartCoordinates,
+      vectorsTrack,
+      vectorAngles,
+      vectorKeyChanceRatioMapGenerator,
+      vectorKeyRouletteGenerator,
+    } = data;
     this.startCoordinates = standardStartCoordinates;
     this.vectorsTrack = vectorsTrack;
     this.vectorAngles = vectorAngles;
     this.vectorKeyChanceRatioMapGenerator = vectorKeyChanceRatioMapGenerator;
+    this.vectorKeyRouletteGenerator = vectorKeyRouletteGenerator;
   }
 
   public getNextPosition(data: GetNextPositionArgsType) {
