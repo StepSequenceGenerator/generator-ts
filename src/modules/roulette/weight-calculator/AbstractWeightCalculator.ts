@@ -8,7 +8,12 @@ type CalcItemWeightArgsType = {
   totalItems: number;
 };
 
-// todo сделать методы static
+/**
+ * @name AbstractWeightCalculator
+ * @param S тип для selection
+ * @param M тип для ChanceRatioMap
+ *
+ * */
 export abstract class AbstractWeightCalculator<S, M> implements IWeightCalculator<S, M> {
   abstract count(selection: S[], chanceRatioMap: ChanceRatioMap<M>): WeightMapType<M>;
 
