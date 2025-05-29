@@ -81,6 +81,7 @@ export class StepTracker {
       currentAcrVectorIndex,
       rbPercentage: RB_PERCENTAGE,
     });
+    console.log(vectorKeyChanceRatioMap);
 
     while (availableVectorKeys.length > 0) {
       const vectorKey = this.getNextMovementVector(availableVectorKeys);
