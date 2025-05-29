@@ -12,7 +12,7 @@ import {
 } from '../../shared/types/descartes-coordinates.type';
 import { VectorKeyChanceRatioMapGenerator } from '../chance-ratio-map-generator/VectorKeyChanceRatioMapGenerator';
 import { VectorKeyWeightCalculator } from '../roulette/weight-calculator/vector-key-weight-calc/VectorKeyWeightCalculator';
-import { VectorKeyRouletteGenerator } from '../roulette/VectorKeyRouletteGenerator';
+import { VectorKeyRoulette } from '../roulette/VectorKeyRoulette';
 
 describe('StepTracker', () => {
   let stepTracker: StepTracker;
@@ -20,7 +20,7 @@ describe('StepTracker', () => {
   beforeEach(() => {
     const vectorKeyChanceRatioMapGenerator = new VectorKeyChanceRatioMapGenerator();
     const vectorKeyWeightCalculator = new VectorKeyWeightCalculator();
-    const vectorKeyRouletteGenerator = new VectorKeyRouletteGenerator(vectorKeyWeightCalculator);
+    const vectorKeyRouletteGenerator = new VectorKeyRoulette(vectorKeyWeightCalculator);
     stepTracker = new StepTracker({
       standardStartCoordinates: START_COORDINATES,
       vectorsTrack: VECTORS_TRACK,

@@ -3,7 +3,7 @@ import { MovementLibrary } from '../movement/MovementLibrary';
 import { IMovementExtended } from '../../shared/types/extended-movement/movement-extended.interface';
 import { MovementExtendedFactory } from '../movement/MovementExtendedFactory';
 import { StepContext } from './StepContext';
-import { MovementRouletteGenerator } from '../roulette/MovementRouletteGenerator';
+import { MovementRoulette } from '../roulette/MovementRoulette';
 import { StepTracker } from '../sequence-tracker/StepTracker';
 
 import { randomGenerator } from '../../utils/random-generator';
@@ -22,7 +22,7 @@ export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
   protected readonly library: MovementLibrary;
   protected readonly context: StepContext<IMovementExtended>;
   protected readonly counter: C;
-  protected readonly randomGenerator: MovementRouletteGenerator;
+  protected readonly randomGenerator: MovementRoulette;
   protected readonly tracker: StepTracker;
   protected readonly filterStrategy: MapMovementCompositeFilterType;
   protected readonly compassArc: CompassArc;
@@ -31,7 +31,7 @@ export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
     library: MovementLibrary;
     context: StepContext<IMovementExtended>;
     counter: C;
-    randomGenerator: MovementRouletteGenerator;
+    randomGenerator: MovementRoulette;
     tracker: StepTracker;
     filterStrategy: MapMovementCompositeFilterType;
     compassArc: CompassArc;

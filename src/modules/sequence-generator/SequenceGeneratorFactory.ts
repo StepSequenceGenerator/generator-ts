@@ -2,7 +2,7 @@ import { MovementLibrary } from '../movement/MovementLibrary';
 import { StepContext } from './StepContext';
 import { StepCounter } from '../step-counter/StepCounter';
 import { DefaultMovementWeightCalculator } from '../roulette/weight-calculator/movement-weight-calc/DefaultMovementWeightCalculator';
-import { MovementRouletteGenerator } from '../roulette/MovementRouletteGenerator';
+import { MovementRoulette } from '../roulette/MovementRoulette';
 import { StepTracker } from '../sequence-tracker/StepTracker';
 import { START_COORDINATES } from '../../shared/constants/start-coordinates';
 import { VECTORS_TRACK } from '../../shared/constants/vectors-track';
@@ -16,7 +16,7 @@ import { FilterCompositeMapFactory } from '../filter-strategy/FilterCompositeMap
 import { FilterStrategyName } from '../../shared/enums/filter-stategy-name.enum';
 import { VectorKeyChanceRatioMapGenerator } from '../chance-ratio-map-generator/VectorKeyChanceRatioMapGenerator';
 import { VectorKeyWeightCalculator } from '../roulette/weight-calculator/vector-key-weight-calc/VectorKeyWeightCalculator';
-import { VectorKeyRouletteGenerator } from '../roulette/VectorKeyRouletteGenerator';
+import { VectorKeyRoulette } from '../roulette/VectorKeyRoulette';
 import { CompassArc } from '../sequence-tracker/CompassArc';
 
 export class SequenceGeneratorFactory {
@@ -55,12 +55,12 @@ export class SequenceGeneratorFactory {
     const weightCalc = new DefaultMovementWeightCalculator();
     const vectorKeyChanceRatioMapGenerator = new VectorKeyChanceRatioMapGenerator();
     const vectorKeyWeightCalculator = new VectorKeyWeightCalculator();
-    const vectorKeyRouletteGenerator = new VectorKeyRouletteGenerator(vectorKeyWeightCalculator);
+    const vectorKeyRouletteGenerator = new VectorKeyRoulette(vectorKeyWeightCalculator);
 
     return {
       library: new MovementLibrary(data),
       context: new StepContext(),
-      randomGenerator: new MovementRouletteGenerator(weightCalc),
+      randomGenerator: new MovementRoulette(weightCalc),
       tracker: new StepTracker({
         standardStartCoordinates: START_COORDINATES,
         vectorsTrack: VECTORS_TRACK,

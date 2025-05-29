@@ -7,7 +7,7 @@ import { randomGenerator } from '../../utils/random-generator';
  * @param C первый дженерик для WeightCalculator
  * @param M второй дженерик для WeightCalculator
  * */
-export abstract class AbstractRouletteGenerator<C, M> implements IRouletteGenerator<C, M> {
+export abstract class AbstractRoulette<C, M> implements IRouletteGenerator<C, M> {
   protected readonly fallbackWeight = 0.1;
   protected weightCalc: AbstractWeightCalculator<C, M>;
 

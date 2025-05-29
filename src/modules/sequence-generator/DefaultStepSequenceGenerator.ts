@@ -2,7 +2,7 @@ import { AbstractSequenceGenerator } from './AbstractSequenceGenerator';
 import { MovementLibrary } from '../movement/MovementLibrary';
 import { StepContext } from './StepContext';
 import { IMovementExtended } from '../../shared/types/extended-movement/movement-extended.interface';
-import { MovementRouletteGenerator } from '../roulette/MovementRouletteGenerator';
+import { MovementRoulette } from '../roulette/MovementRoulette';
 import { StepTracker } from '../sequence-tracker/StepTracker';
 import { StepCounter } from '../step-counter/StepCounter';
 import { DifficultLevelAmountStep } from '../../shared/enums/difficult-level-amount-step.enum';
@@ -22,7 +22,7 @@ export class DefaultStepSequenceGenerator extends AbstractSequenceGenerator<Step
     library: MovementLibrary;
     context: StepContext<IMovementExtended>;
     counter: StepCounter;
-    randomGenerator: MovementRouletteGenerator;
+    randomGenerator: MovementRoulette;
     tracker: StepTracker;
     filterStrategy: MapMovementCompositeFilterType;
     threeTurnsBlockGenerator: ThreeTurnsBlockGenerator;

@@ -19,7 +19,7 @@ import { randomGenerator } from '../../utils/random-generator';
 import { ArcVectorIndexType } from '../../shared/types/arc-vector/arc-vector-index.type';
 import { RB_PERCENTAGE } from '../../shared/constants/rb-percentage/rb-vector-key-percentage';
 import { VectorKeyChanceRatioMapGenerator } from '../chance-ratio-map-generator/VectorKeyChanceRatioMapGenerator';
-import { VectorKeyRouletteGenerator } from '../roulette/VectorKeyRouletteGenerator';
+import { VectorKeyRoulette } from '../roulette/VectorKeyRoulette';
 
 type CombinedCursorType = XCursorType | YCursorType;
 type CoordinateForCursorType<T extends CombinedCursorType> = T extends XCursorType
@@ -38,7 +38,7 @@ type ConstructorArgsType = {
   vectorsTrack: VectorTrackType;
   vectorAngles: VectorAngleType;
   vectorKeyChanceRatioMapGenerator: VectorKeyChanceRatioMapGenerator;
-  vectorKeyRouletteGenerator: VectorKeyRouletteGenerator;
+  vectorKeyRouletteGenerator: VectorKeyRoulette;
 };
 
 export class StepTracker {
@@ -46,7 +46,7 @@ export class StepTracker {
   readonly vectorsTrack: VectorTrackType;
   readonly vectorAngles: VectorAngleType;
   readonly vectorKeyChanceRatioMapGenerator: VectorKeyChanceRatioMapGenerator;
-  readonly vectorKeyRouletteGenerator: VectorKeyRouletteGenerator;
+  readonly vectorKeyRouletteGenerator: VectorKeyRoulette;
 
   constructor(data: ConstructorArgsType) {
     const {

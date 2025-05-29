@@ -2,7 +2,7 @@ import { AbstractSequenceGenerator } from './AbstractSequenceGenerator';
 import { MovementLibrary } from '../movement/MovementLibrary';
 import { StepContext } from './StepContext';
 import { IMovementExtended } from '../../shared/types/extended-movement/movement-extended.interface';
-import { MovementRouletteGenerator } from '../roulette/MovementRouletteGenerator';
+import { MovementRoulette } from '../roulette/MovementRoulette';
 import { StepTracker } from '../sequence-tracker/StepTracker';
 
 import { ThreeDifficultTurnsBlockCounter } from '../step-counter/ThreeDifficultTurnsBlockCounter';
@@ -18,7 +18,7 @@ export class ThreeTurnsBlockGenerator extends AbstractSequenceGenerator<ThreeDif
     library: MovementLibrary;
     context: StepContext<IMovementExtended>;
     counter: ThreeDifficultTurnsBlockCounter;
-    randomGenerator: MovementRouletteGenerator;
+    randomGenerator: MovementRoulette;
     tracker: StepTracker;
     filterStrategy: MapMovementCompositeFilterType;
     compassArc: CompassArc;

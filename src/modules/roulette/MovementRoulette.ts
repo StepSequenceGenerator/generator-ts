@@ -1,4 +1,4 @@
-import { AbstractRouletteGenerator } from './AbstractRouletteGenerator';
+import { AbstractRoulette } from './AbstractRoulette';
 
 import { Movement } from '../movement/Movement.js';
 import { BaseMovementWeightCalculator } from './weight-calculator/movement-weight-calc/BaseMovementWeightCalculator';
@@ -6,10 +6,7 @@ import { isExtendedMovementCharacter } from '../../utils/is-extended-movement-ch
 
 import { ExtendedMovementCharacter } from '../../shared/enums/movement-enums.js';
 
-export class MovementRouletteGenerator extends AbstractRouletteGenerator<
-  Movement,
-  ExtendedMovementCharacter
-> {
+export class MovementRoulette extends AbstractRoulette<Movement, ExtendedMovementCharacter> {
   constructor(weightCalc: BaseMovementWeightCalculator) {
     super(weightCalc);
   }
