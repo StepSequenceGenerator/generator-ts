@@ -20,6 +20,7 @@ import { ArcVectorIndexType } from '../../shared/types/arc-vector/arc-vector-ind
 import { RB_PERCENTAGE } from '../../shared/constants/rb-percentage/rb-vector-key-percentage';
 import { VectorKeyChanceRatioMapGenerator } from '../chance-ratio-map-generator/VectorKeyChanceRatioMapGenerator';
 import { VectorKeyRoulette } from '../roulette/VectorKeyRoulette';
+import { VectorKeyChanceRatioMapType } from '../../shared/types/chance-ratio-map.type';
 
 type CombinedCursorType = XCursorType | YCursorType;
 type CoordinateForCursorType<T extends CombinedCursorType> = T extends XCursorType
@@ -38,7 +39,7 @@ type ConstructorArgsType = {
   vectorsTrack: VectorTrackType;
   vectorAngles: VectorAngleType;
   vectorKeyChanceRatioMapGenerator: VectorKeyChanceRatioMapGenerator;
-  vectorKeyRouletteGenerator: VectorKeyRoulette;
+  vectorKeyRoulette: VectorKeyRoulette;
 };
 
 export class StepTracker {
@@ -46,7 +47,7 @@ export class StepTracker {
   readonly vectorsTrack: VectorTrackType;
   readonly vectorAngles: VectorAngleType;
   readonly vectorKeyChanceRatioMapGenerator: VectorKeyChanceRatioMapGenerator;
-  readonly vectorKeyRouletteGenerator: VectorKeyRoulette;
+  readonly vectorKeyRoulette: VectorKeyRoulette;
 
   constructor(data: ConstructorArgsType) {
     const {
@@ -54,13 +55,13 @@ export class StepTracker {
       vectorsTrack,
       vectorAngles,
       vectorKeyChanceRatioMapGenerator,
-      vectorKeyRouletteGenerator,
+      vectorKeyRoulette,
     } = data;
     this.startCoordinates = standardStartCoordinates;
     this.vectorsTrack = vectorsTrack;
     this.vectorAngles = vectorAngles;
     this.vectorKeyChanceRatioMapGenerator = vectorKeyChanceRatioMapGenerator;
-    this.vectorKeyRouletteGenerator = vectorKeyRouletteGenerator;
+    this.vectorKeyRoulette = vectorKeyRoulette;
   }
 
   /**
@@ -75,16 +76,15 @@ export class StepTracker {
     const { currentVectorKey, currentAcrVectorIndex, currentCoordinates, distance } = data;
     const triedVectorKeys = new Set<VectorKey>();
     let availableVectorKeys = this.getAllowedVectorKeys(currentVectorKey);
-    let vectorKeyChanceRatioMap = this.vectorKeyChanceRatioMapGenerator.getChanceRatioMap({
-      currentVectorKey,
-      vectorKeys: availableVectorKeys,
-      currentAcrVectorIndex,
-      rbPercentage: RB_PERCENTAGE,
-    });
-    console.log(vectorKeyChanceRatioMap);
 
     while (availableVectorKeys.length > 0) {
-      const vectorKey = this.getNextMovementVector(availableVectorKeys);
+      const vectorKeyChanceRatioMap = this.vectorKeyChanceRatioMapGenerator.getChanceRatioMap({
+        currentVectorKey,
+        vectorKeys: availableVectorKeys,
+        currentAcrVectorIndex,
+        rbPercentage: RB_PERCENTAGE,
+      });
+      const vectorKey = this.getNextMovementVector(availableVectorKeys, vectorKeyChanceRatioMap);
       triedVectorKeys.add(vectorKey);
       const vectorCursor = this.getNextTrackVector(vectorKey);
       const newCoordinates = this.getNewCoordinates({
@@ -154,13 +154,17 @@ export class StepTracker {
     return this.vectorsTrack[vectorKey];
   }
 
-  private getNextMovementVector(vectors: VectorKey[]) {
+  private getNextMovementVector(
+    vectors: VectorKey[],
+    chanceRatioMap: VectorKeyChanceRatioMapType,
+  ): VectorKey {
     if (vectors.length === 0)
       throw new SequenceTrackerError(
         'vectors.length should be more than 0',
         'NO_VECTOR_FOR_CHOICE',
       );
-    const index = this.getRandom(0, vectors.length);
+
+    const index = this.vectorKeyRoulette.generateNumber(vectors, chanceRatioMap);
     return vectors[index];
   }
 

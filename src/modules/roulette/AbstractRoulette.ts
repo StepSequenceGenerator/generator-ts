@@ -1,7 +1,6 @@
 import { AbstractWeightCalculator } from './weight-calculator/AbstractWeightCalculator';
 import { IRouletteGenerator } from '../../shared/types/roulette-generator.interface';
 import { ChanceRatioMap, WeightMapType } from '../../shared/types/chance-ratio-map.type';
-import { randomGenerator } from '../../utils/random-generator';
 
 /**
  * @param C первый дженерик для WeightCalculator
@@ -19,8 +18,11 @@ export abstract class AbstractRoulette<C, M> implements IRouletteGenerator<C, M>
     const weightMap: WeightMapType<M> = this.weightCalc.count(selection, chanceRatioMap);
 
     const weightList = this.createWeightList(selection, weightMap);
+    // console.log('weightList: ', weightList);
     const virtualChanceListLength = this.getVirtualChanceListLength(weightList);
+    // console.log('virtualChanceListLength ', virtualChanceListLength);
     const randomIndex = this.getRandomIndex(virtualChanceListLength);
+    // console.log('randomIndex ', randomIndex);
     return this.getItemIndex(weightList, randomIndex);
   }
 
@@ -40,23 +42,22 @@ export abstract class AbstractRoulette<C, M> implements IRouletteGenerator<C, M>
   protected abstract getWeightKey(item: C): M;
 
   protected getVirtualChanceListLength(chanceList: number[]): number {
-    return Math.floor(chanceList.reduce((acc: number, chance: number) => acc + chance, 0));
+    const res = chanceList.reduce((acc: number, chance: number) => acc + chance, 0);
+    // console.log('res: ', res);
+    return res;
+    // return Math.floor(chanceList.reduce((acc: number, chance: number) => acc + chance, 0));
   }
 
   protected getRandomIndex(max: number): number {
-    const min = 0;
-    return randomGenerator(min, max);
+    return Math.random() * max;
   }
 
   protected getItemIndex(chanceList: number[], randomIndex: number): number {
-    let elementIndex: number = 0;
+    let cumulative: number = 0;
     for (let i = 0; i < chanceList.length; i++) {
-      randomIndex -= chanceList[i];
-      if (randomIndex <= 0) {
-        elementIndex = i;
-        break;
-      }
+      cumulative += chanceList[i];
+      if (cumulative >= randomIndex) return i;
     }
-    return elementIndex;
+    return chanceList.length - 1;
   }
 }

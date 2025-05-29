@@ -26,7 +26,7 @@ describe('StepTracker', () => {
       vectorsTrack: VECTORS_TRACK,
       vectorAngles: VECTOR_ANGLES,
       vectorKeyChanceRatioMapGenerator,
-      vectorKeyRouletteGenerator,
+      vectorKeyRoulette: vectorKeyRouletteGenerator,
     });
   });
 
@@ -69,20 +69,39 @@ describe('StepTracker', () => {
   });
 
   describe('getNextMovementVector', () => {
-    it('должен вернуть Vector', () => {
+    it('должен вернуть Vector количество раз в соответствии с ratioMap', () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const sequenceTrackerAny = stepTracker as unknown as any;
       vi.spyOn(sequenceTrackerAny, 'getRandom').mockReturnValue(1);
 
-      const input = [VectorKey.NORTH, VectorKey.EAST, VectorKey.WEST];
-      const expected = VectorKey.EAST;
+      const mockVectors = [VectorKey.NORTH, VectorKey.EAST, VectorKey.WEST];
+      const mockRatioMap = new Map<VectorKey, number>([
+        [VectorKey.NORTH, 1],
+        [VectorKey.EAST, 98],
+        [VectorKey.WEST, 1],
+      ]);
 
-      const result = sequenceTrackerAny['getNextMovementVector'](input);
-      expect(result).toStrictEqual(expected);
+      const counter = new Map<VectorKey, number>();
+      for (let i = 0; i < 10000; i++) {
+        const result = sequenceTrackerAny['getNextMovementVector'](mockVectors, mockRatioMap);
+        if (!counter.has(result)) {
+          counter.set(result, 0);
+        } else {
+          const amount = (counter.get(result) || 0) + 1;
+          counter.set(result, amount);
+        }
+      }
+
+      const northAmount = counter.get(VectorKey.NORTH);
+      const eastAmount = counter.get(VectorKey.EAST);
+      const westAmount = counter.get(VectorKey.WEST);
+      expect(northAmount).approximately(90, 150);
+      expect(westAmount).approximately(90, 150);
+      expect(eastAmount).approximately(9000, 1000);
     });
 
     it('должен выбросить ошибку при vectors.length = 0', () => {
-      expect(() => stepTracker['getNextMovementVector']([])).toThrowError(
+      expect(() => stepTracker['getNextMovementVector']([], new Map())).toThrowError(
         'vectors.length should be more than 0',
       );
     });

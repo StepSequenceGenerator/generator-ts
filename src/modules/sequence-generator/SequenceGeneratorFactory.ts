@@ -66,7 +66,7 @@ export class SequenceGeneratorFactory {
         vectorsTrack: VECTORS_TRACK,
         vectorAngles: VECTOR_ANGLES,
         vectorKeyChanceRatioMapGenerator,
-        vectorKeyRouletteGenerator,
+        vectorKeyRoulette: vectorKeyRouletteGenerator,
       }),
       compassArc: new CompassArc(),
     };
