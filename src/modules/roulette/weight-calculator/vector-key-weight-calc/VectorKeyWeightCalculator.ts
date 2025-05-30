@@ -17,8 +17,8 @@ export class VectorKeyWeightCalculator extends AbstractWeightCalculator<VectorKe
     selection: VectorKey[],
     chanceRatioMap: VectorKeyChanceRatioMapType,
   ): VectorKeyWeightMapType {
-    const weightMap: VectorKeyWeightMapType = new Map<VectorKey, number>();
     const totalItems = selection.length;
+    const weightMap: VectorKeyWeightMapType = new Map<VectorKey, number>();
 
     selection.forEach((item) => {
       const desirePercent = chanceRatioMap.get(item) || 0;
