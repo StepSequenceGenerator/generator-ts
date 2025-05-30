@@ -15,9 +15,27 @@ type CalcItemWeightArgsType = {
  *
  * */
 export abstract class AbstractWeightCalculator<S, M> implements IWeightCalculator<S, M> {
-  abstract count(selection: S[], chanceRatioMap: ChanceRatioMap<M>): WeightMapType<M>;
+  count(selection: S[], chanceRatioMap: ChanceRatioMap<M>): WeightMapType<M> {
+    const groupItemCounted = this.groupAndCountItems(selection);
+    return this.calcWeights(groupItemCounted, chanceRatioMap);
+  }
 
-  protected abstract calcWeights(...args: unknown[]): WeightMapType<M>;
+  protected calcWeights(
+    groupItemCounted: Map<M, number>,
+    chanceRatioMap: WeightMapType<M>,
+  ): WeightMapType<M> {
+    const totalItems = Array.from(groupItemCounted.values()).reduce((acc, cur) => acc + cur, 0);
+    const weightMap: WeightMapType<M> = new Map<M, number>();
+
+    for (let [key, currentItemAmount] of groupItemCounted.entries()) {
+      const desirePercent = chanceRatioMap.get(key) || 0;
+      const weight = this.calcItemWeight({ currentItemAmount, desirePercent, totalItems });
+
+      weightMap.set(key, weight);
+    }
+
+    return weightMap;
+  }
 
   /**
    * Рассчитывает вес (количество), элемента, необходимый для достижения желаемого процента
@@ -42,4 +60,17 @@ export abstract class AbstractWeightCalculator<S, M> implements IWeightCalculato
   protected calcWeight(currentItemAmount: number, desireItemAmount: number): number {
     return round2(desireItemAmount / currentItemAmount);
   }
+
+  protected groupAndCountItems(selection: S[]) {
+    const map = new Map<M, number>();
+    for (let item of selection) {
+      const key = this.createChanceRatioKey(item);
+      const value = map.get(key) || 0;
+      map.set(key, value + 1);
+    }
+
+    return map;
+  }
+
+  protected abstract createChanceRatioKey(item: S): M;
 }

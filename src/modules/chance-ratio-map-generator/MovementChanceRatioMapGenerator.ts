@@ -11,7 +11,7 @@ export interface IGetChanceRatioMapArgs {
   movements: Movement[];
 }
 
-class MovementChanceRatioMapGenerator
+export class MovementChanceRatioMapGenerator
   implements IChanceRatioMapGenerator<ExtendedMovementCharacter, MovementChanceRatioMapType>
 {
   getChanceRatioMap(data: IGetChanceRatioMapArgs): MovementChanceRatioMapType {

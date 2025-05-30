@@ -1,6 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { DefaultMovementWeightCalculator } from './DefaultMovementWeightCalculator';
-import { BaseMovementWeightCalculator } from './BaseMovementWeightCalculator';
 import { MovementChanceRatioMapType } from '../../../../shared/types/chance-ratio-map.type';
 import type { Movement } from '../../../movement/Movement';
 import {
@@ -44,7 +43,6 @@ describe('MovementWeightCalculator', () => {
   describe('implementation', () => {
     it('должен корректно создаваться', () => {
       expect(calc).toBeDefined();
-      expect(calc).toBeInstanceOf(BaseMovementWeightCalculator);
     });
   });
 
@@ -58,7 +56,7 @@ describe('MovementWeightCalculator', () => {
           calcAny = calc as unknown as any;
         });
 
-        const methodNameList = ['groupAndCountMovements', 'recalculateChanceRatio', 'calcWeight'];
+        const methodNameList = ['groupAndCountItems', 'calcWeight'];
 
         it.each(methodNameList)('метод %s', (methodName) => {
           const spyFn = vi.spyOn(calcAny, methodName);
@@ -70,7 +68,7 @@ describe('MovementWeightCalculator', () => {
   });
 
   describe('private methods', () => {
-    describe('groupAndCountMovements', () => {
+    describe('groupAndCountItems', () => {
       it('должен вернуть корректно подсчитанное количество типов движений', () => {
         const expected = new Map([
           [ExtendedMovementCharacter.UNKNOWN, 3],
@@ -78,79 +76,7 @@ describe('MovementWeightCalculator', () => {
           [ExtendedMovementCharacter.DIFFICULT, 2],
           [ExtendedMovementCharacter.STEP, 1],
         ]);
-        const result = calc['groupAndCountMovements'](mockMovements);
-        expect(result).toStrictEqual(expected);
-      });
-    });
-
-    describe('recalculateChanceRatio', () => {
-      describe('должен вызывать методы', () => {
-        let calcAny: any;
-        beforeEach(() => {
-          calcAny = calc as unknown as any;
-        });
-
-        const methodNameList = [
-          'getActualChanceRatioMap',
-          'separatePercentByType',
-          'redistributeChanceRatio',
-        ];
-
-        it.each(methodNameList)('метод %s', (methodName) => {
-          const spyFn = vi.spyOn(calcAny, methodName);
-          calc['recalculateChanceRatio']([], mockChanceRatioMap);
-          expect(spyFn).toHaveBeenCalled();
-        });
-      });
-      //   todo
-    });
-
-    describe('getActualChanceRatioMap', () => {
-      it('должен вернуть Map с актуальными ключами и значениями процентов', () => {
-        const expected = new Map<ExtendedMovementCharacter, number>([
-          [ExtendedMovementCharacter.UNKNOWN, 8],
-          [ExtendedMovementCharacter.TURN, 9],
-          [ExtendedMovementCharacter.DIFFICULT, 50],
-          [ExtendedMovementCharacter.STEP, 8],
-        ]);
-        const result = calc['getActualChanceRatioMap'](
-          Array.from(mockGroupMovementCounted.keys()),
-          mockChanceRatioMap,
-        );
-        expect(result).toStrictEqual(expected);
-      });
-    });
-
-    describe('separatePercentByType', () => {
-      it('должен вернуть количество используемых и неиспользуемых процентов', () => {
-        const mockMap = new Map<ExtendedMovementCharacter, number>([
-          [ExtendedMovementCharacter.UNKNOWN, 8],
-          [ExtendedMovementCharacter.TURN, 9],
-          [ExtendedMovementCharacter.DIFFICULT, 50],
-          [ExtendedMovementCharacter.STEP, 8],
-        ]);
-        const expected = { unusedPercent: 25, usedPercent: 25 };
-        const result = calc['separatePercentByType'](mockMap);
-        expect(result).toStrictEqual(expected);
-      });
-    });
-
-    describe('redistributeChanceRatio', () => {
-      it('должен вернуть Map с обновленными значениями процентов ', () => {
-        const mockPercentageSeparate = { unusedPercent: 25, usedPercent: 25 };
-        const mockMap = new Map<ExtendedMovementCharacter, number>([
-          [ExtendedMovementCharacter.UNKNOWN, 8],
-          [ExtendedMovementCharacter.TURN, 9],
-          [ExtendedMovementCharacter.DIFFICULT, 50],
-          [ExtendedMovementCharacter.STEP, 8],
-        ]);
-        const expected = new Map<ExtendedMovementCharacter, number>([
-          [ExtendedMovementCharacter.UNKNOWN, 16],
-          [ExtendedMovementCharacter.TURN, 18],
-          [ExtendedMovementCharacter.DIFFICULT, 50],
-          [ExtendedMovementCharacter.STEP, 16],
-        ]);
-        const result = calc['redistributeChanceRatio'](mockPercentageSeparate, mockMap);
+        const result = calc['groupAndCountItems'](mockMovements);
         expect(result).toStrictEqual(expected);
       });
     });
