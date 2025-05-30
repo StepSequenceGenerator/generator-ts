@@ -18,7 +18,7 @@ export class ThreeTurnsBlockGenerator extends AbstractSequenceGenerator<ThreeDif
     library: MovementLibrary;
     context: StepContext<IMovementExtended>;
     counter: ThreeDifficultTurnsBlockCounter;
-    randomGenerator: MovementRoulette;
+    movementRoulette: MovementRoulette;
     tracker: StepTracker;
     filterStrategy: MapMovementCompositeFilterType;
     compassArc: CompassArc;

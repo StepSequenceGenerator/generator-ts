@@ -22,7 +22,7 @@ export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
   protected readonly library: MovementLibrary;
   protected readonly context: StepContext<IMovementExtended>;
   protected readonly counter: C;
-  protected readonly randomGenerator: MovementRoulette;
+  protected readonly movementRoulette: MovementRoulette;
   protected readonly tracker: StepTracker;
   protected readonly filterStrategy: MapMovementCompositeFilterType;
   protected readonly compassArc: CompassArc;
@@ -31,18 +31,18 @@ export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
     library: MovementLibrary;
     context: StepContext<IMovementExtended>;
     counter: C;
-    randomGenerator: MovementRoulette;
+    movementRoulette: MovementRoulette;
     tracker: StepTracker;
     filterStrategy: MapMovementCompositeFilterType;
     compassArc: CompassArc;
   }) {
-    const { library, context, counter, randomGenerator, tracker, filterStrategy, compassArc } =
+    const { library, context, counter, movementRoulette, tracker, filterStrategy, compassArc } =
       data;
     this.stepSequence = [];
     this.library = library;
     this.context = context;
     this.counter = counter;
-    this.randomGenerator = randomGenerator;
+    this.movementRoulette = movementRoulette;
     this.tracker = tracker;
     this.filterStrategy = filterStrategy;
     this.compassArc = compassArc;
@@ -70,7 +70,7 @@ export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
   }
 
   protected chooseMovement(movements: Movement[]) {
-    const movementIndex = this.randomGenerator.generateNumber(
+    const movementIndex = this.movementRoulette.generateNumber(
       movements,
       MOVEMENTS_CHANCE_RATIO_MAP,
     );

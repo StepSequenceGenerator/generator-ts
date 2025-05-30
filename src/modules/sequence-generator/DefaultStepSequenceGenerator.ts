@@ -22,7 +22,7 @@ export class DefaultStepSequenceGenerator extends AbstractSequenceGenerator<Step
     library: MovementLibrary;
     context: StepContext<IMovementExtended>;
     counter: StepCounter;
-    randomGenerator: MovementRoulette;
+    movementRoulette: MovementRoulette;
     tracker: StepTracker;
     filterStrategy: MapMovementCompositeFilterType;
     threeTurnsBlockGenerator: ThreeTurnsBlockGenerator;
@@ -32,13 +32,21 @@ export class DefaultStepSequenceGenerator extends AbstractSequenceGenerator<Step
       library,
       context,
       counter,
-      randomGenerator,
+      movementRoulette,
       tracker,
       filterStrategy,
       threeTurnsBlockGenerator,
       compassArc,
     } = data;
-    super({ library, context, counter, randomGenerator, tracker, filterStrategy, compassArc });
+    super({
+      library,
+      context,
+      counter,
+      movementRoulette: movementRoulette,
+      tracker,
+      filterStrategy,
+      compassArc,
+    });
     this.threeTurnsBlockGenerator = threeTurnsBlockGenerator;
     this.serviceMessage = {
       text: 'Генерация выполнена успешно',

@@ -111,8 +111,8 @@ describe('AbstractSequenceGenerator', () => {
   });
 
   describe('chooseMovement', () => {
-    it('должен вызвать randomGenerator.generateNumber', () => {
-      const spyFilter = vi.spyOn(generatorAny.randomGenerator, 'generateNumber');
+    it('должен вызвать movementRoulette.generateNumber', () => {
+      const spyFilter = vi.spyOn(generatorAny.movementRoulette, 'generateNumber');
       generatorAny.chooseMovement([{}] as Movement[]);
       expect(spyFilter).toHaveBeenCalled();
     });

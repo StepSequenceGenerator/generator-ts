@@ -60,7 +60,7 @@ export class SequenceGeneratorFactory {
     return {
       library: new MovementLibrary(data),
       context: new StepContext(),
-      randomGenerator: new MovementRoulette(weightCalc),
+      movementRoulette: new MovementRoulette(weightCalc),
       tracker: new StepTracker({
         standardStartCoordinates: START_COORDINATES,
         vectorsTrack: VECTORS_TRACK,
