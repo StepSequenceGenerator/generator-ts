@@ -5,7 +5,7 @@ import { StepCounter } from '../step-counter/StepCounter';
 import { SequenceGeneratorFactory } from './SequenceGeneratorFactory';
 import { IMovementExtended } from '../../shared/types/extended-movement/movement-extended.interface';
 import { FilterStrategyName } from '../../shared/enums/filter-stategy-name.enum';
-import { MovementChanceRatioMapType } from '../../shared/types/chance-ratio-map.type';
+import { MovementChanceRatioMapType } from '../../shared/types/roulette/chance-ratio-map.type';
 import { ExtendedMovementCharacter, MovementCharacter } from '../../shared/enums/movement-enums';
 
 // const mockMovements = [{}] as Movement[];

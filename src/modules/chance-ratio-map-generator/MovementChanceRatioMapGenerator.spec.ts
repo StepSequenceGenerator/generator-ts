@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { MovementChanceRatioMapGenerator } from './MovementChanceRatioMapGenerator';
-import { MovementChanceRatioMapType } from '../../shared/types/chance-ratio-map.type';
+import { MovementChanceRatioMapType } from '../../shared/types/roulette/chance-ratio-map.type';
 import { ExtendedMovementCharacter } from '../../shared/enums/movement-enums';
 
 const mockChanceRatioMap: MovementChanceRatioMapType = new Map<ExtendedMovementCharacter, number>([

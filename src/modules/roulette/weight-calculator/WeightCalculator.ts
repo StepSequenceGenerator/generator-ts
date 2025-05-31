@@ -1,4 +1,7 @@
-import { ChanceRatioMap, WeightMapType } from '../../../shared/types/chance-ratio-map.type';
+import {
+  ChanceRatioMap,
+  WeightMapType,
+} from '../../../shared/types/roulette/chance-ratio-map.type';
 import { round2 } from '../../../utils/round2';
 
 type CalcItemWeightArgsType = {
@@ -52,15 +55,6 @@ export class WeightCalculator {
     return weightMap;
   }
 
-  /**
-   * Рассчитывает вес (количество), элемента, необходимый для достижения желаемого процента
-   * @param args
-   * @param {number} args.currentItemAmount количество элеметов текущего типа
-   * @param {number} args.desirePercent желаемый процент
-   * @param {number} args.totalItems общее количество элементов в selection
-   * @return {number}
-   * Необходимое количество элемента для достижения желаемого процента.
-   * */
   protected calcItemWeight(args: CalcItemWeightArgsType): number {
     const { currentItemAmount, desirePercent, totalItems } = args;
     const desireItemAmount = this.calcDesireItemAmount(totalItems, desirePercent);

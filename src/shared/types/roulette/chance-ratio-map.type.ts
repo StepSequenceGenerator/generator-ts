@@ -1,5 +1,5 @@
-import { ExtendedMovementCharacter } from '../enums/movement-enums.js';
-import { VectorKey } from '../enums/vector-key.enum';
+import { ExtendedMovementCharacter } from '../../enums/movement-enums';
+import { VectorKey } from '../../enums/vector-key.enum';
 
 // note обобщенные типы
 type ChanceRatioMap<T> = Map<T, number>;

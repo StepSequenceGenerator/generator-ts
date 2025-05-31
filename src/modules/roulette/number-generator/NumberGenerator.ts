@@ -1,4 +1,4 @@
-import { WeightMapType } from '../../../shared/types/chance-ratio-map.type';
+import { WeightMapType } from '../../../shared/types/roulette/chance-ratio-map.type';
 
 export type WeightKeyCreatorType<S, M> = (arg: S) => M;
 export type GenerateNumberArgsType<S, M> = {

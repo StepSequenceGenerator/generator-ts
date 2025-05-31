@@ -1,6 +1,6 @@
 import { NumberGenerator, WeightKeyCreatorType } from './number-generator/NumberGenerator';
 import { ItemKeyExtractorType, WeightCalculator } from './weight-calculator/WeightCalculator';
-import { ChanceRatioMap } from '../../shared/types/chance-ratio-map.type';
+import { ChanceRatioMap, WeightMapType } from '../../shared/types/roulette/chance-ratio-map.type';
 
 export type RouletteConstructorArgsType = {
   weightCalc: WeightCalculator;
@@ -34,7 +34,7 @@ export class Roulette {
   public spinWheel<S, M>(args: SpinWheelArgsType<S, M>) {
     const { selection, chanceRatioMap, weightKeyCreator, itemKeyExtractor } = args;
 
-    const weightMap = this.weightCalc.count<S, M>({
+    const weightMap: WeightMapType<M> = this.weightCalc.count<S, M>({
       selection,
       chanceRatioMap,
       itemKeyExtractor,

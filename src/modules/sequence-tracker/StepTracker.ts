@@ -17,9 +17,9 @@ import { CoordinatesError, SequenceTrackerError } from '../../errors/custom-erro
 import { randomGenerator } from '../../utils/random-generator';
 
 import { ArcVectorIndexType } from '../../shared/types/arc-vector/arc-vector-index.type';
-import { RB_PERCENTAGE } from '../../shared/constants/rb-percentage/rb-vector-key-percentage';
+import { RB_VECTOR_KEY_PERCENTAGE } from '../../shared/constants/rb-percentage/rb-vector-key-percentage';
 import { VectorKeyChanceRatioMapGenerator } from '../chance-ratio-map-generator/VectorKeyChanceRatioMapGenerator';
-import { VectorKeyChanceRatioMapType } from '../../shared/types/chance-ratio-map.type';
+import { VectorKeyChanceRatioMapType } from '../../shared/types/roulette/chance-ratio-map.type';
 import { vectorKeyKeyExtractor } from '../roulette/weight-calculator/extractors';
 import { Roulette } from '../roulette/Roulette';
 import { vectorWeightKeyCreator } from '../roulette/number-generator/weight-key-creators';
@@ -84,7 +84,7 @@ export class StepTracker {
         currentVectorKey,
         vectorKeys: availableVectorKeys,
         currentAcrVectorIndex,
-        rbPercentage: RB_PERCENTAGE,
+        rbPercentage: RB_VECTOR_KEY_PERCENTAGE,
       });
       const vectorKey = this.getNextMovementVector(availableVectorKeys, vectorKeyChanceRatioMap);
       triedVectorKeys.add(vectorKey);

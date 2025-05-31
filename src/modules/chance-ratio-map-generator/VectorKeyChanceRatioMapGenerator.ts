@@ -1,8 +1,8 @@
 import { VectorKey } from '../../shared/enums/vector-key.enum';
 import { IChanceRatioMapGenerator } from './chance-ratio-map-generator.interface';
-import { VectorKeyChanceRatioMapType } from '../../shared/types/chance-ratio-map.type';
+import { VectorKeyChanceRatioMapType } from '../../shared/types/roulette/chance-ratio-map.type';
 import { VECTOR_ANGLES } from '../../shared/constants/vector-angles';
-import { rbVectorKeyPercentageType } from '../../shared/types/vector-key-percentage.rb.type';
+import { rbVectorKeyPercentageType } from '../../shared/types/roulette/vector-key-percentage.rb.type';
 
 interface IBaseChanceRatioMapArg {
   currentAcrVectorIndex: number;

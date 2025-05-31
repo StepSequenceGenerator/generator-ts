@@ -1,13 +1,14 @@
 import { IChanceRatioMapGenerator } from './chance-ratio-map-generator.interface';
-import { MovementChanceRatioMapType } from '../../shared/types/chance-ratio-map.type';
+import { MovementChanceRatioMapType } from '../../shared/types/roulette/chance-ratio-map.type';
 
 import { ExtendedMovementCharacter } from '../../shared/enums/movement-enums';
 import { Movement } from '../movement/Movement';
 import { transformToExtendedMovementCharacterType } from '../../utils/is-extended-movement-character';
 import { round2 } from '../../utils/round2';
+import { MovementDefaultPercentageType } from '../../shared/types/roulette/movement-percentage.rb.type';
 
 export interface IGetChanceRatioMapArgs {
-  baseChanceRatioMap: MovementChanceRatioMapType;
+  rbPercentage: MovementDefaultPercentageType;
   movements: Movement[];
 }
 
@@ -18,12 +19,12 @@ export class MovementChanceRatioMapGenerator
    * getChanceRatioMap
    * @param args
    * @param {Movement[]} args.movements массив движений
-   * @param {MovementChanceRatioMapType} args.baseChanceRatioMap базовый список шансов на выпадение элемента в процентах
+   * @param {MovementChanceRatioMapType} args.rbPercentage базовый список шансов на выпадение элемента в процентах
    */
   getChanceRatioMap(args: IGetChanceRatioMapArgs): MovementChanceRatioMapType {
-    const { baseChanceRatioMap, movements } = args;
+    const { rbPercentage, movements } = args;
     const groupMovementCounted = this.groupAndCountMovements(movements);
-    return this.calcChanceRatio(Array.from(groupMovementCounted.keys()), baseChanceRatioMap);
+    return this.calcChanceRatio(Array.from(groupMovementCounted.keys()), rbPercentage);
   }
 
   protected groupAndCountMovements(selection: Movement[]) {

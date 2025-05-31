@@ -6,7 +6,7 @@ import { StepContext } from './StepContext';
 import { StepTracker } from '../sequence-tracker/StepTracker';
 
 import { randomGenerator } from '../../utils/random-generator';
-import { MOVEMENTS_BASE_CHANCE_RATIO_MAP } from '../../shared/constants/movement_chance-ratio-map.const';
+import { RB_MOVEMENTS_PERCENTAGE } from '../../shared/constants/rb-percentage/rb-movement-percentage';
 
 import { DistanceFactorType } from '../../shared/types/distance-factor.type';
 import { IStepCounter } from '../../shared/types/abstract-step-counter.interface';
@@ -19,7 +19,7 @@ import { movementKeyExtractor } from '../roulette/weight-calculator/extractors';
 import { Roulette } from '../roulette/Roulette';
 import { movementWeightKeyCreator } from '../roulette/number-generator/weight-key-creators';
 import { MovementChanceRatioMapGenerator } from '../chance-ratio-map-generator/MovementChanceRatioMapGenerator';
-import { MovementChanceRatioMapType } from '../../shared/types/chance-ratio-map.type';
+import { MovementChanceRatioMapType } from '../../shared/types/roulette/chance-ratio-map.type';
 
 export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
   protected stepSequence: IMovementExtended[];
@@ -72,7 +72,7 @@ export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
     const currentLibrary = this.getCurrentLibrary(filterStrategy);
     const chanceRatioMap = this.chanceRatioMapGenerator.getChanceRatioMap({
       movements: currentLibrary.movements,
-      baseChanceRatioMap: MOVEMENTS_BASE_CHANCE_RATIO_MAP,
+      rbPercentage: RB_MOVEMENTS_PERCENTAGE,
     });
     const newMovement = this.chooseMovement(currentLibrary.movements, chanceRatioMap);
     const extendedMovement = this.extendMovement(newMovement);

@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { VectorKey } from '../../../../shared/enums/vector-key.enum';
-import { VectorKeyWeightMapType } from '../../../../shared/types/chance-ratio-map.type';
+import { VectorKeyWeightMapType } from '../../../../shared/types/roulette/chance-ratio-map.type';
 import { WeightCalculator } from '../WeightCalculator';
 import { vectorKeyKeyExtractor } from '../extractors';
 

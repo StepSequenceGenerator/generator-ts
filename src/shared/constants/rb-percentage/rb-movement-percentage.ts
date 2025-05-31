@@ -1,7 +1,7 @@
-import { MovementChanceRatioMapType } from '../types/chance-ratio-map.type';
-import { ExtendedMovementCharacter } from '../enums/movement-enums';
+import { ExtendedMovementCharacter } from '../../enums/movement-enums';
+import { MovementDefaultPercentageType } from '../../types/roulette/movement-percentage.rb.type';
 
-export const MOVEMENTS_BASE_CHANCE_RATIO_MAP: MovementChanceRatioMapType = new Map<
+export const RB_MOVEMENTS_PERCENTAGE: MovementDefaultPercentageType = new Map<
   ExtendedMovementCharacter,
   number
 >([

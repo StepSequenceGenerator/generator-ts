@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { MovementChanceRatioMapType } from '../../../../shared/types/chance-ratio-map.type';
+import { MovementChanceRatioMapType } from '../../../../shared/types/roulette/chance-ratio-map.type';
 import type { Movement } from '../../../movement/Movement';
 import {
   ExtendedMovementCharacter,
