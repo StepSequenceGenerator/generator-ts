@@ -2,6 +2,8 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { VectorKeyWeightCalculator } from './VectorKeyWeightCalculator';
 import { VectorKey } from '../../../../shared/enums/vector-key.enum';
 import { VectorKeyWeightMapType } from '../../../../shared/types/chance-ratio-map.type';
+import { WeightCalculator } from '../WeightCalculator';
+import { vectorKeyKeyExtractor } from '../extractors/extractors';
 
 const mockChanceRatioMap: VectorKeyWeightMapType = new Map<VectorKey, number>([
   [VectorKey.NORTH, 12],
@@ -10,6 +12,7 @@ const mockChanceRatioMap: VectorKeyWeightMapType = new Map<VectorKey, number>([
   [VectorKey.SOUTH_EAST, 32],
   [VectorKey.SOUTH, 22],
 ]);
+
 const mockSelection = [
   VectorKey.NORTH,
   VectorKey.NORTH_EAST,
@@ -19,12 +22,12 @@ const mockSelection = [
 ];
 
 describe('VectorKeyWeightCalculator', () => {
-  let weightCalc: VectorKeyWeightCalculator;
+  let weightCalc: WeightCalculator<VectorKey, VectorKey>;
   // eslint-disable-next-line
   let weightCalcAny: any;
 
   beforeEach(() => {
-    weightCalc = new VectorKeyWeightCalculator();
+    weightCalc = new WeightCalculator<VectorKey, VectorKey>(vectorKeyKeyExtractor);
     // eslint-disable-next-line
     weightCalcAny = weightCalc as unknown as any;
   });

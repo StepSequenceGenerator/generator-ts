@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { AbstractWeightCalculator } from './AbstractWeightCalculator';
+import { WeightCalculator } from './WeightCalculator';
 import { WeightMapType } from '../../../shared/types/chance-ratio-map.type';
 
-class TestWeightCalculator extends AbstractWeightCalculator<string, string> {
+class TestWeightCalculator extends WeightCalculator<string, string> {
   count(): WeightMapType<string> {
     return this.calcWeights();
   }

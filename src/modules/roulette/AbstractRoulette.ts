@@ -1,4 +1,4 @@
-import { AbstractWeightCalculator } from './weight-calculator/AbstractWeightCalculator';
+import { WeightCalculator } from './weight-calculator/WeightCalculator';
 import { IRouletteGenerator } from '../../shared/types/roulette-generator.interface';
 import { ChanceRatioMap, WeightMapType } from '../../shared/types/chance-ratio-map.type';
 
@@ -8,9 +8,9 @@ import { ChanceRatioMap, WeightMapType } from '../../shared/types/chance-ratio-m
  * */
 export abstract class AbstractRoulette<C, M> implements IRouletteGenerator<C, M> {
   protected readonly fallbackWeight = 0.1;
-  protected weightCalc: AbstractWeightCalculator<C, M>;
+  protected weightCalc: WeightCalculator<C, M>;
 
-  protected constructor(weightCalc: AbstractWeightCalculator<C, M>) {
+  protected constructor(weightCalc: WeightCalculator<C, M>) {
     this.weightCalc = weightCalc;
   }
 
@@ -18,11 +18,9 @@ export abstract class AbstractRoulette<C, M> implements IRouletteGenerator<C, M>
     const weightMap: WeightMapType<M> = this.weightCalc.count(selection, chanceRatioMap);
 
     const weightList = this.createWeightList(selection, weightMap);
-    // console.log('weightList: ', weightList);
     const virtualChanceListLength = this.getVirtualChanceListLength(weightList);
-    // console.log('virtualChanceListLength ', virtualChanceListLength);
     const randomIndex = this.getRandomIndex(virtualChanceListLength);
-    // console.log('randomIndex ', randomIndex);
+
     return this.getItemIndex(weightList, randomIndex);
   }
 
@@ -42,10 +40,7 @@ export abstract class AbstractRoulette<C, M> implements IRouletteGenerator<C, M>
   protected abstract getWeightKey(item: C): M;
 
   protected getVirtualChanceListLength(chanceList: number[]): number {
-    const res = chanceList.reduce((acc: number, chance: number) => acc + chance, 0);
-    // console.log('res: ', res);
-    return res;
-    // return Math.floor(chanceList.reduce((acc: number, chance: number) => acc + chance, 0));
+    return chanceList.reduce((acc: number, chance: number) => acc + chance, 0);
   }
 
   protected getRandomIndex(max: number): number {

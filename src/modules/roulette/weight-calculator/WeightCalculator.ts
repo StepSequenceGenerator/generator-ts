@@ -9,12 +9,18 @@ type CalcItemWeightArgsType = {
 };
 
 /**
- * @name AbstractWeightCalculator
+ * @name WeightCalculator
  * @param S тип для selection
  * @param M тип для ChanceRatioMap
  *
  * */
-export abstract class AbstractWeightCalculator<S, M> implements IWeightCalculator<S, M> {
+export class WeightCalculator<S, M> implements IWeightCalculator<S, M> {
+  protected readonly keyExtractor: (item: S) => M;
+
+  constructor(keyExtractor: (item: S) => M) {
+    this.keyExtractor = keyExtractor;
+  }
+
   count(selection: S[], chanceRatioMap: ChanceRatioMap<M>): WeightMapType<M> {
     const groupItemCounted = this.groupAndCountItems(selection);
     return this.calcWeights(groupItemCounted, chanceRatioMap);
@@ -64,13 +70,11 @@ export abstract class AbstractWeightCalculator<S, M> implements IWeightCalculato
   protected groupAndCountItems(selection: S[]) {
     const map = new Map<M, number>();
     for (let item of selection) {
-      const key = this.createChanceRatioKey(item);
+      const key = this.keyExtractor(item);
       const value = map.get(key) || 0;
       map.set(key, value + 1);
     }
 
     return map;
   }
-
-  protected abstract createChanceRatioKey(item: S): M;
 }

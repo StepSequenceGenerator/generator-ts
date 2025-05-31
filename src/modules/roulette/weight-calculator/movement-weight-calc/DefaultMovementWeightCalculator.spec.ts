@@ -1,11 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { DefaultMovementWeightCalculator } from './DefaultMovementWeightCalculator';
 import { MovementChanceRatioMapType } from '../../../../shared/types/chance-ratio-map.type';
 import type { Movement } from '../../../movement/Movement';
 import {
   ExtendedMovementCharacter,
   MovementCharacter,
 } from '../../../../shared/enums/movement-enums';
+import { WeightCalculator } from '../WeightCalculator';
+import { movementKeyExtractor } from '../extractors/extractors';
 
 const mockMovements: Movement[] = [
   { type: MovementCharacter.UNKNOWN, isDifficult: false } as Movement,
@@ -35,9 +36,9 @@ const mockChanceRatioMap: MovementChanceRatioMapType = new Map<ExtendedMovementC
 ]);
 
 describe('MovementWeightCalculator', () => {
-  let calc: DefaultMovementWeightCalculator;
+  let calc: WeightCalculator<Movement, ExtendedMovementCharacter>;
   beforeEach(() => {
-    calc = new DefaultMovementWeightCalculator();
+    calc = new WeightCalculator<Movement, ExtendedMovementCharacter>(movementKeyExtractor);
   });
 
   describe('implementation', () => {
