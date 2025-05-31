@@ -11,22 +11,25 @@ import {
   XCoordinateType,
 } from '../../shared/types/descartes-coordinates.type';
 import { VectorKeyChanceRatioMapGenerator } from '../chance-ratio-map-generator/VectorKeyChanceRatioMapGenerator';
-import { VectorKeyRoulette } from '../roulette/VectorKeyRoulette';
 import { WeightCalculator } from '../roulette/weight-calculator/WeightCalculator';
+import { Roulette } from '../roulette/Roulette';
+import { NumberGenerator } from '../roulette/number-generator/NumberGenerator';
 
 describe('StepTracker', () => {
   let stepTracker: StepTracker;
 
   beforeEach(() => {
     const vectorKeyChanceRatioMapGenerator = new VectorKeyChanceRatioMapGenerator();
-    const vectorKeyWeightCalculator = new WeightCalculator();
-    const vectorKeyRouletteGenerator = new VectorKeyRoulette(vectorKeyWeightCalculator);
+    const roulette = new Roulette({
+      weightCalc: new WeightCalculator(),
+      numberGenerator: new NumberGenerator(),
+    });
     stepTracker = new StepTracker({
       standardStartCoordinates: START_COORDINATES,
       vectorsTrack: VECTORS_TRACK,
       vectorAngles: VECTOR_ANGLES,
       vectorKeyChanceRatioMapGenerator,
-      vectorKeyRoulette: vectorKeyRouletteGenerator,
+      roulette: roulette,
     });
   });
 

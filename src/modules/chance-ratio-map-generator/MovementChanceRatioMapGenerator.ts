@@ -14,8 +14,14 @@ export interface IGetChanceRatioMapArgs {
 export class MovementChanceRatioMapGenerator
   implements IChanceRatioMapGenerator<ExtendedMovementCharacter, MovementChanceRatioMapType>
 {
-  getChanceRatioMap(data: IGetChanceRatioMapArgs): MovementChanceRatioMapType {
-    const { baseChanceRatioMap, movements } = data;
+  /**
+   * getChanceRatioMap
+   * @param args
+   * @param {Movement[]} args.movements массив движений
+   * @param {MovementChanceRatioMapType} args.baseChanceRatioMap базовый список шансов на выпадение элемента в процентах
+   */
+  getChanceRatioMap(args: IGetChanceRatioMapArgs): MovementChanceRatioMapType {
+    const { baseChanceRatioMap, movements } = args;
     const groupMovementCounted = this.groupAndCountMovements(movements);
     return this.calcChanceRatio(Array.from(groupMovementCounted.keys()), baseChanceRatioMap);
   }

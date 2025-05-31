@@ -2,7 +2,6 @@ import { AbstractSequenceGenerator } from './AbstractSequenceGenerator';
 import { MovementLibrary } from '../movement/MovementLibrary';
 import { StepContext } from './StepContext';
 import { IMovementExtended } from '../../shared/types/extended-movement/movement-extended.interface';
-import { MovementRoulette } from '../roulette/MovementRoulette';
 import { StepTracker } from '../sequence-tracker/StepTracker';
 import { StepCounter } from '../step-counter/StepCounter';
 import { DifficultLevelAmountStep } from '../../shared/enums/difficult-level-amount-step.enum';
@@ -13,6 +12,8 @@ import { ServiceMessageType } from '../../shared/types/service-message.type';
 import { MapMovementCompositeFilterType } from '../../shared/types/map-composite-filters.type';
 import { FilterStrategyName } from '../../shared/enums/filter-stategy-name.enum';
 import { CompassArc } from '../sequence-tracker/CompassArc';
+import { Roulette } from '../roulette/Roulette';
+import { MovementChanceRatioMapGenerator } from '../chance-ratio-map-generator/MovementChanceRatioMapGenerator';
 
 export class DefaultStepSequenceGenerator extends AbstractSequenceGenerator<StepCounter> {
   private threeTurnsBlockGenerator: ThreeTurnsBlockGenerator;
@@ -22,7 +23,8 @@ export class DefaultStepSequenceGenerator extends AbstractSequenceGenerator<Step
     library: MovementLibrary;
     context: StepContext<IMovementExtended>;
     counter: StepCounter;
-    movementRoulette: MovementRoulette;
+    chanceRatioMapGenerator: MovementChanceRatioMapGenerator;
+    roulette: Roulette;
     tracker: StepTracker;
     filterStrategy: MapMovementCompositeFilterType;
     threeTurnsBlockGenerator: ThreeTurnsBlockGenerator;
@@ -32,7 +34,8 @@ export class DefaultStepSequenceGenerator extends AbstractSequenceGenerator<Step
       library,
       context,
       counter,
-      movementRoulette,
+      chanceRatioMapGenerator,
+      roulette,
       tracker,
       filterStrategy,
       threeTurnsBlockGenerator,
@@ -42,7 +45,8 @@ export class DefaultStepSequenceGenerator extends AbstractSequenceGenerator<Step
       library,
       context,
       counter,
-      movementRoulette: movementRoulette,
+      chanceRatioMapGenerator,
+      roulette,
       tracker,
       filterStrategy,
       compassArc,

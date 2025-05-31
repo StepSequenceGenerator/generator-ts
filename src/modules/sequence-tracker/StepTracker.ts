@@ -19,9 +19,10 @@ import { randomGenerator } from '../../utils/random-generator';
 import { ArcVectorIndexType } from '../../shared/types/arc-vector/arc-vector-index.type';
 import { RB_PERCENTAGE } from '../../shared/constants/rb-percentage/rb-vector-key-percentage';
 import { VectorKeyChanceRatioMapGenerator } from '../chance-ratio-map-generator/VectorKeyChanceRatioMapGenerator';
-import { VectorKeyRoulette } from '../roulette/VectorKeyRoulette';
 import { VectorKeyChanceRatioMapType } from '../../shared/types/chance-ratio-map.type';
-import { vectorKeyKeyExtractor } from '../roulette/weight-calculator/extractors/extractors';
+import { vectorKeyKeyExtractor } from '../roulette/weight-calculator/extractors';
+import { Roulette } from '../roulette/Roulette';
+import { vectorWeightKeyCreator } from '../roulette/number-generator/weight-key-creators';
 
 type CombinedCursorType = XCursorType | YCursorType;
 type CoordinateForCursorType<T extends CombinedCursorType> = T extends XCursorType
@@ -40,7 +41,7 @@ type ConstructorArgsType = {
   vectorsTrack: VectorTrackType;
   vectorAngles: VectorAngleType;
   vectorKeyChanceRatioMapGenerator: VectorKeyChanceRatioMapGenerator;
-  vectorKeyRoulette: VectorKeyRoulette;
+  roulette: Roulette;
 };
 
 export class StepTracker {
@@ -48,7 +49,7 @@ export class StepTracker {
   readonly vectorsTrack: VectorTrackType;
   readonly vectorAngles: VectorAngleType;
   readonly vectorKeyChanceRatioMapGenerator: VectorKeyChanceRatioMapGenerator;
-  readonly vectorKeyRoulette: VectorKeyRoulette;
+  readonly roulette: Roulette;
 
   constructor(data: ConstructorArgsType) {
     const {
@@ -56,13 +57,13 @@ export class StepTracker {
       vectorsTrack,
       vectorAngles,
       vectorKeyChanceRatioMapGenerator,
-      vectorKeyRoulette,
+      roulette,
     } = data;
     this.startCoordinates = standardStartCoordinates;
     this.vectorsTrack = vectorsTrack;
     this.vectorAngles = vectorAngles;
     this.vectorKeyChanceRatioMapGenerator = vectorKeyChanceRatioMapGenerator;
-    this.vectorKeyRoulette = vectorKeyRoulette;
+    this.roulette = roulette;
   }
 
   /**
@@ -165,11 +166,12 @@ export class StepTracker {
         'NO_VECTOR_FOR_CHOICE',
       );
 
-    const index = this.vectorKeyRoulette.generateNumber(
-      vectors,
+    const index = this.roulette.spinWheel({
+      selection: vectors,
       chanceRatioMap,
-      vectorKeyKeyExtractor,
-    );
+      itemKeyExtractor: vectorKeyKeyExtractor,
+      weightKeyCreator: vectorWeightKeyCreator,
+    });
     return vectors[index];
   }
 

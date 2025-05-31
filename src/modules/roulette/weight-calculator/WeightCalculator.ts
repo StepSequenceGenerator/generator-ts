@@ -7,12 +7,12 @@ type CalcItemWeightArgsType = {
   totalItems: number;
 };
 
-export type KeyExtractorType<S, M> = (item: S) => M;
+export type ItemKeyExtractorType<S, M> = (item: S) => M;
 
 type CountArgsType<S, M> = {
   selection: S[];
   chanceRatioMap: ChanceRatioMap<M>;
-  keyExtractor: KeyExtractorType<S, M>;
+  itemKeyExtractor: ItemKeyExtractorType<S, M>;
 };
 
 /**
@@ -27,11 +27,11 @@ export class WeightCalculator {
    * @param args
    * @arg args.selection элементы
    * @arg args.chanceRatioMap шансы на выпадение элемента в selection в процентах
-   * @arg args.keyExtractor callback для опредления ключа для weightMap
+   * @arg args.itemKeyExtractor callback для опредления ключа для weightMap
    */
   public count<S, M>(args: CountArgsType<S, M>): WeightMapType<M> {
-    const { selection, keyExtractor, chanceRatioMap } = args;
-    const groupItemCounted = this.groupAndCountItems<S, M>(selection, keyExtractor);
+    const { selection, itemKeyExtractor, chanceRatioMap } = args;
+    const groupItemCounted = this.groupAndCountItems<S, M>(selection, itemKeyExtractor);
     return this.calcWeights<M>(groupItemCounted, chanceRatioMap);
   }
 

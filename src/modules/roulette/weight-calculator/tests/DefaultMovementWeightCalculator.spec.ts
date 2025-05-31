@@ -6,7 +6,7 @@ import {
   MovementCharacter,
 } from '../../../../shared/enums/movement-enums';
 import { WeightCalculator } from '../WeightCalculator';
-import { movementKeyExtractor } from '../extractors/extractors';
+import { movementKeyExtractor } from '../extractors';
 
 const mockMovements: Movement[] = [
   { type: MovementCharacter.UNKNOWN, isDifficult: false } as Movement,
@@ -64,7 +64,7 @@ describe('MovementWeightCalculator', () => {
           calc.count({
             selection: mockMovements,
             chanceRatioMap: mockChanceRatioMap,
-            keyExtractor: movementKeyExtractor,
+            itemKeyExtractor: movementKeyExtractor,
           });
           expect(spyFn).toHaveBeenCalled();
         });

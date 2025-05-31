@@ -3,7 +3,6 @@ import { MovementLibrary } from '../movement/MovementLibrary';
 import { IMovementExtended } from '../../shared/types/extended-movement/movement-extended.interface';
 import { MovementExtendedFactory } from '../movement/MovementExtendedFactory';
 import { StepContext } from './StepContext';
-import { MovementRoulette } from '../roulette/MovementRoulette';
 import { StepTracker } from '../sequence-tracker/StepTracker';
 
 import { randomGenerator } from '../../utils/random-generator';
@@ -16,14 +15,19 @@ import { MapMovementCompositeFilterType } from '../../shared/types/map-composite
 import { FilterStrategyName } from '../../shared/enums/filter-stategy-name.enum';
 import { BaseCompositeMovementFilters } from '../filter-strategy/BaseCompositeMovementFilters';
 import { CompassArc } from '../sequence-tracker/CompassArc';
-import { movementKeyExtractor } from '../roulette/weight-calculator/extractors/extractors';
+import { movementKeyExtractor } from '../roulette/weight-calculator/extractors';
+import { Roulette } from '../roulette/Roulette';
+import { movementWeightKeyCreator } from '../roulette/number-generator/weight-key-creators';
+import { MovementChanceRatioMapGenerator } from '../chance-ratio-map-generator/MovementChanceRatioMapGenerator';
+import { MovementChanceRatioMapType } from '../../shared/types/chance-ratio-map.type';
 
 export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
   protected stepSequence: IMovementExtended[];
   protected readonly library: MovementLibrary;
   protected readonly context: StepContext<IMovementExtended>;
   protected readonly counter: C;
-  protected readonly movementRoulette: MovementRoulette;
+  protected readonly chanceRatioMapGenerator: MovementChanceRatioMapGenerator;
+  protected readonly roulette: Roulette;
   protected readonly tracker: StepTracker;
   protected readonly filterStrategy: MapMovementCompositeFilterType;
   protected readonly compassArc: CompassArc;
@@ -32,18 +36,28 @@ export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
     library: MovementLibrary;
     context: StepContext<IMovementExtended>;
     counter: C;
-    movementRoulette: MovementRoulette;
+    chanceRatioMapGenerator: MovementChanceRatioMapGenerator;
+    roulette: Roulette;
     tracker: StepTracker;
     filterStrategy: MapMovementCompositeFilterType;
     compassArc: CompassArc;
   }) {
-    const { library, context, counter, movementRoulette, tracker, filterStrategy, compassArc } =
-      data;
+    const {
+      library,
+      context,
+      counter,
+      chanceRatioMapGenerator,
+      roulette,
+      tracker,
+      filterStrategy,
+      compassArc,
+    } = data;
     this.stepSequence = [];
     this.library = library;
     this.context = context;
     this.counter = counter;
-    this.movementRoulette = movementRoulette;
+    this.chanceRatioMapGenerator = chanceRatioMapGenerator;
+    this.roulette = roulette;
     this.tracker = tracker;
     this.filterStrategy = filterStrategy;
     this.compassArc = compassArc;
@@ -56,7 +70,11 @@ export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
     filterStrategy: BaseCompositeMovementFilters,
   ): IMovementExtended {
     const currentLibrary = this.getCurrentLibrary(filterStrategy);
-    const newMovement = this.chooseMovement(currentLibrary.movements);
+    const chanceRatioMap = this.chanceRatioMapGenerator.getChanceRatioMap({
+      movements: currentLibrary.movements,
+      baseChanceRatioMap: MOVEMENTS_BASE_CHANCE_RATIO_MAP,
+    });
+    const newMovement = this.chooseMovement(currentLibrary.movements, chanceRatioMap);
     const extendedMovement = this.extendMovement(newMovement);
     extendedMovement.coordinates = this.getCoordinates(newMovement, distanceFactor);
     return extendedMovement;
@@ -70,12 +88,13 @@ export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
     });
   }
 
-  protected chooseMovement(movements: Movement[]) {
-    const movementIndex = this.movementRoulette.generateNumber(
-      movements,
-      MOVEMENTS_BASE_CHANCE_RATIO_MAP,
-      movementKeyExtractor,
-    );
+  protected chooseMovement(movements: Movement[], chanceRatioMap: MovementChanceRatioMapType) {
+    const movementIndex = this.roulette.spinWheel({
+      selection: movements,
+      chanceRatioMap,
+      itemKeyExtractor: movementKeyExtractor,
+      weightKeyCreator: movementWeightKeyCreator,
+    });
     return movements[movementIndex];
   }
 

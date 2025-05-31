@@ -2,7 +2,6 @@ import { AbstractSequenceGenerator } from './AbstractSequenceGenerator';
 import { MovementLibrary } from '../movement/MovementLibrary';
 import { StepContext } from './StepContext';
 import { IMovementExtended } from '../../shared/types/extended-movement/movement-extended.interface';
-import { MovementRoulette } from '../roulette/MovementRoulette';
 import { StepTracker } from '../sequence-tracker/StepTracker';
 
 import { ThreeDifficultTurnsBlockCounter } from '../step-counter/ThreeDifficultTurnsBlockCounter';
@@ -10,6 +9,8 @@ import { DistanceFactorType } from '../../shared/types/distance-factor.type';
 import { MapMovementCompositeFilterType } from '../../shared/types/map-composite-filters.type';
 import { FilterStrategyName } from '../../shared/enums/filter-stategy-name.enum';
 import { CompassArc } from '../sequence-tracker/CompassArc';
+import { Roulette } from '../roulette/Roulette';
+import { MovementChanceRatioMapGenerator } from '../chance-ratio-map-generator/MovementChanceRatioMapGenerator';
 
 const THREE_TURNS_BLOCK_LENGTH = 3;
 
@@ -18,7 +19,8 @@ export class ThreeTurnsBlockGenerator extends AbstractSequenceGenerator<ThreeDif
     library: MovementLibrary;
     context: StepContext<IMovementExtended>;
     counter: ThreeDifficultTurnsBlockCounter;
-    movementRoulette: MovementRoulette;
+    chanceRatioMapGenerator: MovementChanceRatioMapGenerator;
+    roulette: Roulette;
     tracker: StepTracker;
     filterStrategy: MapMovementCompositeFilterType;
     compassArc: CompassArc;
