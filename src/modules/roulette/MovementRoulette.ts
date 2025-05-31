@@ -1,13 +1,13 @@
 import { AbstractRoulette } from './AbstractRoulette';
 
 import { Movement } from '../movement/Movement.js';
-import { DefaultMovementWeightCalculator } from './weight-calculator/movement-weight-calc/DefaultMovementWeightCalculator';
 import { isExtendedMovementCharacter } from '../../utils/is-extended-movement-character.js';
 
 import { ExtendedMovementCharacter } from '../../shared/enums/movement-enums.js';
+import { WeightCalculator } from './weight-calculator/WeightCalculator';
 
 export class MovementRoulette extends AbstractRoulette<Movement, ExtendedMovementCharacter> {
-  constructor(weightCalc: DefaultMovementWeightCalculator) {
+  constructor(weightCalc: WeightCalculator) {
     super(weightCalc);
   }
 

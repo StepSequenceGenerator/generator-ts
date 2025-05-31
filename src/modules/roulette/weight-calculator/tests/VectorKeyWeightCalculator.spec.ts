@@ -1,5 +1,4 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { VectorKeyWeightCalculator } from './VectorKeyWeightCalculator';
 import { VectorKey } from '../../../../shared/enums/vector-key.enum';
 import { VectorKeyWeightMapType } from '../../../../shared/types/chance-ratio-map.type';
 import { WeightCalculator } from '../WeightCalculator';
@@ -21,13 +20,13 @@ const mockSelection = [
   VectorKey.SOUTH,
 ];
 
-describe('VectorKeyWeightCalculator', () => {
-  let weightCalc: WeightCalculator<VectorKey, VectorKey>;
+describe('WeightCalculator', () => {
+  let weightCalc: WeightCalculator;
   // eslint-disable-next-line
   let weightCalcAny: any;
 
   beforeEach(() => {
-    weightCalc = new WeightCalculator<VectorKey, VectorKey>(vectorKeyKeyExtractor);
+    weightCalc = new WeightCalculator();
     // eslint-disable-next-line
     weightCalcAny = weightCalc as unknown as any;
   });
@@ -68,7 +67,7 @@ describe('VectorKeyWeightCalculator', () => {
         VectorKey.SOUTH_EAST,
         VectorKey.SOUTH,
       ];
-      weightCalcAny.groupAndCountItems(mockSelection);
+      weightCalcAny.groupAndCountItems(mockSelection, vectorKeyKeyExtractor);
     });
   });
 });

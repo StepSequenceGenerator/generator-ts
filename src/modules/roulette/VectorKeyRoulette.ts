@@ -1,11 +1,11 @@
 import { AbstractRoulette } from './AbstractRoulette';
 import { VectorKey } from '../../shared/enums/vector-key.enum';
-import { VectorKeyWeightCalculator } from './weight-calculator/vector-key-weight-calc/VectorKeyWeightCalculator';
+import { IUniversalWeightCalculator } from '../../shared/types/weight-calculator.interface';
 
 export class VectorKeyRoulette extends AbstractRoulette<VectorKey, VectorKey> {
   protected readonly fallbackWeight = 0.1;
 
-  constructor(weightCalc: VectorKeyWeightCalculator) {
+  constructor(weightCalc: IUniversalWeightCalculator) {
     super(weightCalc);
   }
 

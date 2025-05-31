@@ -1,7 +1,6 @@
 import { MovementLibrary } from '../movement/MovementLibrary';
 import { StepContext } from './StepContext';
 import { StepCounter } from '../step-counter/StepCounter';
-import { DefaultMovementWeightCalculator } from '../roulette/weight-calculator/movement-weight-calc/DefaultMovementWeightCalculator';
 import { MovementRoulette } from '../roulette/MovementRoulette';
 import { StepTracker } from '../sequence-tracker/StepTracker';
 import { START_COORDINATES } from '../../shared/constants/start-coordinates';
@@ -15,9 +14,9 @@ import { ThreeDifficultTurnsBlockCounter } from '../step-counter/ThreeDifficultT
 import { FilterCompositeMapFactory } from '../filter-strategy/FilterCompositeMapFactory';
 import { FilterStrategyName } from '../../shared/enums/filter-stategy-name.enum';
 import { VectorKeyChanceRatioMapGenerator } from '../chance-ratio-map-generator/VectorKeyChanceRatioMapGenerator';
-import { VectorKeyWeightCalculator } from '../roulette/weight-calculator/vector-key-weight-calc/VectorKeyWeightCalculator';
 import { VectorKeyRoulette } from '../roulette/VectorKeyRoulette';
 import { CompassArc } from '../sequence-tracker/CompassArc';
+import { WeightCalculator } from '../roulette/weight-calculator/WeightCalculator';
 
 export class SequenceGeneratorFactory {
   private static generator = new Map<GeneratorType, unknown>([
@@ -52,9 +51,9 @@ export class SequenceGeneratorFactory {
   }
 
   protected static createBaseConfig(data: Movement[]) {
-    const weightCalc = new DefaultMovementWeightCalculator();
+    const weightCalc = new WeightCalculator();
     const vectorKeyChanceRatioMapGenerator = new VectorKeyChanceRatioMapGenerator();
-    const vectorKeyWeightCalculator = new VectorKeyWeightCalculator();
+    const vectorKeyWeightCalculator = new WeightCalculator();
     const vectorKeyRouletteGenerator = new VectorKeyRoulette(vectorKeyWeightCalculator);
 
     return {

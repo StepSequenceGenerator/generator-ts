@@ -36,9 +36,9 @@ const mockChanceRatioMap: MovementChanceRatioMapType = new Map<ExtendedMovementC
 ]);
 
 describe('MovementWeightCalculator', () => {
-  let calc: WeightCalculator<Movement, ExtendedMovementCharacter>;
+  let calc: WeightCalculator;
   beforeEach(() => {
-    calc = new WeightCalculator<Movement, ExtendedMovementCharacter>(movementKeyExtractor);
+    calc = new WeightCalculator();
   });
 
   describe('implementation', () => {
@@ -61,7 +61,11 @@ describe('MovementWeightCalculator', () => {
 
         it.each(methodNameList)('метод %s', (methodName) => {
           const spyFn = vi.spyOn(calcAny, methodName);
-          calc.count(mockMovements, mockChanceRatioMap);
+          calc.count({
+            selection: mockMovements,
+            chanceRatioMap: mockChanceRatioMap,
+            keyExtractor: movementKeyExtractor,
+          });
           expect(spyFn).toHaveBeenCalled();
         });
       });
@@ -77,7 +81,7 @@ describe('MovementWeightCalculator', () => {
           [ExtendedMovementCharacter.DIFFICULT, 2],
           [ExtendedMovementCharacter.STEP, 1],
         ]);
-        const result = calc['groupAndCountItems'](mockMovements);
+        const result = calc['groupAndCountItems'](mockMovements, movementKeyExtractor);
         expect(result).toStrictEqual(expected);
       });
     });

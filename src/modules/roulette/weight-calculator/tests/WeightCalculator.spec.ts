@@ -1,24 +1,13 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { WeightCalculator } from './WeightCalculator';
-import { WeightMapType } from '../../../shared/types/chance-ratio-map.type';
+import { WeightCalculator } from '../WeightCalculator';
 
-class TestWeightCalculator extends WeightCalculator<string, string> {
-  count(): WeightMapType<string> {
-    return this.calcWeights();
-  }
-
-  protected calcWeights(): WeightMapType<string> {
-    return new Map<string, string>() as unknown as WeightMapType<string>;
-  }
-}
-
-describe('AbstractWeightCalculator', () => {
-  let weightCalc: TestWeightCalculator;
+describe('WeightCalculator', () => {
+  let weightCalc: WeightCalculator;
   // eslint-disable-next-line
   let weightCalcAny: any;
 
   beforeEach(() => {
-    weightCalc = new TestWeightCalculator();
+    weightCalc = new WeightCalculator();
     // eslint-disable-next-line
     weightCalcAny = weightCalc as unknown as any;
   });

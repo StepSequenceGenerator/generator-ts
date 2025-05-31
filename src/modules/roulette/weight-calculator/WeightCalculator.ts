@@ -1,4 +1,3 @@
-import { IWeightCalculator } from '../../../shared/types/weight-calculator.interface';
 import { ChanceRatioMap, WeightMapType } from '../../../shared/types/chance-ratio-map.type';
 import { round2 } from '../../../utils/round2';
 
@@ -8,25 +7,35 @@ type CalcItemWeightArgsType = {
   totalItems: number;
 };
 
+export type KeyExtractorType<S, M> = (item: S) => M;
+
+type CountArgsType<S, M> = {
+  selection: S[];
+  chanceRatioMap: ChanceRatioMap<M>;
+  keyExtractor: KeyExtractorType<S, M>;
+};
+
 /**
  * @name WeightCalculator
  * @param S тип для selection
  * @param M тип для ChanceRatioMap
  *
  * */
-export class WeightCalculator<S, M> implements IWeightCalculator<S, M> {
-  protected readonly keyExtractor: (item: S) => M;
-
-  constructor(keyExtractor: (item: S) => M) {
-    this.keyExtractor = keyExtractor;
+export class WeightCalculator {
+  /**
+   * count
+   * @param args
+   * @arg args.selection элементы
+   * @arg args.chanceRatioMap шансы на выпадение элемента в selection в процентах
+   * @arg args.keyExtractor callback для опредления ключа для weightMap
+   */
+  public count<S, M>(args: CountArgsType<S, M>): WeightMapType<M> {
+    const { selection, keyExtractor, chanceRatioMap } = args;
+    const groupItemCounted = this.groupAndCountItems<S, M>(selection, keyExtractor);
+    return this.calcWeights<M>(groupItemCounted, chanceRatioMap);
   }
 
-  count(selection: S[], chanceRatioMap: ChanceRatioMap<M>): WeightMapType<M> {
-    const groupItemCounted = this.groupAndCountItems(selection);
-    return this.calcWeights(groupItemCounted, chanceRatioMap);
-  }
-
-  protected calcWeights(
+  protected calcWeights<M>(
     groupItemCounted: Map<M, number>,
     chanceRatioMap: WeightMapType<M>,
   ): WeightMapType<M> {
@@ -67,10 +76,10 @@ export class WeightCalculator<S, M> implements IWeightCalculator<S, M> {
     return round2(desireItemAmount / currentItemAmount);
   }
 
-  protected groupAndCountItems(selection: S[]) {
+  protected groupAndCountItems<S, M>(selection: S[], keyExtractor: (item: S) => M) {
     const map = new Map<M, number>();
     for (let item of selection) {
-      const key = this.keyExtractor(item);
+      const key = keyExtractor(item);
       const value = map.get(key) || 0;
       map.set(key, value + 1);
     }

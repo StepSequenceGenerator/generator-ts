@@ -16,6 +16,7 @@ import { MapMovementCompositeFilterType } from '../../shared/types/map-composite
 import { FilterStrategyName } from '../../shared/enums/filter-stategy-name.enum';
 import { BaseCompositeMovementFilters } from '../filter-strategy/BaseCompositeMovementFilters';
 import { CompassArc } from '../sequence-tracker/CompassArc';
+import { movementKeyExtractor } from '../roulette/weight-calculator/extractors/extractors';
 
 export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
   protected stepSequence: IMovementExtended[];
@@ -73,6 +74,7 @@ export abstract class AbstractSequenceGenerator<C extends IStepCounter> {
     const movementIndex = this.movementRoulette.generateNumber(
       movements,
       MOVEMENTS_BASE_CHANCE_RATIO_MAP,
+      movementKeyExtractor,
     );
     return movements[movementIndex];
   }

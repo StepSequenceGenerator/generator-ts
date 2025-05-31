@@ -21,6 +21,7 @@ import { RB_PERCENTAGE } from '../../shared/constants/rb-percentage/rb-vector-ke
 import { VectorKeyChanceRatioMapGenerator } from '../chance-ratio-map-generator/VectorKeyChanceRatioMapGenerator';
 import { VectorKeyRoulette } from '../roulette/VectorKeyRoulette';
 import { VectorKeyChanceRatioMapType } from '../../shared/types/chance-ratio-map.type';
+import { vectorKeyKeyExtractor } from '../roulette/weight-calculator/extractors/extractors';
 
 type CombinedCursorType = XCursorType | YCursorType;
 type CoordinateForCursorType<T extends CombinedCursorType> = T extends XCursorType
@@ -164,7 +165,11 @@ export class StepTracker {
         'NO_VECTOR_FOR_CHOICE',
       );
 
-    const index = this.vectorKeyRoulette.generateNumber(vectors, chanceRatioMap);
+    const index = this.vectorKeyRoulette.generateNumber(
+      vectors,
+      chanceRatioMap,
+      vectorKeyKeyExtractor,
+    );
     return vectors[index];
   }
 

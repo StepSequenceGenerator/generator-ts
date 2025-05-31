@@ -1,21 +1,32 @@
-import { WeightCalculator } from './weight-calculator/WeightCalculator';
 import { IRouletteGenerator } from '../../shared/types/roulette-generator.interface';
 import { ChanceRatioMap, WeightMapType } from '../../shared/types/chance-ratio-map.type';
+import {
+  IUniversalWeightCalculator,
+  KeyExtractorType,
+} from '../../shared/types/weight-calculator.interface';
 
 /**
- * @param C первый дженерик для WeightCalculator
+ * @param S первый дженерик для WeightCalculator
  * @param M второй дженерик для WeightCalculator
  * */
-export abstract class AbstractRoulette<C, M> implements IRouletteGenerator<C, M> {
+export abstract class AbstractRoulette<S, M> implements IRouletteGenerator<S, M> {
   protected readonly fallbackWeight = 0.1;
-  protected weightCalc: WeightCalculator<C, M>;
+  protected weightCalc: IUniversalWeightCalculator;
 
-  protected constructor(weightCalc: WeightCalculator<C, M>) {
+  protected constructor(weightCalc: IUniversalWeightCalculator) {
     this.weightCalc = weightCalc;
   }
 
-  public generateNumber(selection: C[], chanceRatioMap: ChanceRatioMap<M>): number {
-    const weightMap: WeightMapType<M> = this.weightCalc.count(selection, chanceRatioMap);
+  public generateNumber(
+    selection: S[],
+    chanceRatioMap: ChanceRatioMap<M>,
+    keyExtractor: KeyExtractorType<S, M>,
+  ): number {
+    const weightMap: WeightMapType<M> = this.weightCalc.count<S, M>({
+      selection,
+      chanceRatioMap,
+      keyExtractor,
+    });
 
     const weightList = this.createWeightList(selection, weightMap);
     const virtualChanceListLength = this.getVirtualChanceListLength(weightList);
@@ -24,8 +35,8 @@ export abstract class AbstractRoulette<C, M> implements IRouletteGenerator<C, M>
     return this.getItemIndex(weightList, randomIndex);
   }
 
-  protected createWeightList(selection: C[], weights: WeightMapType<M>): number[] {
-    return selection.map((item: C) => {
+  protected createWeightList(selection: S[], weights: WeightMapType<M>): number[] {
+    return selection.map((item: S) => {
       const weightKey = this.getWeightKey(item);
       return weights.get(weightKey) ?? this.fallbackWeight;
     });
@@ -37,7 +48,7 @@ export abstract class AbstractRoulette<C, M> implements IRouletteGenerator<C, M>
    * @param item элемент из selection
    * @return возвращает ключ с типом второго дженерика в классе
    * */
-  protected abstract getWeightKey(item: C): M;
+  protected abstract getWeightKey(item: S): M;
 
   protected getVirtualChanceListLength(chanceList: number[]): number {
     return chanceList.reduce((acc: number, chance: number) => acc + chance, 0);
