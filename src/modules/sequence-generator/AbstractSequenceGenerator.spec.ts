@@ -5,8 +5,23 @@ import { StepCounter } from '../step-counter/StepCounter';
 import { SequenceGeneratorFactory } from './SequenceGeneratorFactory';
 import { IMovementExtended } from '../../shared/types/extended-movement/movement-extended.interface';
 import { FilterStrategyName } from '../../shared/enums/filter-stategy-name.enum';
+import { MovementChanceRatioMapType } from '../../shared/types/roulette/chance-ratio-map.type';
+import { ExtendedMovementCharacter, MovementCharacter } from '../../shared/enums/movement-enums';
 
-const mockMovements = [{}] as Movement[];
+// const mockMovements = [{}] as Movement[];
+const mockChanceRatioMap: MovementChanceRatioMapType = new Map<ExtendedMovementCharacter, number>([
+  [ExtendedMovementCharacter.STEP, 0],
+  [ExtendedMovementCharacter.TURN, 0],
+  [ExtendedMovementCharacter.SEQUENCE, 0],
+  [ExtendedMovementCharacter.HOP, 0],
+  [ExtendedMovementCharacter.GLIDE, 0],
+  [ExtendedMovementCharacter.UNKNOWN, 0],
+  [ExtendedMovementCharacter.DIFFICULT, 100],
+]);
+const mockMovements: Movement[] = [
+  { type: MovementCharacter.UNKNOWN, isDifficult: false } as Movement,
+  { type: MovementCharacter.STEP, isDifficult: true } as Movement,
+];
 
 // @ts-expect-error TS2515
 class testGenerator extends AbstractSequenceGenerator<StepCounter> {}
@@ -111,15 +126,15 @@ describe('AbstractSequenceGenerator', () => {
   });
 
   describe('chooseMovement', () => {
-    it('должен вызвать randomGenerator.generateNumber', () => {
-      const spyFilter = vi.spyOn(generatorAny.randomGenerator, 'generateNumber');
-      generatorAny.chooseMovement([{}] as Movement[]);
+    it('должен вызвать roulette.spinWheel', () => {
+      const spyFilter = vi.spyOn(generatorAny.roulette, 'spinWheel');
+      generatorAny.chooseMovement(mockMovements, mockChanceRatioMap);
       expect(spyFilter).toHaveBeenCalled();
     });
 
     it('должен вернуть объект', () => {
-      const result = generatorAny.chooseMovement([{}] as Movement[]);
-      expect(result).toStrictEqual({});
+      const result = generatorAny.chooseMovement(mockMovements, mockChanceRatioMap);
+      expect(result).toStrictEqual({ type: MovementCharacter.STEP, isDifficult: true } as Movement);
     });
   });
 

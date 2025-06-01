@@ -1,8 +1,6 @@
 import { MovementLibrary } from '../movement/MovementLibrary';
 import { StepContext } from './StepContext';
 import { StepCounter } from '../step-counter/StepCounter';
-import { MovementDefaultWeightCalculator } from '../roulette/weight-calculator/MovementDefaultWeightCalculator';
-import { MovementRouletteGenerator } from '../roulette/MovementRouletteGenerator';
 import { StepTracker } from '../sequence-tracker/StepTracker';
 import { START_COORDINATES } from '../../shared/constants/start-coordinates';
 import { VECTORS_TRACK } from '../../shared/constants/vectors-track';
@@ -14,6 +12,12 @@ import { ThreeTurnsBlockGenerator } from './ThreeTurnsBlockGenerator';
 import { ThreeDifficultTurnsBlockCounter } from '../step-counter/ThreeDifficultTurnsBlockCounter';
 import { FilterCompositeMapFactory } from '../filter-strategy/FilterCompositeMapFactory';
 import { FilterStrategyName } from '../../shared/enums/filter-stategy-name.enum';
+import { VectorKeyChanceRatioMapGenerator } from '../chance-ratio-map-generator/VectorKeyChanceRatioMapGenerator';
+import { CompassArc } from '../sequence-tracker/CompassArc';
+import { WeightCalculator } from '../roulette/weight-calculator/WeightCalculator';
+import { Roulette } from '../roulette/Roulette';
+import { NumberGenerator } from '../roulette/number-generator/NumberGenerator';
+import { MovementChanceRatioMapGenerator } from '../chance-ratio-map-generator/MovementChanceRatioMapGenerator';
 
 export class SequenceGeneratorFactory {
   private static generator = new Map<GeneratorType, unknown>([
@@ -48,12 +52,24 @@ export class SequenceGeneratorFactory {
   }
 
   protected static createBaseConfig(data: Movement[]) {
-    const weightCalc = new MovementDefaultWeightCalculator();
+    const roulette = new Roulette({
+      weightCalc: new WeightCalculator(),
+      numberGenerator: new NumberGenerator(),
+    });
+
     return {
       library: new MovementLibrary(data),
       context: new StepContext(),
-      randomGenerator: new MovementRouletteGenerator(weightCalc),
-      tracker: new StepTracker(START_COORDINATES, VECTORS_TRACK, VECTOR_ANGLES),
+      chanceRatioMapGenerator: new MovementChanceRatioMapGenerator(),
+      roulette,
+      tracker: new StepTracker({
+        standardStartCoordinates: START_COORDINATES,
+        vectorsTrack: VECTORS_TRACK,
+        vectorAngles: VECTOR_ANGLES,
+        vectorKeyChanceRatioMapGenerator: new VectorKeyChanceRatioMapGenerator(),
+        roulette,
+      }),
+      compassArc: new CompassArc(),
     };
   }
 

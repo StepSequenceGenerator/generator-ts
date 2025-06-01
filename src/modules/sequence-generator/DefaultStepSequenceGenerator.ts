@@ -2,7 +2,6 @@ import { AbstractSequenceGenerator } from './AbstractSequenceGenerator';
 import { MovementLibrary } from '../movement/MovementLibrary';
 import { StepContext } from './StepContext';
 import { IMovementExtended } from '../../shared/types/extended-movement/movement-extended.interface';
-import { MovementRouletteGenerator } from '../roulette/MovementRouletteGenerator';
 import { StepTracker } from '../sequence-tracker/StepTracker';
 import { StepCounter } from '../step-counter/StepCounter';
 import { DifficultLevelAmountStep } from '../../shared/enums/difficult-level-amount-step.enum';
@@ -12,6 +11,9 @@ import { SequenceTrackerError } from '../../errors/custom-errors';
 import { ServiceMessageType } from '../../shared/types/service-message.type';
 import { MapMovementCompositeFilterType } from '../../shared/types/map-composite-filters.type';
 import { FilterStrategyName } from '../../shared/enums/filter-stategy-name.enum';
+import { CompassArc } from '../sequence-tracker/CompassArc';
+import { Roulette } from '../roulette/Roulette';
+import { MovementChanceRatioMapGenerator } from '../chance-ratio-map-generator/MovementChanceRatioMapGenerator';
 
 export class DefaultStepSequenceGenerator extends AbstractSequenceGenerator<StepCounter> {
   private threeTurnsBlockGenerator: ThreeTurnsBlockGenerator;
@@ -21,21 +23,34 @@ export class DefaultStepSequenceGenerator extends AbstractSequenceGenerator<Step
     library: MovementLibrary;
     context: StepContext<IMovementExtended>;
     counter: StepCounter;
-    randomGenerator: MovementRouletteGenerator;
+    chanceRatioMapGenerator: MovementChanceRatioMapGenerator;
+    roulette: Roulette;
     tracker: StepTracker;
     filterStrategy: MapMovementCompositeFilterType;
     threeTurnsBlockGenerator: ThreeTurnsBlockGenerator;
+    compassArc: CompassArc;
   }) {
     const {
       library,
       context,
       counter,
-      randomGenerator,
+      chanceRatioMapGenerator,
+      roulette,
       tracker,
       filterStrategy,
       threeTurnsBlockGenerator,
+      compassArc,
     } = data;
-    super({ library, context, counter, randomGenerator, tracker, filterStrategy });
+    super({
+      library,
+      context,
+      counter,
+      chanceRatioMapGenerator,
+      roulette,
+      tracker,
+      filterStrategy,
+      compassArc,
+    });
     this.threeTurnsBlockGenerator = threeTurnsBlockGenerator;
     this.serviceMessage = {
       text: 'Генерация выполнена успешно',

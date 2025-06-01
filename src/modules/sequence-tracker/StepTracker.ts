@@ -16,37 +16,77 @@ import { VectorKey } from '../../shared/enums/vector-key.enum';
 import { CoordinatesError, SequenceTrackerError } from '../../errors/custom-errors';
 import { randomGenerator } from '../../utils/random-generator';
 
+import { ArcVectorIndexType } from '../../shared/types/arc-vector/arc-vector-index.type';
+import { RB_VECTOR_KEY_PERCENTAGE } from '../../shared/constants/rb-percentage/rb-vector-key-percentage';
+import { VectorKeyChanceRatioMapGenerator } from '../chance-ratio-map-generator/VectorKeyChanceRatioMapGenerator';
+import { VectorKeyChanceRatioMapType } from '../../shared/types/roulette/chance-ratio-map.type';
+import { vectorKeyKeyExtractor } from '../roulette/weight-calculator/extractors';
+import { Roulette } from '../roulette/Roulette';
+import { vectorWeightKeyCreator } from '../roulette/number-generator/weight-key-creators';
+
 type CombinedCursorType = XCursorType | YCursorType;
 type CoordinateForCursorType<T extends CombinedCursorType> = T extends XCursorType
   ? XCoordinateType
   : YCoordinateType;
 
+type GetNextPositionArgsType = {
+  currentVectorKey: VectorKey | null;
+  currentAcrVectorIndex: ArcVectorIndexType;
+  currentCoordinates: DescartesCoordinatesType;
+  distance: number;
+};
+
+type ConstructorArgsType = {
+  standardStartCoordinates: ReadonlyArray<DescartesCoordinatesType>;
+  vectorsTrack: VectorTrackType;
+  vectorAngles: VectorAngleType;
+  vectorKeyChanceRatioMapGenerator: VectorKeyChanceRatioMapGenerator;
+  roulette: Roulette;
+};
+
 export class StepTracker {
   readonly startCoordinates: ReadonlyArray<DescartesCoordinatesType>;
-  readonly trackVectors: VectorTrackType;
+  readonly vectorsTrack: VectorTrackType;
   readonly vectorAngles: VectorAngleType;
+  readonly vectorKeyChanceRatioMapGenerator: VectorKeyChanceRatioMapGenerator;
+  readonly roulette: Roulette;
 
-  constructor(
-    standardStartCoordinates: ReadonlyArray<DescartesCoordinatesType>,
-    trackVectors: VectorTrackType,
-    vectorAngles: VectorAngleType,
-  ) {
+  constructor(data: ConstructorArgsType) {
+    const {
+      standardStartCoordinates,
+      vectorsTrack,
+      vectorAngles,
+      vectorKeyChanceRatioMapGenerator,
+      roulette,
+    } = data;
     this.startCoordinates = standardStartCoordinates;
+    this.vectorsTrack = vectorsTrack;
     this.vectorAngles = vectorAngles;
-    this.trackVectors = trackVectors;
+    this.vectorKeyChanceRatioMapGenerator = vectorKeyChanceRatioMapGenerator;
+    this.roulette = roulette;
   }
 
-  public getNextPosition(
-    currentVector: VectorKey | null,
-    currentCoordinates: DescartesCoordinatesType,
-    distance: number,
-  ) {
-    const triedVectorKeys = new Set<VectorKey>();
-    let availableVectorKeys = this.getAllowedVectorKeys(currentVector);
+  /**
+   * @arg data
+   * @arg {VectorKey | null} data.currentVectorKey ключ вектора движения относительно поля
+   * @arg {ArcVectorIndexType} data.currentAcrVectorIndex индекс дуги: по часовой или против часовой стрелки
+   * @arg {DescartesCoordinatesType} data.currentCoordinates текущий координаты
+   * @arg {number} data.distance расстояние, которое покрывает движение
+   * */
 
-    console.debug('++++++++++++');
+  public getNextPosition(data: GetNextPositionArgsType) {
+    const { currentVectorKey, currentAcrVectorIndex, currentCoordinates, distance } = data;
+    const triedVectorKeys = new Set<VectorKey>();
+    let availableVectorKeys = this.getAllowedVectorKeys(currentVectorKey);
+
     while (availableVectorKeys.length > 0) {
-      const vectorKey = this.getNextMovementVector(availableVectorKeys);
+      const vectorKeyChanceRatioMap = this.vectorKeyChanceRatioMapGenerator.getChanceRatioMap({
+        currentVectorKey,
+        vectorKeys: availableVectorKeys,
+        currentAcrVectorIndex,
+        rbPercentage: RB_VECTOR_KEY_PERCENTAGE,
+      });
+      const vectorKey = this.getNextMovementVector(availableVectorKeys, vectorKeyChanceRatioMap);
       triedVectorKeys.add(vectorKey);
       const vectorCursor = this.getNextTrackVector(vectorKey);
       const newCoordinates = this.getNewCoordinates({
@@ -113,16 +153,25 @@ export class StepTracker {
   }
 
   getNextTrackVector(vectorKey: VectorKey): VectorCursorType {
-    return this.trackVectors[vectorKey];
+    return this.vectorsTrack[vectorKey];
   }
 
-  private getNextMovementVector(vectors: VectorKey[]) {
+  private getNextMovementVector(
+    vectors: VectorKey[],
+    chanceRatioMap: VectorKeyChanceRatioMapType,
+  ): VectorKey {
     if (vectors.length === 0)
       throw new SequenceTrackerError(
         'vectors.length should be more than 0',
         'NO_VECTOR_FOR_CHOICE',
       );
-    const index = this.getRandom(0, vectors.length);
+
+    const index = this.roulette.spinWheel({
+      selection: vectors,
+      chanceRatioMap,
+      itemKeyExtractor: vectorKeyKeyExtractor,
+      weightKeyCreator: vectorWeightKeyCreator,
+    });
     return vectors[index];
   }
 
@@ -130,8 +179,12 @@ export class StepTracker {
     return currentVector === null
       ? (Object.keys(this.vectorAngles) as VectorKey[])
       : (Object.keys(this.vectorAngles) as VectorKey[]).filter((key) => {
-          const diff = Math.abs(this.vectorAngles[currentVector] - this.vectorAngles[key]);
-          return diff <= maxTurnAngle;
+          const absoluteAngelDiff = Math.abs(
+            this.vectorAngles[currentVector] - this.vectorAngles[key],
+          );
+          const normalizeAngleDiff = Math.min(absoluteAngelDiff, 360 - absoluteAngelDiff);
+
+          return normalizeAngleDiff <= maxTurnAngle;
         });
   }
 
